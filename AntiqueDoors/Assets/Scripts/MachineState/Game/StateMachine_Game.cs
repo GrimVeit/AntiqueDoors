@@ -9,14 +9,14 @@ public class StateMachine_Game : IGlobalStateMachineProvider
 
     private IState _currentState;
 
-    public StateMachine_Game()
+    public StateMachine_Game(UIGameRoot sceneRoot)
     {
-
+        states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot);
     }
 
     public void Initialize()
     {
-
+        SetState(GetState<MainState_Game>());
     }
 
     public void Dispose()

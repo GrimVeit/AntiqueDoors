@@ -42,7 +42,7 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
 
-        stateMachine = new StateMachine_Game();
+        stateMachine = new StateMachine_Game(sceneRoot);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -71,12 +71,12 @@ public class GameSceneEntryPoint : MonoBehaviour
 
     private void ActivateTransitions()
     {
-
+        sceneRoot.OnClickToExit_Main += HandleClickToMenu;
     }
 
     private void DeactivateTransitions()
     {
-
+        sceneRoot.OnClickToExit_Main -= HandleClickToMenu;
     }
 
     private void Deactivate()
