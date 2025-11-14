@@ -37,7 +37,7 @@ public class GameEntryPoint
 
     private void Run()
     {
-        coroutines.StartCoroutine(LoadAndStartCheck());
+        coroutines.StartCoroutine(LoadAndStartMainMenu());
     }
 
 

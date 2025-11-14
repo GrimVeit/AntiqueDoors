@@ -106,14 +106,12 @@ public class MenuEntryPoint : MonoBehaviour
 
     private void ActivateTransitions()
     {
-        sceneRoot.OnClickToPlay_Main += HandleClickToGame;
-        sceneRoot.OnClickToExit_Main += Exit;
+
     }
 
     private void DeactivateTransitions()
     {
-        sceneRoot.OnClickToPlay_Main -= HandleClickToGame;
-        sceneRoot.OnClickToExit_Main -= Exit;
+
     }
 
     private void Deactivate()

@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class MainPanel_Menu : MovePanel
 {
     [SerializeField] private Button buttonLeaderboard;
-    [SerializeField] private Button buttonWardrobe;
     [SerializeField] private Button buttonPlay;
-    [SerializeField] private Button buttonExit;
+    [SerializeField] private Button buttonShop;
+    [SerializeField] private Button buttonProfile;
 
     [SerializeField] private List<UIEffectCombination> uIEffectCombinations = new List<UIEffectCombination>();
 
@@ -18,9 +18,9 @@ public class MainPanel_Menu : MovePanel
         base.Initialize();
 
         buttonLeaderboard.onClick.AddListener(() => OnClickToLeaderboard?.Invoke());
-        buttonWardrobe.onClick.AddListener(() => OnClickToWardrobe?.Invoke());
         buttonPlay.onClick.AddListener(() => OnClickToPlay?.Invoke());
-        buttonExit.onClick.AddListener(() => OnClickToExit?.Invoke());
+        buttonShop.onClick.AddListener(() => OnClickToShop?.Invoke());
+        buttonProfile.onClick.AddListener(() => OnClickToProfile?.Invoke());
 
         uIEffectCombinations.ForEach(data => data.Initialize());
     }
@@ -30,9 +30,9 @@ public class MainPanel_Menu : MovePanel
         base.Dispose();
 
         buttonLeaderboard.onClick.RemoveListener(() => OnClickToLeaderboard?.Invoke());
-        buttonWardrobe.onClick.RemoveListener(() => OnClickToWardrobe?.Invoke());
         buttonPlay.onClick.RemoveListener(() => OnClickToPlay?.Invoke());
-        buttonExit.onClick.RemoveListener(() => OnClickToExit?.Invoke());
+        buttonShop.onClick.RemoveListener(() => OnClickToShop?.Invoke());
+        buttonProfile.onClick.RemoveListener(() => OnClickToProfile?.Invoke());
 
         uIEffectCombinations.ForEach(data => data.Dispose());
     }
@@ -54,9 +54,9 @@ public class MainPanel_Menu : MovePanel
     #region Output
 
     public event Action OnClickToLeaderboard;
-    public event Action OnClickToWardrobe;
     public event Action OnClickToPlay;
-    public event Action OnClickToExit;
+    public event Action OnClickToShop;
+    public event Action OnClickToProfile;
 
     #endregion
 }

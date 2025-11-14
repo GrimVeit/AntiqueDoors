@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LeaderboardState_Menu : IState
+public class ShopState_Menu : IState
 {
     private readonly IGlobalStateMachineProvider _machineProvider;
     private readonly UIMainMenuRoot _sceneRoot;
 
-    public LeaderboardState_Menu(IGlobalStateMachineProvider machineProvider, UIMainMenuRoot sceneRoot)
+    public ShopState_Menu(IGlobalStateMachineProvider machineProvider, UIMainMenuRoot sceneRoot)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -15,20 +15,20 @@ public class LeaderboardState_Menu : IState
 
     public void EnterState()
     {
-        Debug.Log("<color=red>ACTIVATE STATE - LEADERBOARD STATE / MENU</color>");
+        Debug.Log("<color=red>ACTIVATE STATE - SHOP STATE / MENU</color>");
 
-        _sceneRoot.OnClickToBack_Leaderboard += ChangeStateToMain;
+        _sceneRoot.OnClickToBack_Shop += ChangeStateToMain;
 
         _sceneRoot.OpenBackgroundSecondPanel();
-        _sceneRoot.OpenLeaderboardPanel();
+        _sceneRoot.OpenShopPanel();
     }
 
     public void ExitState()
     {
-        _sceneRoot.OnClickToBack_Leaderboard -= ChangeStateToMain;
+        _sceneRoot.OnClickToBack_Shop -= ChangeStateToMain;
 
         _sceneRoot.CloseBackgroundSecondPanel();
-        _sceneRoot.CloseLeaderboardPanel();
+        _sceneRoot.CloseShopPanel();
     }
 
     private void ChangeStateToMain()

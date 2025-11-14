@@ -1,0 +1,32 @@
+{
+  "project_info": {
+    "project_number": "1046723420430",
+    "firebase_url": "https://antiquedoors-1c9b5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "antiquedoors-1c9b5",
+    "storage_bucket": "antiquedoors-1c9b5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046723420430:ios:fd8a439c9a513ca994375f",
+        "android_client_info": {
+          "package_name": "com.DoorsCompany.AntiqueDoors"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1scLkK1Lfe8BWg0X4-qp1le6iZWhVUAg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

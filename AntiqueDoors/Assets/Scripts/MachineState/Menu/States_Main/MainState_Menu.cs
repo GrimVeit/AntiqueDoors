@@ -18,20 +18,35 @@ public class MainState_Menu : IState
         Debug.Log("<color=red>ACTIVATE STATE - MAIN STATE / MENU</color>");
 
         _sceneRoot.OnClickToLeaderboard_Main += ChangeStateToLeaderboard;
+        _sceneRoot.OnClickToProfile_Main += ChangeStateToProfile;
+        _sceneRoot.OnClickToShop_Main += ChangeStateToShop;
 
+        _sceneRoot.OpenBackgroundMainPanel();
         _sceneRoot.OpenMainPanel();
-        _sceneRoot.OpenCoinsPanel();
     }
 
     public void ExitState()
     {
         _sceneRoot.OnClickToLeaderboard_Main -= ChangeStateToLeaderboard;
+        _sceneRoot.OnClickToProfile_Main -= ChangeStateToProfile;
+        _sceneRoot.OnClickToShop_Main -= ChangeStateToShop;
 
+        _sceneRoot.CloseBackgroundMainPanel();
         _sceneRoot.CloseMainPanel();
     }
 
     private void ChangeStateToLeaderboard()
     {
         _machineProvider.SetState(_machineProvider.GetState<LeaderboardState_Menu>());
+    }
+
+    private void ChangeStateToProfile()
+    {
+        _machineProvider.SetState(_machineProvider.GetState<ProfileState_Menu>());
+    }
+
+    private void ChangeStateToShop()
+    {
+        _machineProvider.SetState(_machineProvider.GetState<ShopState_Menu>());
     }
 }

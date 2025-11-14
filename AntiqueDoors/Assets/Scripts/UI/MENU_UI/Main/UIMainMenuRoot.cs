@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class UIMainMenuRoot : UIRoot
 {
-    [SerializeField] private IntroPanel_Menu introPanel;
     [SerializeField] private MainPanel_Menu mainPanel;
-    [SerializeField] private CoinsPanel_Menu coinsPanel;
     [SerializeField] private LeaderboardPanel_Menu leaderboardPanel;
+    [SerializeField] private ProfilePanel_Menu profilePanel;
+    [SerializeField] private ShopPanel_Game shopPanel;
+    [SerializeField] private MovePanel backgroundPanelMain;
+    [SerializeField] private MovePanel backgroundPanelSecond;
 
     [Header("Registration")]
     [SerializeField] private NicknamePanel_Menu nicknamePanel;
@@ -22,10 +24,10 @@ public class UIMainMenuRoot : UIRoot
 
     public void Initialize()
     {
-        introPanel.Initialize();
         mainPanel.Initialize();
-        coinsPanel.Initialize();
         leaderboardPanel.Initialize();
+        profilePanel.Initialize();
+        shopPanel.Initialize();
 
         nicknamePanel.Initialize();
         registrationPanel.Initialize();
@@ -37,11 +39,13 @@ public class UIMainMenuRoot : UIRoot
         registrationPanel.OnClickToRegistrate += HandleClickToRegistrate_Registration;
 
         leaderboardPanel.OnClickToBack += HandleClickToBack_Leaderboard;
+        profilePanel.OnClickToBack += HandleClickToBack_Profile;
+        shopPanel.OnClickToBack += HandleClickToBack_Shop;
 
         mainPanel.OnClickToLeaderboard += HandleClickToLeaderboard_Main;
-        mainPanel.OnClickToWardrobe += HandleClickToWardrobe_Main;
+        mainPanel.OnClickToShop += HandleClickToShop_Main;
         mainPanel.OnClickToPlay += HandleClickToPlay_Main;
-        mainPanel.OnClickToExit += HandleClickToExit_Main;
+        mainPanel.OnClickToProfile += HandleClickToProfile_Main;
     }
 
 
@@ -50,18 +54,22 @@ public class UIMainMenuRoot : UIRoot
         registrationPanel.OnClickToRegistrate -= HandleClickToRegistrate_Registration;
 
         leaderboardPanel.OnClickToBack -= HandleClickToBack_Leaderboard;
+        profilePanel.OnClickToBack -= HandleClickToBack_Profile;
+        shopPanel.OnClickToBack -= HandleClickToBack_Shop;
 
         mainPanel.OnClickToLeaderboard -= HandleClickToLeaderboard_Main;
-        mainPanel.OnClickToWardrobe -= HandleClickToWardrobe_Main;
+        mainPanel.OnClickToShop -= HandleClickToShop_Main;
         mainPanel.OnClickToPlay -= HandleClickToPlay_Main;
-        mainPanel.OnClickToExit -= HandleClickToExit_Main;
+        mainPanel.OnClickToProfile -= HandleClickToProfile_Main;
 
         if (currentPanel != null)
             CloseOtherPanel(currentPanel);
 
-        CloseCoinsPanel();
-        CloseIntroPanel();
+        CloseBackgroundMainPanel();
+        CloseBackgroundSecondPanel();
         CloseLeaderboardPanel();
+        CloseShopPanel();
+        CloseProfilePanel();
         CloseLoadRegistrationPanel();
         CloseMainPanel();
         CloseNicknamePanel();
@@ -70,10 +78,10 @@ public class UIMainMenuRoot : UIRoot
 
     public void Dispose()
     {
-        introPanel.Dispose();
         mainPanel.Dispose();
-        coinsPanel.Dispose();
         leaderboardPanel.Dispose();
+        profilePanel.Dispose();
+        shopPanel.Dispose();
 
         nicknamePanel.Dispose();
         registrationPanel.Dispose();
@@ -97,18 +105,33 @@ public class UIMainMenuRoot : UIRoot
     }
 
 
-    public void OpenCoinsPanel()
+    public void OpenBackgroundMainPanel()
     {
-        if(coinsPanel.IsActive) return;
+        if (backgroundPanelMain.IsActive) return;
 
-        OpenOtherPanel(coinsPanel);
+        OpenOtherPanel(backgroundPanelMain);
     }
 
-    public void CloseCoinsPanel()
+    public void CloseBackgroundMainPanel()
     {
-        if (!coinsPanel.IsActive) return;
+        if (!backgroundPanelMain.IsActive) return;
 
-        CloseOtherPanel(coinsPanel);
+        CloseOtherPanel(backgroundPanelMain);
+    }
+
+
+    public void OpenBackgroundSecondPanel()
+    {
+        if (backgroundPanelSecond.IsActive) return;
+
+        OpenOtherPanel(backgroundPanelSecond);
+    }
+
+    public void CloseBackgroundSecondPanel()
+    {
+        if (!backgroundPanelSecond.IsActive) return;
+
+        CloseOtherPanel(backgroundPanelSecond);
     }
 
 
@@ -129,6 +152,37 @@ public class UIMainMenuRoot : UIRoot
     }
 
 
+    public void OpenProfilePanel()
+    {
+        if (profilePanel.IsActive) return;
+
+        OpenOtherPanel(profilePanel);
+    }
+
+    public void CloseProfilePanel()
+    {
+        if(!profilePanel.IsActive) return;
+
+        CloseOtherPanel(profilePanel);
+    }
+
+
+    public void OpenShopPanel()
+    {
+        if (shopPanel.IsActive) return;
+
+        OpenOtherPanel(shopPanel);
+    }
+
+    public void CloseShopPanel()
+    {
+        if (!shopPanel.IsActive) return;
+
+        CloseOtherPanel(shopPanel);
+    }
+
+
+    //--------------------------------------------//
 
 
     public void OpenNicknamePanel()
@@ -176,22 +230,6 @@ public class UIMainMenuRoot : UIRoot
         CloseOtherPanel(loadRegistrationPanel);
     }
 
-
-
-    public void OpenIntroPanel()
-    {
-        if (introPanel.IsActive) return;
-
-        OpenOtherPanel(introPanel);
-    }
-
-    public void CloseIntroPanel()
-    {
-        if (!introPanel.IsActive) return;
-
-        CloseOtherPanel(introPanel);
-    }
-
     #endregion
 
 
@@ -211,9 +249,9 @@ public class UIMainMenuRoot : UIRoot
     #region MainPanel
 
     public event Action OnClickToLeaderboard_Main;
-    public event Action OnClickToWardrobe_Main;
+    public event Action OnClickToShop_Main;
     public event Action OnClickToPlay_Main;
-    public event Action OnClickToExit_Main;
+    public event Action OnClickToProfile_Main;
 
     private void HandleClickToLeaderboard_Main()
     {
@@ -222,11 +260,11 @@ public class UIMainMenuRoot : UIRoot
         OnClickToLeaderboard_Main?.Invoke();
     }
 
-    private void HandleClickToWardrobe_Main()
+    private void HandleClickToShop_Main()
     {
         _soundProvider.PlayOneShot("Click");
 
-        OnClickToWardrobe_Main?.Invoke();
+        OnClickToShop_Main?.Invoke();
     }
 
     private void HandleClickToPlay_Main()
@@ -236,9 +274,9 @@ public class UIMainMenuRoot : UIRoot
         OnClickToPlay_Main?.Invoke();
     }
 
-    private void HandleClickToExit_Main()
+    private void HandleClickToProfile_Main()
     {
-        OnClickToExit_Main?.Invoke();
+        OnClickToProfile_Main?.Invoke();
     }
 
     #endregion
@@ -252,6 +290,32 @@ public class UIMainMenuRoot : UIRoot
         _soundProvider.PlayOneShot("Click");
 
         OnClickToBack_Leaderboard?.Invoke();
+    }
+
+    #endregion
+
+    #region ProfilePanel
+
+    public event Action OnClickToBack_Profile;
+
+    private void HandleClickToBack_Profile()
+    {
+        _soundProvider.PlayOneShot("Click");
+
+        OnClickToBack_Profile?.Invoke();
+    }
+
+    #endregion
+
+    #region ProfilePanel
+
+    public event Action OnClickToBack_Shop;
+
+    private void HandleClickToBack_Shop()
+    {
+        _soundProvider.PlayOneShot("Click");
+
+        OnClickToBack_Shop?.Invoke();
     }
 
     #endregion
