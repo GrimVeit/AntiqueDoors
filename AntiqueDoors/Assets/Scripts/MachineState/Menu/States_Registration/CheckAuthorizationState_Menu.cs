@@ -15,7 +15,7 @@ public class CheckAuthorizationState_Menu : IState
 
     public void EnterState()
     {
-        Debug.Log("<color=red>ACTIVATE STATE - CHECK TUTORIAL STATE / MENU</color>");
+        Debug.Log("<color=red>ACTIVATE STATE - AUTHORIZATION STATE / MENU</color>");
 
         if (_firebaseAuthentication.IsAuthorization())
         {

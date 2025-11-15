@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AvatarModel
 {
+    public int CurrentIndexAvatar => _currentIndexAvatar;
+
     public event Action<int> OnSelectAvatar;
     public event Action<int> OnDeselectAvatar;
 
@@ -15,11 +17,11 @@ public class AvatarModel
     public AvatarModel(string keyAvatar)
     {
         this.keyAvatar = keyAvatar;
+        _currentIndexAvatar = PlayerPrefs.GetInt(keyAvatar, 0);
     }
 
     public void Initialize()
     {
-        _currentIndexAvatar = PlayerPrefs.GetInt(keyAvatar, 0);
         OnSelectAvatar?.Invoke(_currentIndexAvatar);
     }
 

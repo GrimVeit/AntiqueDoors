@@ -12,11 +12,12 @@ public class StateMachine_Menu : IGlobalStateMachineProvider
     public StateMachine_Menu
         (UIMainMenuRoot sceneRoot,
         NicknamePresenter nicknamePresenter,
+        AvatarPresenter avatarPresenter,
         FirebaseAuthenticationPresenter firebaseAuthenticationPresenter,
         FirebaseDatabasePresenter firebaseDatabasePresenter)
     {
         states[typeof(CheckAuthorizationState_Menu)] = new CheckAuthorizationState_Menu(this, firebaseAuthenticationPresenter);
-        states[typeof(NameAndAvatarInputState_Menu)] = new NameAndAvatarInputState_Menu(this, sceneRoot, nicknamePresenter, firebaseAuthenticationPresenter, firebaseDatabasePresenter);
+        states[typeof(NameAndAvatarInputState_Menu)] = new NameAndAvatarInputState_Menu(this, sceneRoot, nicknamePresenter, firebaseAuthenticationPresenter, firebaseDatabasePresenter, avatarPresenter);
         states[typeof(RegistrationState_Menu)] = new RegistrationState_Menu(this, sceneRoot, firebaseAuthenticationPresenter, firebaseDatabasePresenter);
 
 
@@ -30,7 +31,7 @@ public class StateMachine_Menu : IGlobalStateMachineProvider
 
     public void Initialize()
     {
-        SetState(GetState<MainState_Menu>());
+        SetState(GetState<CheckAuthorizationState_Menu>());
     }
 
     public void Dispose()

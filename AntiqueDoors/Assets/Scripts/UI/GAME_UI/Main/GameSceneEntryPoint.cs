@@ -19,6 +19,8 @@ public class GameSceneEntryPoint : MonoBehaviour
     private ParticleEffectMaterialPresenter particleEffectMaterialPresenter;
     private SoundPresenter soundPresenter;
 
+    private AvatarPresenter avatarPresenter;
+
     private StateMachine_Game stateMachine;
 
     public void Run(UIRootView uIRootView)
@@ -42,6 +44,8 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
 
+        avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
+
         stateMachine = new StateMachine_Game(sceneRoot);
 
         sceneRoot.SetSoundProvider(soundPresenter);
@@ -55,6 +59,8 @@ public class GameSceneEntryPoint : MonoBehaviour
         particleEffectMaterialPresenter.Activate();
         sceneRoot.Initialize();
         bankPresenter.Initialize();
+
+        avatarPresenter.Initialize();
         
         stateMachine.Initialize();
     }
@@ -96,6 +102,9 @@ public class GameSceneEntryPoint : MonoBehaviour
         particleEffectPresenter?.Dispose();
         particleEffectMaterialPresenter?.Dispose();
         bankPresenter?.Dispose();
+
+        avatarPresenter?.Dispose();
+
         stateMachine?.Dispose();
     }
 

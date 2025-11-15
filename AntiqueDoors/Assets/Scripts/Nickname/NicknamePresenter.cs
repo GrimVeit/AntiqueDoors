@@ -24,6 +24,7 @@ public class NicknamePresenter
         DeactivateEvents();
 
         nicknameView.Dispose();
+        nicknameModel.Dispose();
     }
 
     private void ActivateEvents()

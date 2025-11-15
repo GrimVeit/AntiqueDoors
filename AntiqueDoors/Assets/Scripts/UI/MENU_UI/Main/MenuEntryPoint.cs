@@ -19,9 +19,13 @@ public class MenuEntryPoint : MonoBehaviour
     private SoundPresenter soundPresenter;
 
     private NicknamePresenter nicknamePresenter;
+    private AvatarPresenter avatarPresenter;
     private FirebaseAuthenticationPresenter firebaseAuthenticationPresenter;
     private FirebaseDatabasePresenter firebaseDatabasePresenter;
     private LeaderboardPresenter leaderboardPresenter;
+
+    private AvatarVisualPresenter avatarVisualPresenter_Main;
+    private AvatarVisualPresenter avatarVisualPresenter_Update;
 
     private StateMachine_Menu stateMachine;
 
@@ -57,14 +61,19 @@ public class MenuEntryPoint : MonoBehaviour
                 bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
 
                 nicknamePresenter = new NicknamePresenter(new NicknameModel(PlayerPrefsKeys.NICKNAME, soundPresenter), viewContainer.GetView<NicknameView>());
+                avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
                 firebaseAuthenticationPresenter = new FirebaseAuthenticationPresenter(new FirebaseAuthenticationModel(firebaseAuth, soundPresenter), viewContainer.GetView<FirebaseAuthenticationView>());
 
                 firebaseDatabasePresenter = new FirebaseDatabasePresenter(new FirebaseDatabaseModel(firebaseAuth, databaseReference, bankPresenter));
                 leaderboardPresenter = new LeaderboardPresenter(new LeaderboardModel(firebaseDatabasePresenter), viewContainer.GetView<LeaderboardView>());
 
+                avatarVisualPresenter_Main = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Registration"));
+                avatarVisualPresenter_Update = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Update"));
+
                 stateMachine = new StateMachine_Menu
                 (sceneRoot,
                 nicknamePresenter,
+                avatarPresenter,
                 firebaseAuthenticationPresenter,
                 firebaseDatabasePresenter);
 
@@ -83,6 +92,10 @@ public class MenuEntryPoint : MonoBehaviour
                 leaderboardPresenter.Initialize();
                 firebaseAuthenticationPresenter.Initialize();
                 firebaseDatabasePresenter.Initialize();
+
+                avatarVisualPresenter_Main.Initialize();
+                avatarVisualPresenter_Update.Initialize();
+                avatarPresenter.Initialize();
 
                 stateMachine.Initialize();
             }
@@ -145,6 +158,10 @@ public class MenuEntryPoint : MonoBehaviour
         leaderboardPresenter?.Dispose();
         firebaseAuthenticationPresenter?.Dispose();
         firebaseDatabasePresenter?.Dispose();
+
+        avatarVisualPresenter_Main?.Dispose();
+        avatarVisualPresenter_Update?.Dispose();
+        avatarPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

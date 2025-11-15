@@ -33,6 +33,11 @@ public class NicknameModel
         OnChooseNickname?.Invoke(Nickname);
     }
 
+    public void Dispose()
+    {
+        PlayerPrefs.SetString(keyNickname, Nickname);
+    }
+
     public void ChangeNickname(string value)
     {
         Nickname = value;

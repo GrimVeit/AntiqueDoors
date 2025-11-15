@@ -11,7 +11,6 @@ public class UIMainMenuRoot : UIRoot
     [SerializeField] private MovePanel backgroundPanelSecond;
 
     [Header("Registration")]
-    [SerializeField] private NicknamePanel_Menu nicknamePanel;
     [SerializeField] private RegistrationPanel_Menu registrationPanel;
     [SerializeField] private LoadingPanel_Menu loadRegistrationPanel;
 
@@ -29,7 +28,6 @@ public class UIMainMenuRoot : UIRoot
         profilePanel.Initialize();
         shopPanel.Initialize();
 
-        nicknamePanel.Initialize();
         registrationPanel.Initialize();
         loadRegistrationPanel.Initialize();
     }
@@ -72,7 +70,6 @@ public class UIMainMenuRoot : UIRoot
         CloseProfilePanel();
         CloseLoadRegistrationPanel();
         CloseMainPanel();
-        CloseNicknamePanel();
         CloseRegistrationPanel();
     }
 
@@ -83,7 +80,6 @@ public class UIMainMenuRoot : UIRoot
         profilePanel.Dispose();
         shopPanel.Dispose();
 
-        nicknamePanel.Dispose();
         registrationPanel.Dispose();
         loadRegistrationPanel.Dispose();
     }
@@ -183,21 +179,6 @@ public class UIMainMenuRoot : UIRoot
 
 
     //--------------------------------------------//
-
-
-    public void OpenNicknamePanel()
-    {
-        if (nicknamePanel.IsActive) return;
-
-        OpenOtherPanel(nicknamePanel);
-    }
-
-    public void CloseNicknamePanel()
-    {
-        if (!nicknamePanel.IsActive) return;
-
-        CloseOtherPanel(nicknamePanel);
-    }
 
 
 

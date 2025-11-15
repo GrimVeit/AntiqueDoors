@@ -28,7 +28,7 @@ public class LeaderboardModel
 
     private void GetUsers(List<UserData> users)
     {
-        var top = users.Take(10).ToList();
+        var top = users.Take(5).ToList();
         OnGetTopPlayers?.Invoke(top);
     }
 

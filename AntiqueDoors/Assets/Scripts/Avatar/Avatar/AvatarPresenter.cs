@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AvatarPresenter
+public class AvatarPresenter : IAvatarInfoProvider, IAvatarProvider, IAvatarEventsProvider
 {
     private readonly AvatarModel _model;
     private readonly AvatarView _view;
@@ -19,7 +19,6 @@ public class AvatarPresenter
         ActivateEvents();
 
         _model.Initialize();
-        _view.Initialize();
     }
 
     public void Dispose()
@@ -27,23 +26,16 @@ public class AvatarPresenter
         DeactivateEvents();
 
         _model.Dispose();
-        _view.Dispose();
     }
 
     private void ActivateEvents()
     {
-        _view.OnChooseAvatar += _model.Select;
-
-        _model.OnSelectAvatar += _view.Select;
-        _model.OnDeselectAvatar += _view.Deselect;
+        _model.OnSelectAvatar += _view.SetAvatar;
     }
 
     private void DeactivateEvents()
     {
-        _view.OnChooseAvatar -= _model.Select;
-
-        _model.OnSelectAvatar -= _view.Select;
-        _model.OnDeselectAvatar -= _view.Deselect;
+        _model.OnSelectAvatar -= _view.SetAvatar;
     }
 
     #region Output
@@ -55,4 +47,26 @@ public class AvatarPresenter
     }
 
     #endregion
+
+    #region Input
+
+    public void SelectAvatar(int id) => _model.Select(id);
+    public int GetCurrentAvatar() => _model.CurrentIndexAvatar;
+
+    #endregion
+}
+
+public interface IAvatarInfoProvider
+{
+    int GetCurrentAvatar();
+}
+
+public interface IAvatarProvider
+{
+    public void SelectAvatar(int id);
+}
+
+public interface IAvatarEventsProvider
+{
+    public event Action<int> OnChooseAvatar;
 }

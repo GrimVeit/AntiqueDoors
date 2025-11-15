@@ -7,25 +7,30 @@ using UnityEngine.UI;
 public class LeaderboardView : View
 {
     [SerializeField] private Transform transformContent;
-    [SerializeField] private UserGrid userGridPrefabTop3;
-    [SerializeField] private UserGrid userGridPrefabOther;
+    [SerializeField] private UserGrid userGridPrefab;
 
     public void GetTopPlayers(List<UserData> users)
     {
         for (int i = 0; i < users.Count; i++)
         {
-            UserGrid grid = null;
+            UserGrid grid = Instantiate(userGridPrefab, transformContent);
 
-            if (i < 3)
+            if (i == 0)
             {
-                grid = Instantiate(userGridPrefabTop3, transformContent);
+                grid.SetData(users[i].Nickname, users[i].Record, 3);
+            }
+            else if(i == 1)
+            {
+                grid.SetData(users[i].Nickname, users[i].Record, 2);
+            }
+            else if (i == 2)
+            {
+                grid.SetData(users[i].Nickname, users[i].Record, 1);
             }
             else
             {
-                grid = Instantiate(userGridPrefabOther, transformContent);
+                grid.SetData(users[i].Nickname, users[i].Record, 0);
             }
-
-            grid.SetData(i + 1, users[i].Nickname, users[i].Record);
         }
     }
 }

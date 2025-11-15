@@ -9,22 +9,31 @@ public class NicknameView : View
     public event Action OnSubmitNickname;
     public event Action<string> OnChangeNickname;
 
-    [SerializeField] private List<TextMeshProUGUI> textNicknames = new List<TextMeshProUGUI>();
+    [SerializeField] private List<TextMeshProUGUI> textNicknames = new();
+    [SerializeField] private List<TMP_InputField> textInputs = new();
 
-    [SerializeField] private TMP_InputField inputFieldNickname;
+    [SerializeField] private List<TMP_InputField> inputFieldNickname;
     [SerializeField] private TextMeshProUGUI textDescription;
     [SerializeField] private Button button;
 
     public void Initialize()
     {
-        if(inputFieldNickname != null)
-           inputFieldNickname.onValueChanged.AddListener(HandlerOnNicknameTextValueChanged);
+        if (inputFieldNickname.Count == 0) return;
+
+        for (int i = 0; i < inputFieldNickname.Count; i++)
+        {
+            inputFieldNickname[i].onValueChanged.AddListener(HandlerOnNicknameTextValueChanged);
+        }
     }
 
     public void Dispose()
     {
-        if(inputFieldNickname != null)
-           inputFieldNickname.onValueChanged.RemoveListener(HandlerOnNicknameTextValueChanged);
+        if (inputFieldNickname.Count == 0) return;
+
+        for (int i = 0; i < inputFieldNickname.Count; i++)
+        {
+            inputFieldNickname[i].onValueChanged.RemoveListener(HandlerOnNicknameTextValueChanged);
+        }
     }
 
     public void ActivateButton()
@@ -42,6 +51,11 @@ public class NicknameView : View
         for (int i = 0; i < textNicknames.Count; i++)
         {
             textNicknames[i].text = nickname;
+        }
+
+        for (int i = 0; i < textInputs.Count; i++)
+        {
+            textInputs[i].text = nickname;
         }
     }
 
