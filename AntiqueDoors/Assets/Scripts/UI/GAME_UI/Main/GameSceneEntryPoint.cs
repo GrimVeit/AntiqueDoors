@@ -18,8 +18,9 @@ public class GameSceneEntryPoint : MonoBehaviour
     private ParticleEffectPresenter particleEffectPresenter;
     private ParticleEffectMaterialPresenter particleEffectMaterialPresenter;
     private SoundPresenter soundPresenter;
-
     private AvatarPresenter avatarPresenter;
+
+    private DoorStatePresenter doorStatePresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -43,8 +44,9 @@ public class GameSceneEntryPoint : MonoBehaviour
         particleEffectMaterialPresenter = new ParticleEffectMaterialPresenter(new ParticleEffectMaterialModel(), viewContainer.GetView<ParticleEffectMaterialView>());
 
         bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
-
         avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
+
+        doorStatePresenter = new DoorStatePresenter(new DoorStateModel(), viewContainer.GetView<DoorStateView>());
 
         stateMachine = new StateMachine_Game(sceneRoot);
 
@@ -59,8 +61,9 @@ public class GameSceneEntryPoint : MonoBehaviour
         particleEffectMaterialPresenter.Activate();
         sceneRoot.Initialize();
         bankPresenter.Initialize();
-
         avatarPresenter.Initialize();
+
+        doorStatePresenter.Initialize();
         
         stateMachine.Initialize();
     }
@@ -102,10 +105,30 @@ public class GameSceneEntryPoint : MonoBehaviour
         particleEffectPresenter?.Dispose();
         particleEffectMaterialPresenter?.Dispose();
         bankPresenter?.Dispose();
-
         avatarPresenter?.Dispose();
 
+        doorStatePresenter?.Dispose();
+
         stateMachine?.Dispose();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftAlt)) 
+            doorStatePresenter.ActivateAll();
+
+
+        if (Input.GetKeyDown(KeyCode.RightAlt)) 
+            doorStatePresenter.DeactivateAll();
+
+        if (Input.GetKeyDown(KeyCode.Q))
+            doorStatePresenter.OpenDoor(0);
+
+        if (Input.GetKeyDown(KeyCode.W))
+            doorStatePresenter.OpenDoor(1);
+
+        if (Input.GetKeyDown(KeyCode.E))
+            doorStatePresenter.OpenDoor(2);
     }
 
     private void OnDestroy()

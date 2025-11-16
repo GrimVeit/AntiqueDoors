@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorStateModel : MonoBehaviour
+public class DoorStateModel
 {
-    // Start is called before the first frame update
-    void Start()
+    public void OpenDoor(int id)
     {
-        
+        OnOpen?.Invoke(id);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ActivateAll()
     {
-        
+        OnActivateAll?.Invoke();
     }
+
+    public void DeactivateAll()
+    {
+        OnDeactivateAll?.Invoke();
+    }
+
+    #region Output
+
+    public event Action OnActivateAll;
+    public event Action OnDeactivateAll;
+    public event Action<int> OnOpen;
+
+    #endregion
 }
