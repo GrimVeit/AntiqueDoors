@@ -21,6 +21,7 @@ public class GameSceneEntryPoint : MonoBehaviour
     private AvatarPresenter avatarPresenter;
 
     private DoorStatePresenter doorStatePresenter;
+    private DoorCounterPresenter doorCounterPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -47,6 +48,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
 
         doorStatePresenter = new DoorStatePresenter(new DoorStateModel(), viewContainer.GetView<DoorStateView>());
+        doorCounterPresenter = new DoorCounterPresenter(new DoorCounterModel(), viewContainer.GetView<DoorCounterView>());
 
         stateMachine = new StateMachine_Game(sceneRoot);
 
@@ -64,7 +66,8 @@ public class GameSceneEntryPoint : MonoBehaviour
         avatarPresenter.Initialize();
 
         doorStatePresenter.Initialize();
-        
+        doorCounterPresenter.Initialize();
+
         stateMachine.Initialize();
     }
 
@@ -108,27 +111,15 @@ public class GameSceneEntryPoint : MonoBehaviour
         avatarPresenter?.Dispose();
 
         doorStatePresenter?.Dispose();
+        doorCounterPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt)) 
-            doorStatePresenter.ActivateAll();
-
-
-        if (Input.GetKeyDown(KeyCode.RightAlt)) 
-            doorStatePresenter.DeactivateAll();
-
-        if (Input.GetKeyDown(KeyCode.Q))
-            doorStatePresenter.OpenDoor(0);
-
-        if (Input.GetKeyDown(KeyCode.W))
-            doorStatePresenter.OpenDoor(1);
-
-        if (Input.GetKeyDown(KeyCode.E))
-            doorStatePresenter.OpenDoor(2);
+        if (Input.GetKeyDown(KeyCode.Space))
+            doorCounterPresenter.AddCount();
     }
 
     private void OnDestroy()
