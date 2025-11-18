@@ -870,6 +870,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   duration: 0.1
   scaleElement: {fileID: 191098553}
+--- !u!1 &191319747
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 191319748}
+  - component: {fileID: 191319749}
+  m_Layer: 5
+  m_Name: DoorDesign
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &191319748
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191319747}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1762319325}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &191319749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191319747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50308a4a85bde814c90ba5653143fec0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageDoor_1: {fileID: 1142885445}
+  imageDoor_2: {fileID: 1483831625}
+  imageDoor_3: {fileID: 2085024306}
+  doorDesigns:
+    doorDesigns:
+    - type: 0
+      sprite: {fileID: 21300000, guid: 16b95799afa723a43aea3c3ea6eb88cc, type: 3}
+    - type: 1
+      sprite: {fileID: 21300000, guid: 3e994cb66f6705a429a370bda1d1a09d, type: 3}
+    - type: 2
+      sprite: {fileID: 21300000, guid: 3779656d96f691341ac28c9610fc2e4e, type: 3}
+    - type: 3
+      sprite: {fileID: 21300000, guid: 2ade435cdf0fa4b41a484ba59c2fff25, type: 3}
+    - type: 4
+      sprite: {fileID: 21300000, guid: b25634facb820c84ea3ffd404407f7c6, type: 3}
+    - type: 5
+      sprite: {fileID: 21300000, guid: 2d403349437e75d4bbac3581f5b69f90, type: 3}
 --- !u!1 &192312572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2993,7 +3058,7 @@ GameObject:
   - component: {fileID: 1142885445}
   - component: {fileID: 1142885444}
   m_Layer: 5
-  m_Name: Door
+  m_Name: Door_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4061,7 +4126,7 @@ GameObject:
   - component: {fileID: 1483831625}
   - component: {fileID: 1483831624}
   m_Layer: 5
-  m_Name: Door
+  m_Name: Door_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5175,6 +5240,7 @@ RectTransform:
   m_Children:
   - {fileID: 1768709352}
   - {fileID: 2045450630}
+  - {fileID: 191319748}
   m_Father: {fileID: 426014025604183617}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6403,7 +6469,7 @@ GameObject:
   - component: {fileID: 2085024306}
   - component: {fileID: 2085024305}
   m_Layer: 5
-  m_Name: Door
+  m_Name: Door_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

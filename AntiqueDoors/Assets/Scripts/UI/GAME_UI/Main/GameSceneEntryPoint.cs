@@ -22,6 +22,8 @@ public class GameSceneEntryPoint : MonoBehaviour
 
     private DoorStatePresenter doorStatePresenter;
     private DoorCounterPresenter doorCounterPresenter;
+    private StoreDoorPresenter storeDoorPresenter;
+    private DoorDesignPresenter doorDesignPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -49,6 +51,8 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         doorStatePresenter = new DoorStatePresenter(new DoorStateModel(), viewContainer.GetView<DoorStateView>());
         doorCounterPresenter = new DoorCounterPresenter(new DoorCounterModel(), viewContainer.GetView<DoorCounterView>());
+        storeDoorPresenter = new StoreDoorPresenter(new StoreDoorModel(doorCounterPresenter));
+        doorDesignPresenter = new DoorDesignPresenter(new DoorDesignModel(storeDoorPresenter), viewContainer.GetView<DoorDesignView>());
 
         stateMachine = new StateMachine_Game(sceneRoot);
 
@@ -67,6 +71,8 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         doorStatePresenter.Initialize();
         doorCounterPresenter.Initialize();
+        storeDoorPresenter.Initialize();
+        doorDesignPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -112,14 +118,26 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         doorStatePresenter?.Dispose();
         doorCounterPresenter?.Dispose();
+        storeDoorPresenter?.Dispose();
+        doorDesignPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+            doorStatePresenter.ActivateAll();
+
+        if (Input.GetKeyDown(KeyCode.RightAlt))
+            doorStatePresenter.DeactivateAll();
+
+
         if (Input.GetKeyDown(KeyCode.Space))
             doorCounterPresenter.AddCount();
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+            storeDoorPresenter.GenerateDoors();
     }
 
     private void OnDestroy()
