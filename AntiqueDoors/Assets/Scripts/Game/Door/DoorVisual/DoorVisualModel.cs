@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,24 +18,38 @@ public class DoorVisualModel
 
     public void Initialize()
     {
-        _storeDoorEventsProvider.OnDoorsCreated -= SetDoors;
+        
     }
 
     public void Dispose()
     {
-
+        _storeDoorEventsProvider.OnDoorsCreated -= SetDoors;
     }
 
-    public void ChooseVisual(int doorId)
+    public void ActivateInteraction()
     {
-        if (_doors[doorId].HasLock)
-        {
+        OnActivateInteraction?.Invoke();
+    }
 
-        }
-        else
-        {
+    public void DeactivateInteraction()
+    {
+        OnDeactivateInteraction?.Invoke();
+    }
 
-        }
+    public void ChooseDoor(int doorId)
+    {
+        OnChooseDoor_Value?.Invoke(_doors[doorId]);
+
+        OnChooseDoor?.Invoke();
+
+        //if (_doors[doorId].HasLock)
+        //{
+
+        //}
+        //else
+        //{
+
+        //}
     }
 
     private void SetDoors(List<Door> doors)
@@ -43,6 +58,13 @@ public class DoorVisualModel
     }
 
     #region Output
+
+    public event Action<Door> OnChooseDoor_Value;
+    public event Action OnChooseDoor;
+
+
+    public event Action OnActivateInteraction;
+    public event Action OnDeactivateInteraction;
 
     #endregion
 }
