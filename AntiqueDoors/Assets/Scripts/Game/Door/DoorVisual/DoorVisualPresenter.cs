@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorVisualPresenter
+public class DoorVisualPresenter : IDoorVisualActivatorProvider, IDoorVisualEventsProvider
 {
     private readonly DoorVisualModel _model;
     private readonly DoorVisualView _view;
@@ -19,6 +19,7 @@ public class DoorVisualPresenter
         ActivateEvents();
 
         _model.Initialize();
+        _view.Initialize();
     }
 
     public void Dispose()
@@ -26,6 +27,7 @@ public class DoorVisualPresenter
         DeactivateEvents();
 
         _model.Dispose();
+        _view.Dispose();
     }
 
     private void ActivateEvents()
@@ -76,5 +78,6 @@ public interface IDoorVisualActivatorProvider
 
 public interface IDoorVisualEventsProvider
 {
-
+    public event Action<Door> OnChooseDoor_Value;
+    public event Action OnChooseDoor;
 }

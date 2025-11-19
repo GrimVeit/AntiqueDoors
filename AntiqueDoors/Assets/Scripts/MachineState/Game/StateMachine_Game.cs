@@ -9,14 +9,24 @@ public class StateMachine_Game : IGlobalStateMachineProvider
 
     private IState _currentState;
 
-    public StateMachine_Game(UIGameRoot sceneRoot)
+    public StateMachine_Game(
+        UIGameRoot sceneRoot,
+        IDoorVisualActivatorProvider doorVisualActivatorProvider,
+        IDoorVisualEventsProvider doorVisualEventsProvider,
+        IDoorStateProvider doorStateProvider,
+        IDoorStateEventsProvider doorStateEventsProvider,
+        IStoreDoorProvider storeDoorProvider,
+        IDoorCounterProvider doorCounterProvider)
     {
-        states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot);
+        states[typeof(StartMainState_Game)] = new StartMainState_Game(this, sceneRoot, doorStateProvider, doorStateEventsProvider, storeDoorProvider);
+        states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot, doorVisualActivatorProvider, doorVisualEventsProvider);
+
+        states[typeof(NothingDoorResultState_Game)] = new NothingDoorResultState_Game(this, sceneRoot, doorCounterProvider);
     }
 
     public void Initialize()
     {
-        SetState(GetState<MainState_Game>());
+        SetState(GetState<StartMainState_Game>());
     }
 
     public void Dispose()

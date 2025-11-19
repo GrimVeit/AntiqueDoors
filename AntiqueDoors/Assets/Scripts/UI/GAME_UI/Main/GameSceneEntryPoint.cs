@@ -24,6 +24,7 @@ public class GameSceneEntryPoint : MonoBehaviour
     private DoorCounterPresenter doorCounterPresenter;
     private StoreDoorPresenter storeDoorPresenter;
     private DoorDesignPresenter doorDesignPresenter;
+    private DoorVisualPresenter doorVisualPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -49,12 +50,20 @@ public class GameSceneEntryPoint : MonoBehaviour
         bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
         avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
 
-        doorStatePresenter = new DoorStatePresenter(new DoorStateModel(), viewContainer.GetView<DoorStateView>());
+        doorStatePresenter = new DoorStatePresenter(viewContainer.GetView<DoorStateView>());
         doorCounterPresenter = new DoorCounterPresenter(new DoorCounterModel(), viewContainer.GetView<DoorCounterView>());
         storeDoorPresenter = new StoreDoorPresenter(new StoreDoorModel(doorCounterPresenter));
         doorDesignPresenter = new DoorDesignPresenter(new DoorDesignModel(storeDoorPresenter), viewContainer.GetView<DoorDesignView>());
+        doorVisualPresenter = new DoorVisualPresenter(new DoorVisualModel(storeDoorPresenter), viewContainer.GetView<DoorVisualView>());
 
-        stateMachine = new StateMachine_Game(sceneRoot);
+        stateMachine = new StateMachine_Game
+            (sceneRoot,
+            doorVisualPresenter,
+            doorVisualPresenter,
+            doorStatePresenter,
+            doorStatePresenter,
+            storeDoorPresenter,
+            doorCounterPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -73,6 +82,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         doorCounterPresenter.Initialize();
         storeDoorPresenter.Initialize();
         doorDesignPresenter.Initialize();
+        doorVisualPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -120,6 +130,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         doorCounterPresenter?.Dispose();
         storeDoorPresenter?.Dispose();
         doorDesignPresenter?.Dispose();
+        doorVisualPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

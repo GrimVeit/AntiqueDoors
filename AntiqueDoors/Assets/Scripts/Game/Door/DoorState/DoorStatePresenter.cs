@@ -1,47 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorStatePresenter : IDoorStateProvider
+public class DoorStatePresenter : IDoorStateProvider, IDoorStateEventsProvider
 {
-    private readonly DoorStateModel _model;
     private readonly DoorStateView _view;
 
-    public DoorStatePresenter(DoorStateModel model, DoorStateView view)
+    public DoorStatePresenter(DoorStateView view)
     {
-        _model = model;
         _view = view;
     }
 
     public void Initialize()
     {
-        ActivateEvents();
+
     }
 
     public void Dispose()
     {
-        DeactivateEvents();
+
     }
 
-    private void ActivateEvents()
-    {
-        _model.OnActivateAll += _view.ActivateAll;
-        _model.OnDeactivateAll += _view.DeactivateAll;
-        _model.OnOpen += _view.Open;
-    }
+    #region Output
 
-    private void DeactivateEvents()
-    {
-        _model.OnActivateAll -= _view.ActivateAll;
-        _model.OnDeactivateAll -= _view.DeactivateAll;
-        _model.OnOpen -= _view.Open;
-    }
+    public event Action OnEndActivateAllDoors { add => _view.OnEndActivateAllDoors += value; remove => _view.OnEndActivateAllDoors -= value; }
+    public event Action OnEndDeactivateAllDoors { add => _view.OnEndDeactivateAllDoors += value; remove => _view.OnEndDeactivateAllDoors -= value; }
+    public event Action OnEnnOpenDoor { add => _view.OnEnnOpenDoor += value; remove => _view.OnEnnOpenDoor -= value; }
+
+    #endregion
+
+
 
     #region Input
 
-    public void OpenDoor(int id) => _model.OpenDoor(id);
-    public void DeactivateAll() => _model.DeactivateAll();
-    public void ActivateAll() => _model.ActivateAll();
+    public void OpenDoor(int id) => _view.Open(id);
+    public void DeactivateAll() => _view.DeactivateAll();
+    public void ActivateAll() => _view.ActivateAll();
 
     #endregion
 }
@@ -51,4 +46,11 @@ public interface IDoorStateProvider
     void OpenDoor(int id);
     void DeactivateAll();
     void ActivateAll();
+}
+
+public interface IDoorStateEventsProvider
+{
+    public event Action OnEndActivateAllDoors;
+    public event Action OnEndDeactivateAllDoors;
+    public event Action OnEnnOpenDoor;
 }

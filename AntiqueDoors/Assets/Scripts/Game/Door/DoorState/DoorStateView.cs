@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,7 @@ public class DoorStateView : View
 
         yield return new WaitForSeconds(timeWaitActivateDeactivateAll);
 
-        doorUnit_3.Activate();
+        doorUnit_3.Activate(() => OnEndActivateAllDoors?.Invoke());
     }
 
     private IEnumerator DeactivateAll_Coro()
@@ -60,7 +61,7 @@ public class DoorStateView : View
 
         yield return new WaitForSeconds(timeWaitActivateDeactivateAll);
 
-        doorUnit_3.Deactivate();
+        doorUnit_3.Deactivate(() => OnEndDeactivateAllDoors?.Invoke());
     }
 
     private IEnumerator Open_Coro(int door)
@@ -75,7 +76,7 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_1.Open();
+            doorUnit_1.Open(() => OnEnnOpenDoor?.Invoke());
         }
         else if (door == 1)
         {
@@ -87,7 +88,7 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_2.Open();
+            doorUnit_2.Open(() => OnEnnOpenDoor?.Invoke());
         }
         else
         {
@@ -99,7 +100,15 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_3.Open();
+            doorUnit_3.Open(() => OnEnnOpenDoor?.Invoke());
         }
     }
+
+    #region Output
+
+    public event Action OnEndActivateAllDoors;
+    public event Action OnEndDeactivateAllDoors;
+    public event Action OnEnnOpenDoor;
+
+    #endregion
 }
