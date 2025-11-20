@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorNothingPanel_Game : MovePanel
+public class DoorBonusPanel_Game : MovePanel
 {
     [SerializeField] private LazyMotionGroup _group;
 

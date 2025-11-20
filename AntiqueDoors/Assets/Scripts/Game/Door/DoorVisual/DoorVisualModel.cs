@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class DoorVisualModel
 {
+    public int CurrentDoorIndex =>  _currentDoorIndex;
+    public Door CurrentDoor => _currentDoor;
+
     private readonly IStoreDoorEventsProvider _storeDoorEventsProvider;
 
     private List<Door> _doors = new();
+
+    private Door _currentDoor;
+    private int _currentDoorIndex;
 
     public DoorVisualModel(IStoreDoorEventsProvider storeDoorEventsProvider)
     {
@@ -38,8 +44,10 @@ public class DoorVisualModel
 
     public void ChooseDoor(int doorId)
     {
-        OnChooseDoor_Value?.Invoke(_doors[doorId]);
+        _currentDoorIndex = doorId;
+        _currentDoor = _doors[_currentDoorIndex];
 
+        OnChooseDoor_Value?.Invoke(_currentDoor);
         OnChooseDoor?.Invoke();
 
         //if (_doors[doorId].HasLock)

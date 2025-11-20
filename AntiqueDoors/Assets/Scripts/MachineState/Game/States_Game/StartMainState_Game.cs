@@ -21,6 +21,8 @@ public class StartMainState_Game : IState
 
     public void EnterState()
     {
+        Debug.Log("<color=red>ACTIVATE START MAIN STATE</color>");
+
         _doorStateEventsProvider.OnEndActivateAllDoors += ChangeStateToMain;
 
         _sceneRoot.OpenMainPanel();

@@ -20,11 +20,15 @@ public class GameSceneEntryPoint : MonoBehaviour
     private SoundPresenter soundPresenter;
     private AvatarPresenter avatarPresenter;
 
+    private VideoPresenter videoPresenter;
     private DoorStatePresenter doorStatePresenter;
     private DoorCounterPresenter doorCounterPresenter;
     private StoreDoorPresenter storeDoorPresenter;
     private DoorDesignPresenter doorDesignPresenter;
     private DoorVisualPresenter doorVisualPresenter;
+
+    private StoreHealthPresenter storeHealthPresenter;
+    private PlayerHealthPresenter playerHealthPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -50,11 +54,15 @@ public class GameSceneEntryPoint : MonoBehaviour
         bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
         avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
 
+        videoPresenter = new VideoPresenter(new VideoModel(), viewContainer.GetView<VideoView>());
         doorStatePresenter = new DoorStatePresenter(viewContainer.GetView<DoorStateView>());
         doorCounterPresenter = new DoorCounterPresenter(new DoorCounterModel(), viewContainer.GetView<DoorCounterView>());
         storeDoorPresenter = new StoreDoorPresenter(new StoreDoorModel(doorCounterPresenter));
         doorDesignPresenter = new DoorDesignPresenter(new DoorDesignModel(storeDoorPresenter), viewContainer.GetView<DoorDesignView>());
         doorVisualPresenter = new DoorVisualPresenter(new DoorVisualModel(storeDoorPresenter), viewContainer.GetView<DoorVisualView>());
+
+        storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
+        playerHealthPresenter = new PlayerHealthPresenter(new PlayerHealthModel(storeHealthPresenter), viewContainer.GetView<PlayerHealthView>());
 
         stateMachine = new StateMachine_Game
             (sceneRoot,
@@ -63,7 +71,9 @@ public class GameSceneEntryPoint : MonoBehaviour
             doorStatePresenter,
             doorStatePresenter,
             storeDoorPresenter,
-            doorCounterPresenter);
+            doorCounterPresenter,
+            doorVisualPresenter,
+            videoPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -78,11 +88,15 @@ public class GameSceneEntryPoint : MonoBehaviour
         bankPresenter.Initialize();
         avatarPresenter.Initialize();
 
+        videoPresenter.Initialize();
         doorStatePresenter.Initialize();
         doorCounterPresenter.Initialize();
         storeDoorPresenter.Initialize();
         doorDesignPresenter.Initialize();
         doorVisualPresenter.Initialize();
+
+        storeHealthPresenter.Initialize();
+        playerHealthPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -126,11 +140,15 @@ public class GameSceneEntryPoint : MonoBehaviour
         bankPresenter?.Dispose();
         avatarPresenter?.Dispose();
 
+        videoPresenter?.Dispose();
         doorStatePresenter?.Dispose();
         doorCounterPresenter?.Dispose();
         storeDoorPresenter?.Dispose();
         doorDesignPresenter?.Dispose();
         doorVisualPresenter?.Dispose();
+
+        storeHealthPresenter?.Dispose();
+        playerHealthPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

@@ -14,6 +14,13 @@ public class DoorStateView : View
 
     private IEnumerator timerActivator;
 
+    public void Hide()
+    {
+        doorUnit_1.Hide();
+        doorUnit_2.Hide();
+        doorUnit_3.Hide();
+    }
+
     public void ActivateAll()
     {
         if (timerActivator != null) Coroutines.Stop(timerActivator);
@@ -76,7 +83,7 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_1.Open(() => OnEnnOpenDoor?.Invoke());
+            doorUnit_1.Open(() => OnEndOpenDoor?.Invoke());
         }
         else if (door == 1)
         {
@@ -88,7 +95,7 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_2.Open(() => OnEnnOpenDoor?.Invoke());
+            doorUnit_2.Open(() => OnEndOpenDoor?.Invoke());
         }
         else
         {
@@ -100,7 +107,7 @@ public class DoorStateView : View
 
             yield return new WaitForSeconds(timeWait);
 
-            doorUnit_3.Open(() => OnEnnOpenDoor?.Invoke());
+            doorUnit_3.Open(() => OnEndOpenDoor?.Invoke());
         }
     }
 
@@ -108,7 +115,7 @@ public class DoorStateView : View
 
     public event Action OnEndActivateAllDoors;
     public event Action OnEndDeactivateAllDoors;
-    public event Action OnEnnOpenDoor;
+    public event Action OnEndOpenDoor;
 
     #endregion
 }

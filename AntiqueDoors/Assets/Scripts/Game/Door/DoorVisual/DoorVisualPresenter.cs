@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorVisualPresenter : IDoorVisualActivatorProvider, IDoorVisualEventsProvider
+public class DoorVisualPresenter : IDoorVisualActivatorProvider, IDoorVisualEventsProvider, IDoorVisualInfoProvider
 {
     private readonly DoorVisualModel _model;
     private readonly DoorVisualView _view;
@@ -64,6 +64,10 @@ public class DoorVisualPresenter : IDoorVisualActivatorProvider, IDoorVisualEven
 
     #region Input
 
+    public Door GetCurrentDoor() => _model.CurrentDoor;
+    public int GetCurrentIndexDoor() => _model.CurrentDoorIndex;
+
+
     public void ActivateInteraction() => _model.ActivateInteraction();
     public void DeactivateInteraction() => _model.DeactivateInteraction();
 
@@ -74,6 +78,12 @@ public interface IDoorVisualActivatorProvider
 {
     void ActivateInteraction();
     void DeactivateInteraction();
+}
+
+public interface IDoorVisualInfoProvider
+{
+    Door GetCurrentDoor();
+    int GetCurrentIndexDoor();
 }
 
 public interface IDoorVisualEventsProvider

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NothingDoorResultState_Game : IState
+public class BonusDoorResultState_Game : IState
 {
     private readonly IGlobalStateMachineProvider _machineProvider;
     private readonly UIGameRoot _sceneRoot;
@@ -11,7 +11,7 @@ public class NothingDoorResultState_Game : IState
 
     private IEnumerator timer;
 
-    public NothingDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider)
+    public BonusDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -21,12 +21,9 @@ public class NothingDoorResultState_Game : IState
 
     public void EnterState()
     {
-        Debug.Log("<color=red>ACTIVATE NOTHING RESULT STATE</color>");
+        Debug.Log("<color=red>ACTIVATE BONUS RESULT STATE</color>");
 
-        _sceneRoot.OpenDoorNothingPanel();
-        _sceneRoot.OpenDoorNothingBackgroundPanel();
-
-        if(timer != null) Coroutines.Stop(timer);
+        if (timer != null) Coroutines.Stop(timer);
 
         timer = Timer();
         Coroutines.Start(timer);
@@ -39,13 +36,22 @@ public class NothingDoorResultState_Game : IState
         _doorCounterProvider.AddCount();
         _doorStateProvider.Hide();
 
-        _sceneRoot.CloseDoorNothingPanel();
-        _sceneRoot.CloseDoorNothingBaackgroundPanel();
+        _sceneRoot.CloseDoorBonusBackgroundPanel();
     }
 
     private IEnumerator Timer()
     {
-        yield return new WaitForSeconds(3);
+        _sceneRoot.OpenDoorBonusBackgroundPanel();
+
+        yield return new WaitForSeconds(0.5f);
+
+        _sceneRoot.OpenDoorBonusPanel();
+
+        yield return new WaitForSeconds(2.2f);
+
+        _sceneRoot.CloseDoorBonusPanel();
+
+        yield return new WaitForSeconds(0.3f);
 
         ChangeStateToStartMenu();
     }

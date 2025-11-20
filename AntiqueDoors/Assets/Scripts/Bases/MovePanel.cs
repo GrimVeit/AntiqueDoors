@@ -46,6 +46,8 @@ public class MovePanel : Panel
 
     private void CanvasGroupAlpha(CanvasGroup canvasGroup, float from, float to, float time)
     {
+        if(canvasGroup == null) return;
+
         Coroutines.Start(SmoothVal(canvasGroup, from, to, time));
     }
 

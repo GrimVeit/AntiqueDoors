@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,24 +27,25 @@ public class VideoPresenter : IVideoProvider
     private void ActivateEvents()
     {
         _model.OnPlay += _view.Play;
+        _model.OnPrepare += _view.Prepare;
     }
 
     private void DeactivateEvents()
     {
         _model.OnPlay -= _view.Play;
+        _model.OnPrepare -= _view.Prepare;
     }
 
     #region Input
 
-    public void Play(string id)
-    {
-        _model.Play(id);
-    }
+    public void Play(string id, Action onComplete) => _model.Play(id, onComplete);
+    public void Prepare(string id) => _model.Prepare(id);
 
     #endregion
 }
 
 public interface IVideoProvider
 {
-    public void Play(string id);
+    public void Prepare(string id);
+    public void Play(string id, Action onComplete = null);
 }

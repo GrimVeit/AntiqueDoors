@@ -64,6 +64,16 @@ public class DoorUnit : MonoBehaviour
             .OnComplete(() => OnComplete?.Invoke());
     }
 
+    public void Hide()
+    {
+        sequenceUnit?.Kill();
+
+        transformDoor.localPosition = vectorDeactiveDoorPosition;
+        transformDoor.localScale = Vector3.one;
+        transformUnit.localPosition = vectorNormalPos;
+        transformUnit.localScale = Vector3.zero;
+    }
+
     public void Open(Action OnComplete = null)
     {
         sequenceUnit?.Kill();

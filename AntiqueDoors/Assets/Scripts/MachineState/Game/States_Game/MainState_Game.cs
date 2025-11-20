@@ -19,46 +19,24 @@ public class MainState_Game : IState
 
     public void EnterState()
     {
-        _doorVisualEventsProvider.OnChooseDoor_Value += ChooseDoor;
+        Debug.Log("<color=red>ACTIVATE MAIN STATE</color>");
+
+        _doorVisualEventsProvider.OnChooseDoor += ChangeStateToDoorMove;
 
         _doorVisualActivatorProvider.ActivateInteraction();
     }
 
     public void ExitState()
     {
+        _doorVisualEventsProvider.OnChooseDoor -= ChangeStateToDoorMove;
+
         _doorVisualActivatorProvider.DeactivateInteraction();
 
         _sceneRoot.CloseMainPanel();
     }
-
-    private void ChooseDoor(Door door)
+    
+    private void ChangeStateToDoorMove()
     {
-        if (door.HasDanger)
-        {
-            ChangeStateToBad();
-        }
-        else if (door.HasBonus)
-        {
-            ChangeStateToGood();
-        }
-        else if(!door.HasDanger && !door.HasBonus)
-        {
-            ChangeStateToNothing();
-        }
+        _machineProvider.SetState(_machineProvider.GetState<MoveDoorState_Game>());
     }
-
-    private void ChangeStateToNothing()
-    {
-        _machineProvider.SetState(_machineProvider.GetState<NothingDoorResultState_Game>());
-    }
-
-    private void ChangeStateToGood()
-    {
-        _machineProvider.SetState(_machineProvider.GetState<NothingDoorResultState_Game>());
-    }
-
-    private void ChangeStateToBad()
-    {
-        _machineProvider.SetState(_machineProvider.GetState<NothingDoorResultState_Game>());
-    } 
 }

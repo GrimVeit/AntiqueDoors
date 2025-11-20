@@ -39,11 +39,7 @@ public class BankModel
             OnRemoveMoney?.Invoke();
         }
         this.money += money;
-        //this.money = Mathf.Round(this.money * 10f) / 10f;
-        MathF.Round(this.money, 1);
         OnChangeMoney?.Invoke(this.money);
-
-        Debug.Log(this.money);
     }
 
     public bool CanAfford(float bet)

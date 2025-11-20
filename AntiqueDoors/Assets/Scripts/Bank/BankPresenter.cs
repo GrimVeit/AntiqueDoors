@@ -7,8 +7,8 @@ public class BankPresenter : IMoneyProvider, IMoneyEventsProvider
 
     public BankPresenter(BankModel model, BankView view)
     {
-        this._model = model;
-        this._view = view;
+        _model = model;
+        _view = view;
     }
 
     public void Initialize()
