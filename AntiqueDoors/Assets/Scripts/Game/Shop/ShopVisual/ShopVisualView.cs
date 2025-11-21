@@ -86,11 +86,11 @@ public class ShopVisualGroup
     {
         for (int i = 0; i < shopVisuals.Count; i++)
         {
-            if(i < id)
+            if(i + 1 < id)
             {
                 shopVisuals[i].SetReceived();
             }
-            else if(i == id)
+            else if(i + 1 == id)
             {
                 shopVisuals[i].SetAvailabled();
             }

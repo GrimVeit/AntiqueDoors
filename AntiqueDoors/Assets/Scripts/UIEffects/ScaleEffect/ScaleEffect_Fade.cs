@@ -37,7 +37,7 @@ public class ScaleEffect_Fade : ScaleEffect
 
         isActive = true;
 
-        tweenFade = scaleElement.DOScale(scaleNormal, duration);
+        tweenFade = scaleElement.DOScale(scaleNormal, duration).SetEase(Ease.OutBack);
     }
 
     public override void DeactivateEffect(Action OnComplete = null)

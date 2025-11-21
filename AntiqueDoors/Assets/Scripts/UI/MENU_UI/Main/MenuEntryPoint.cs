@@ -30,6 +30,7 @@ public class MenuEntryPoint : MonoBehaviour
     private StoreHealthPresenter storeHealthPresenter;
     private StoreShopPresenter storeShopPresenter;
     private ShopVisualPresenter shopVisualPresenter;
+    private ShopAnimationVisualPresenter shopAnimationVisualPresenter;
 
     private StateMachine_Menu stateMachine;
 
@@ -77,6 +78,7 @@ public class MenuEntryPoint : MonoBehaviour
                 storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
                 storeShopPresenter = new StoreShopPresenter(new StoreShopModel(PlayerPrefsKeys.SHOP_LEVEL_SHIELD, PlayerPrefsKeys.SHOP_LEVEL_EVIL, PlayerPrefsKeys.SHOP_LEVEL_ORACLE));
                 shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter), viewContainer.GetView<ShopVisualView>());
+                shopAnimationVisualPresenter = new ShopAnimationVisualPresenter(new ShopAnimationVisualModel(storeShopPresenter), viewContainer.GetView<ShopAnimationVisualView>());
 
                 stateMachine = new StateMachine_Menu
                 (sceneRoot,
@@ -90,6 +92,8 @@ public class MenuEntryPoint : MonoBehaviour
 
                 ActivateEvents();
 
+                Debug.Log("Test");
+
                 soundPresenter.Initialize();
                 particleEffectPresenter.Initialize();
                 particleEffectMaterialPresenter.Initialize();
@@ -101,13 +105,29 @@ public class MenuEntryPoint : MonoBehaviour
                 firebaseAuthenticationPresenter.Initialize();
                 firebaseDatabasePresenter.Initialize();
 
+                Debug.Log("Test");
+
                 avatarVisualPresenter_Main.Initialize();
                 avatarVisualPresenter_Update.Initialize();
                 avatarPresenter.Initialize();
 
+                Debug.Log("Test");
+
+                shopAnimationVisualPresenter.Initialize();
+
+                Debug.Log("Test");
+
                 storeHealthPresenter.Initialize();
+
+                Debug.Log("Test");
+
                 shopVisualPresenter.Initialize();
+
+                Debug.Log("Test");
+
                 storeShopPresenter.Initialize();
+
+                Debug.Log("Test");
 
                 stateMachine.Initialize();
             }
@@ -175,6 +195,7 @@ public class MenuEntryPoint : MonoBehaviour
         avatarVisualPresenter_Update?.Dispose();
         avatarPresenter?.Dispose();
 
+        shopAnimationVisualPresenter?.Dispose();
         storeHealthPresenter?.Dispose();
         shopVisualPresenter?.Dispose();
         storeShopPresenter?.Dispose();

@@ -26,9 +26,9 @@ public class StoreShopModel
 
     public void Initialize()
     {
-        _levelShield = PlayerPrefs.GetInt(_keyShield, -1);
-        _levelEvil = PlayerPrefs.GetInt(_keyEvil, -1);
-        _levelOracle = PlayerPrefs.GetInt(_keyOracle, -1);
+        _levelShield = PlayerPrefs.GetInt(_keyShield, 0);
+        _levelEvil = PlayerPrefs.GetInt(_keyEvil, 0);
+        _levelOracle = PlayerPrefs.GetInt(_keyOracle, 0);
 
         OnLevelShopChanged?.Invoke(ShopGroup.Shield, _levelShield);
         OnLevelShopChanged?.Invoke(ShopGroup.Evil, _levelEvil);
