@@ -73,7 +73,8 @@ public class GameSceneEntryPoint : MonoBehaviour
             storeDoorPresenter,
             doorCounterPresenter,
             doorVisualPresenter,
-            videoPresenter);
+            videoPresenter,
+            playerHealthPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();

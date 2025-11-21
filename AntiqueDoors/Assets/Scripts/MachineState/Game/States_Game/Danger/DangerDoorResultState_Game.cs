@@ -11,7 +11,10 @@ public class DangerDoorResultState_Game : IState
     private readonly IVideoProvider _videoProvider;
     private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
 
-    public DangerDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IVideoProvider videoProvider, IDoorVisualInfoProvider doorVisualInfoProvider)
+    private readonly IPlayerHealthProvider _playerHealthProvider;
+    private Door _currentDoor;
+
+    public DangerDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IVideoProvider videoProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -19,6 +22,7 @@ public class DangerDoorResultState_Game : IState
         _doorStateProvider = doorStateProvider;
         _videoProvider = videoProvider;
         _doorVisualInfoProvider = doorVisualInfoProvider;
+        _playerHealthProvider = playerHealthProvider;
     }
 
     public void EnterState()
@@ -27,8 +31,10 @@ public class DangerDoorResultState_Game : IState
 
         _sceneRoot.OpenDoorDangerPanel();
 
-        var currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
-        _videoProvider.Play($"DoorDanger_{(int)currentDoor.DangerLevel}", ChangeStateToStartMenu);
+        _currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
+        _videoProvider.Play($"DoorDanger_{(int)_currentDoor.DangerLevel}", ChangeStateToStartMenu);
+
+        _playerHealthProvider.TakeDamage((int)_currentDoor.DangerLevel);
     }
 
     public void ExitState()
@@ -36,6 +42,9 @@ public class DangerDoorResultState_Game : IState
         _doorCounterProvider.AddCount();
         _doorStateProvider.Hide();
         _sceneRoot.CloseDoorDangerPanel();
+
+        if (_currentDoor.Type == DoorType.Spikes)
+            _playerHealthProvider.TakeDamage(1);
     }
 
     private void ChangeStateToStartMenu()

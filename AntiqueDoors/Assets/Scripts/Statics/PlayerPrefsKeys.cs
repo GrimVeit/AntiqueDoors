@@ -15,4 +15,8 @@ public static class PlayerPrefsKeys
 
     public const string MAX_HEALTH = "MAX_HEALTH";
     public const string MAX_SHIELD = "MAX_SHIELD";
+
+    public const string SHOP_LEVEL_SHIELD = "SHOP_LEVEL_SHIELD";
+    public const string SHOP_LEVEL_EVIL = "SHOP_LEVEL_EVIL";
+    public const string SHOP_LEVEL_ORACLE = "SHOP_LEVEL_ORACLE";
 }

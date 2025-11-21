@@ -27,6 +27,10 @@ public class MenuEntryPoint : MonoBehaviour
     private AvatarVisualPresenter avatarVisualPresenter_Main;
     private AvatarVisualPresenter avatarVisualPresenter_Update;
 
+    private StoreHealthPresenter storeHealthPresenter;
+    private StoreShopPresenter storeShopPresenter;
+    private ShopVisualPresenter shopVisualPresenter;
+
     private StateMachine_Menu stateMachine;
 
     public void Run(UIRootView uIRootView)
@@ -70,6 +74,10 @@ public class MenuEntryPoint : MonoBehaviour
                 avatarVisualPresenter_Main = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Registration"));
                 avatarVisualPresenter_Update = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Update"));
 
+                storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
+                storeShopPresenter = new StoreShopPresenter(new StoreShopModel(PlayerPrefsKeys.SHOP_LEVEL_SHIELD, PlayerPrefsKeys.SHOP_LEVEL_EVIL, PlayerPrefsKeys.SHOP_LEVEL_ORACLE));
+                shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter), viewContainer.GetView<ShopVisualView>());
+
                 stateMachine = new StateMachine_Menu
                 (sceneRoot,
                 nicknamePresenter,
@@ -96,6 +104,10 @@ public class MenuEntryPoint : MonoBehaviour
                 avatarVisualPresenter_Main.Initialize();
                 avatarVisualPresenter_Update.Initialize();
                 avatarPresenter.Initialize();
+
+                storeHealthPresenter.Initialize();
+                shopVisualPresenter.Initialize();
+                storeShopPresenter.Initialize();
 
                 stateMachine.Initialize();
             }
@@ -162,6 +174,10 @@ public class MenuEntryPoint : MonoBehaviour
         avatarVisualPresenter_Main?.Dispose();
         avatarVisualPresenter_Update?.Dispose();
         avatarPresenter?.Dispose();
+
+        storeHealthPresenter?.Dispose();
+        shopVisualPresenter?.Dispose();
+        storeShopPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

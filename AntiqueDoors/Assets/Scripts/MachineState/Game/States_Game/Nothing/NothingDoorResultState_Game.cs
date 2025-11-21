@@ -9,14 +9,19 @@ public class NothingDoorResultState_Game : IState
     private readonly IDoorCounterProvider _doorCounterProvider;
     private readonly IDoorStateProvider _doorStateProvider;
 
+    private readonly IDoorVisualInfoProvider _visualInfoProvider;
+    private readonly IPlayerHealthProvider _healthProvider;
+
     private IEnumerator timer;
 
-    public NothingDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider)
+    public NothingDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
         _doorCounterProvider = doorCounterProvider;
         _doorStateProvider = doorStateProvider;
+        _visualInfoProvider = doorVisualInfoProvider;
+        _healthProvider = playerHealthProvider;
     }
 
     public void EnterState()
@@ -41,6 +46,11 @@ public class NothingDoorResultState_Game : IState
 
         _sceneRoot.CloseDoorNothingPanel();
         _sceneRoot.CloseDoorNothingBaackgroundPanel();
+
+        //DAMAGE FROM SPIKES
+        var door = _visualInfoProvider.GetCurrentDoor();
+        if (door.Type == DoorType.Spikes)
+            _healthProvider.TakeDamage(1);
     }
 
     private IEnumerator Timer()

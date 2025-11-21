@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealthPresenter
+public class PlayerHealthPresenter : IPlayerHealthInfoProvider, IPlayerHealthEventsProvider, IPlayerHealthProvider
 {
     private readonly PlayerHealthModel _model;
     private readonly PlayerHealthView _view;
@@ -73,6 +73,6 @@ public interface IPlayerHealthEventsProvider
 public interface IPlayerHealthProvider
 {
     void TakeDamage(int damage);
-    void Heal(int amount);
+    void AddHealth(int amount);
     void AddShield(int amount);
 }
