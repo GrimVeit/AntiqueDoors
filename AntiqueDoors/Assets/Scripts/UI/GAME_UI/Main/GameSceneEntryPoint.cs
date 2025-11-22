@@ -34,6 +34,7 @@ public class GameSceneEntryPoint : MonoBehaviour
     private BonusVisualPresenter bonusVisualPresenter;
     private StoreAdditionallyPresenter storeAdditionallyPresenter;
     private BonusConditionPresenter bonusConditionPresenter;
+    private BonusRewardPresenter bonusRewardPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -80,6 +81,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         }));
 
         bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
+        bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter), viewContainer.GetView<BonusRewardView>());
 
         stateMachine = new StateMachine_Game
             (sceneRoot,
@@ -91,7 +93,9 @@ public class GameSceneEntryPoint : MonoBehaviour
             doorCounterPresenter,
             doorVisualPresenter,
             videoPresenter,
-            playerHealthPresenter);
+            playerHealthPresenter,
+            bonusRewardPresenter,
+            bonusRewardPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -120,6 +124,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeBonusPresenter.Initialize();
         storeAdditionallyPresenter.Initialize();
         bonusConditionPresenter.Initialize();
+        bonusRewardPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -177,6 +182,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeBonusPresenter?.Dispose();
         storeAdditionallyPresenter?.Dispose();
         bonusConditionPresenter?.Dispose();
+        bonusRewardPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

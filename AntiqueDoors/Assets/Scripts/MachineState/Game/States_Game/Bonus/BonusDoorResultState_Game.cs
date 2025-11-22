@@ -8,15 +8,20 @@ public class BonusDoorResultState_Game : IState
     private readonly UIGameRoot _sceneRoot;
     private readonly IDoorCounterProvider _doorCounterProvider;
     private readonly IDoorStateProvider _doorStateProvider;
+    private readonly IBonusRewardProvider _bonusRewardProvider;
+    private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
 
+    private Door _currentDoor;
     private IEnumerator timer;
 
-    public BonusDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider)
+    public BonusDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IBonusRewardProvider bonusRewardProvider, IDoorVisualInfoProvider doorVisualInfoProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
         _doorCounterProvider = doorCounterProvider;
         _doorStateProvider = doorStateProvider;
+        _bonusRewardProvider = bonusRewardProvider;
+        _doorVisualInfoProvider = doorVisualInfoProvider;
     }
 
     public void EnterState()
@@ -27,6 +32,9 @@ public class BonusDoorResultState_Game : IState
 
         timer = Timer();
         Coroutines.Start(timer);
+
+        _currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
+        _bonusRewardProvider.CreateBonuses(_currentDoor.BonusCount);
     }
 
     public void ExitState()
@@ -46,6 +54,7 @@ public class BonusDoorResultState_Game : IState
         yield return new WaitForSeconds(0.5f);
 
         _sceneRoot.OpenDoorBonusPanel();
+        _sceneRoot.OpenBonusRewardPanel();
 
         yield return new WaitForSeconds(2.2f);
 
@@ -53,11 +62,11 @@ public class BonusDoorResultState_Game : IState
 
         yield return new WaitForSeconds(0.3f);
 
-        ChangeStateToStartMenu();
+        ChangeStateToBonusReward();
     }
 
-    private void ChangeStateToStartMenu()
+    private void ChangeStateToBonusReward()
     {
-        _machineProvider.SetState(_machineProvider.GetState<StartMainState_Game>());
+        _machineProvider.SetState(_machineProvider.GetState<BonusRewardState_Game>());
     }
 }

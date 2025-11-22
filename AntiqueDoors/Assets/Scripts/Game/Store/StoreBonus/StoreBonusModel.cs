@@ -6,11 +6,14 @@ using UnityEngine;
 
 public class StoreBonusModel
 {
-    private readonly Dictionary<BonusType, int> _bonusTypes = 
-        Enum
-        .GetValues(typeof(BonusType))
-        .Cast<BonusType>()
-        .ToDictionary(bt => bt, bt => 0);
+    private readonly Dictionary<BonusType, int> _bonusTypes = new()
+    {
+        { BonusType.Oracle, 0 },
+        { BonusType.EvilTongue, 0 },
+        { BonusType.Amulet, 0 },
+        { BonusType.NormalKey, 0 },
+        { BonusType.GoldenKey, 0 }
+    };
 
     public void Initialize()
     {
@@ -65,4 +68,5 @@ public enum BonusType
     Amulet = 2,
     NormalKey = 3,
     GoldenKey = 4,
+    Health = 5
 }

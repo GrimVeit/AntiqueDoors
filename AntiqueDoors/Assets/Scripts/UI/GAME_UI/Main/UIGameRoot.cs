@@ -18,6 +18,7 @@ public class UIGameRoot : UIRoot
     [Header("Bonus Door")]
     [SerializeField] private DoorBonusPanel_Game doorBonusPanel;
     [SerializeField] private DoorBonusBackgroundPanel_Game doorBonusBackgroundPanel;
+    [SerializeField] private BonusRewardPanel_Game bonusRewardPanel;
 
     private ISoundProvider _soundProvider;
 
@@ -38,6 +39,7 @@ public class UIGameRoot : UIRoot
 
         doorBonusPanel.Initialize();
         doorBonusBackgroundPanel.Initialize();
+        bonusRewardPanel.Initialize();
     }
 
     public void Activate()
@@ -58,6 +60,7 @@ public class UIGameRoot : UIRoot
         CloseDoorDangerPanel();
         CloseDoorBonusPanel();
         CloseDoorBonusBackgroundPanel();
+        CloseBonusRewardPanel();
     }
 
     public void Dispose()
@@ -72,6 +75,7 @@ public class UIGameRoot : UIRoot
 
         doorBonusPanel.Dispose();
         doorBonusBackgroundPanel.Dispose();
+        bonusRewardPanel.Dispose();
     }
 
     #region Input
@@ -180,6 +184,20 @@ public class UIGameRoot : UIRoot
         if (!doorBonusBackgroundPanel.IsActive) return;
 
         CloseOtherPanel(doorBonusBackgroundPanel);
+    }
+
+    public void OpenBonusRewardPanel()
+    {
+        if(bonusRewardPanel.IsActive) return;
+
+        OpenOtherPanel(bonusRewardPanel);
+    }
+
+    public void CloseBonusRewardPanel()
+    {
+        if(!bonusRewardPanel.IsActive) return;
+
+        CloseOtherPanel(bonusRewardPanel);
     }
 
     #endregion

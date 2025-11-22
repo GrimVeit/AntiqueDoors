@@ -19,7 +19,9 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         IDoorCounterProvider doorCounterProvider,
         IDoorVisualInfoProvider doorVisualInfoProvider,
         IVideoProvider videoProvider,
-        IPlayerHealthProvider playerHealthProvider)
+        IPlayerHealthProvider playerHealthProvider,
+        IBonusRewardProvider bonusRewardProvider,
+        IBonusRewardEventsProvider bonusRewardEventsProvider)
     {
         states[typeof(StartMainState_Game)] = new StartMainState_Game(this, sceneRoot, doorStateProvider, doorStateEventsProvider, storeDoorProvider);
         states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot, doorVisualActivatorProvider, doorVisualEventsProvider);
@@ -27,7 +29,9 @@ public class StateMachine_Game : IGlobalStateMachineProvider
 
         states[typeof(NothingDoorResultState_Game)] = new NothingDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, doorVisualInfoProvider, playerHealthProvider);
         states[typeof(DangerDoorResultState_Game)] = new DangerDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, videoProvider, doorVisualInfoProvider, playerHealthProvider);
-        states[typeof(BonusDoorResultState_Game)] = new BonusDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider);
+
+        states[typeof(BonusDoorResultState_Game)] = new BonusDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, bonusRewardProvider, doorVisualInfoProvider);
+        states[typeof(BonusRewardState_Game)] = new BonusRewardState_Game(this, sceneRoot, bonusRewardProvider, bonusRewardEventsProvider);
     }
 
     public void Initialize()
