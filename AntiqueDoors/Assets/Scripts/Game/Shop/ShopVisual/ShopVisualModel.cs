@@ -9,8 +9,9 @@ public class ShopVisualModel
     private readonly IMoneyProvider _moneyProvider;
     private readonly IStoreShopProvider _storeShopProvider;
     private readonly IHealthStoreProvider _healthStoreProvider;
+    private readonly IStoreAdditionallyProvider _storeAdditionallyProvider;
 
-    public ShopVisualModel(IStoreShopEventsProvider storeShopEventsProvider, IMoneyProvider moneyProvider, IStoreShopProvider storeShopProvider, IHealthStoreProvider healthStoreProvider)
+    public ShopVisualModel(IStoreShopEventsProvider storeShopEventsProvider, IMoneyProvider moneyProvider, IStoreShopProvider storeShopProvider, IHealthStoreProvider healthStoreProvider, IStoreAdditionallyProvider storeAdditionallyProvider)
     {
         _storeShopEventsProvider = storeShopEventsProvider;
         _moneyProvider = moneyProvider;
@@ -18,6 +19,7 @@ public class ShopVisualModel
         _healthStoreProvider = healthStoreProvider;
 
         _storeShopEventsProvider.OnLevelShopChanged += SetChange;
+        _storeAdditionallyProvider = storeAdditionallyProvider;
     }
 
     public void Initialize()
@@ -44,6 +46,33 @@ public class ShopVisualModel
         {
             case ShopGroup.Shield:
                 _healthStoreProvider.IncreaseMaxShield(1);
+                break;
+
+
+
+            case ShopGroup.Evil:
+                if (levelId == 1)
+                {
+                    _storeAdditionallyProvider.ActivateBonusCondition(0);
+                }
+                else if(levelId == 2)
+                {
+                    _storeAdditionallyProvider.ActivateBonusCondition(1);
+                }
+                break;
+
+
+
+
+            case ShopGroup.Oracle:
+                if (levelId == 1)
+                {
+                    _storeAdditionallyProvider.ActivateBonusCondition(2);
+                }
+                else if (levelId == 2)
+                {
+                    _storeAdditionallyProvider.ActivateBonusCondition(3);
+                }
                 break;
         }
 

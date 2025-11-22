@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
@@ -27,6 +28,7 @@ public class MenuEntryPoint : MonoBehaviour
     private AvatarVisualPresenter avatarVisualPresenter_Main;
     private AvatarVisualPresenter avatarVisualPresenter_Update;
 
+    private StoreAdditionallyPresenter storeAdditionallyPresenter;
     private StoreHealthPresenter storeHealthPresenter;
     private StoreShopPresenter storeShopPresenter;
     private ShopVisualPresenter shopVisualPresenter;
@@ -75,9 +77,17 @@ public class MenuEntryPoint : MonoBehaviour
                 avatarVisualPresenter_Main = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Registration"));
                 avatarVisualPresenter_Update = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter), viewContainer.GetView<AvatarVisualView>("Update"));
 
+                storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
+                {
+                    PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_START,
+                    PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_10_DOORS,
+                    PlayerPrefsKeys.SHOP_CONDITION_ORACLE_START,
+                    PlayerPrefsKeys.SHOP_CONDITION_ORACLE_10_DOORS
+                }));
+
                 storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
                 storeShopPresenter = new StoreShopPresenter(new StoreShopModel(PlayerPrefsKeys.SHOP_LEVEL_SHIELD, PlayerPrefsKeys.SHOP_LEVEL_EVIL, PlayerPrefsKeys.SHOP_LEVEL_ORACLE));
-                shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter), viewContainer.GetView<ShopVisualView>());
+                shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter, storeAdditionallyPresenter), viewContainer.GetView<ShopVisualView>());
                 shopAnimationVisualPresenter = new ShopAnimationVisualPresenter(new ShopAnimationVisualModel(storeShopPresenter), viewContainer.GetView<ShopAnimationVisualView>());
 
                 stateMachine = new StateMachine_Menu
@@ -105,29 +115,15 @@ public class MenuEntryPoint : MonoBehaviour
                 firebaseAuthenticationPresenter.Initialize();
                 firebaseDatabasePresenter.Initialize();
 
-                Debug.Log("Test");
-
                 avatarVisualPresenter_Main.Initialize();
                 avatarVisualPresenter_Update.Initialize();
                 avatarPresenter.Initialize();
-
-                Debug.Log("Test");
-
                 shopAnimationVisualPresenter.Initialize();
 
-                Debug.Log("Test");
-
+                storeAdditionallyPresenter.Initialize();
                 storeHealthPresenter.Initialize();
-
-                Debug.Log("Test");
-
                 shopVisualPresenter.Initialize();
-
-                Debug.Log("Test");
-
                 storeShopPresenter.Initialize();
-
-                Debug.Log("Test");
 
                 stateMachine.Initialize();
             }
@@ -196,6 +192,7 @@ public class MenuEntryPoint : MonoBehaviour
         avatarPresenter?.Dispose();
 
         shopAnimationVisualPresenter?.Dispose();
+        storeAdditionallyPresenter?.Dispose();
         storeHealthPresenter?.Dispose();
         shopVisualPresenter?.Dispose();
         storeShopPresenter?.Dispose();

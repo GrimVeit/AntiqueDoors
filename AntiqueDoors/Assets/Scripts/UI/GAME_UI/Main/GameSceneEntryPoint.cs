@@ -30,6 +30,11 @@ public class GameSceneEntryPoint : MonoBehaviour
     private StoreHealthPresenter storeHealthPresenter;
     private PlayerHealthPresenter playerHealthPresenter;
 
+    private StoreBonusPresenter storeBonusPresenter;
+    private BonusVisualPresenter bonusVisualPresenter;
+    private StoreAdditionallyPresenter storeAdditionallyPresenter;
+    private BonusConditionPresenter bonusConditionPresenter;
+
     private StateMachine_Game stateMachine;
 
     public void Run(UIRootView uIRootView)
@@ -63,6 +68,18 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
         playerHealthPresenter = new PlayerHealthPresenter(new PlayerHealthModel(storeHealthPresenter), viewContainer.GetView<PlayerHealthView>());
+
+        storeBonusPresenter = new StoreBonusPresenter(new StoreBonusModel());
+        bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter), viewContainer.GetView<BonusVisualView>());
+        storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
+        {
+            PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_START,
+            PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_10_DOORS,
+            PlayerPrefsKeys.SHOP_CONDITION_ORACLE_START,
+            PlayerPrefsKeys.SHOP_CONDITION_ORACLE_10_DOORS
+        }));
+
+        bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
 
         stateMachine = new StateMachine_Game
             (sceneRoot,
@@ -98,6 +115,11 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         storeHealthPresenter.Initialize();
         playerHealthPresenter.Initialize();
+
+        bonusVisualPresenter.Initialize();
+        storeBonusPresenter.Initialize();
+        storeAdditionallyPresenter.Initialize();
+        bonusConditionPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -150,6 +172,11 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         storeHealthPresenter?.Dispose();
         playerHealthPresenter?.Dispose();
+
+        bonusVisualPresenter?.Dispose();
+        storeBonusPresenter?.Dispose();
+        storeAdditionallyPresenter?.Dispose();
+        bonusConditionPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

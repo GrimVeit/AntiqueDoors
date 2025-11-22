@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreBonusPresenter
+public class StoreBonusPresenter : IStoreBonusProvider, IStoreBonusEventsProvider
 {
     private readonly StoreBonusModel _model;
 
