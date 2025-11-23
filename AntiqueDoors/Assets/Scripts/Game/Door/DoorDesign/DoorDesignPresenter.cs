@@ -37,3 +37,8 @@ public class DoorDesignPresenter
         _model.OnDesignChanged -= _view.SetDesigns;
     }
 }
+
+public interface IDoorDesignProvider
+{
+    void Set
+}
