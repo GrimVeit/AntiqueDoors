@@ -7,6 +7,7 @@ public class UIEffectCombination : MonoBehaviour
     [SerializeField] private float startTimeDelay;
     [SerializeField] private List<UIEffect> uiEffects = new List<UIEffect>();
     [SerializeField] private float timeDelay;
+    [SerializeField] private bool isReverseNormal = false;
 
     private IEnumerator scaleEffectCombimation_Coroutine;
 
@@ -36,12 +37,17 @@ public class UIEffectCombination : MonoBehaviour
         if (scaleEffectCombimation_Coroutine != null)
             Coroutines.Stop(scaleEffectCombimation_Coroutine);
 
-        //scaleEffectCombimation_Coroutine = DeactivateScaleEffect_Coroutine();
-        //Coroutines.Start(scaleEffectCombimation_Coroutine);
-
-        for (int i = uiEffects.Count - 1; i >= 0; i--)
+        if (isReverseNormal)
         {
-            uiEffects[i].DeactivateEffect();
+            scaleEffectCombimation_Coroutine = DeactivateScaleEffect_Coroutine();
+            Coroutines.Start(scaleEffectCombimation_Coroutine);
+        }
+        else
+        {
+            for (int i = uiEffects.Count - 1; i >= 0; i--)
+            {
+                uiEffects[i].DeactivateEffect();
+            }
         }
     }
 

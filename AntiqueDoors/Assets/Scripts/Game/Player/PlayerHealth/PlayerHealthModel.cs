@@ -31,6 +31,8 @@ public class PlayerHealthModel
 
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
         OnShieldChanged?.Invoke(CurrentShield, MaxShield);
+
+        Debug.Log("HEALTH: " + CurrentHealth);
     }
 
     public void TakeDamage(int damage)
@@ -49,6 +51,8 @@ public class PlayerHealthModel
             if (CurrentHealth < 0) CurrentHealth = 0;
             OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
         }
+
+        Debug.Log("HEALTH: " + CurrentHealth);
     }
 
     public void AddHealth(int amount)
@@ -56,6 +60,8 @@ public class PlayerHealthModel
         CurrentHealth += amount;
         if (CurrentHealth > MaxHealth) CurrentHealth = MaxHealth;
         OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+
+        Debug.Log("HEALTH: " + CurrentHealth);
     }
 
     public void AddShield(int amount)

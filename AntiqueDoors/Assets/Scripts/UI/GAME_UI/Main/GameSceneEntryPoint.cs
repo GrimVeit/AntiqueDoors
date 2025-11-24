@@ -35,6 +35,7 @@ public class GameSceneEntryPoint : MonoBehaviour
     private StoreAdditionallyPresenter storeAdditionallyPresenter;
     private BonusConditionPresenter bonusConditionPresenter;
     private BonusRewardPresenter bonusRewardPresenter;
+    private BonusApplierPresenter bonusApplierPresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -71,7 +72,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         playerHealthPresenter = new PlayerHealthPresenter(new PlayerHealthModel(storeHealthPresenter), viewContainer.GetView<PlayerHealthView>());
 
         storeBonusPresenter = new StoreBonusPresenter(new StoreBonusModel());
-        bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter), viewContainer.GetView<BonusVisualView>());
+        bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter, storeBonusPresenter), viewContainer.GetView<BonusVisualView>());
         storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
         {
             PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_START,
@@ -82,6 +83,7 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
         bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter), viewContainer.GetView<BonusRewardView>());
+        bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter));
 
         stateMachine = new StateMachine_Game
             (sceneRoot,
@@ -95,7 +97,12 @@ public class GameSceneEntryPoint : MonoBehaviour
             videoPresenter,
             playerHealthPresenter,
             bonusRewardPresenter,
-            bonusRewardPresenter);
+            bonusRewardPresenter,
+            bonusRewardPresenter,
+            bonusVisualPresenter,
+            bonusVisualPresenter,
+            bonusApplierPresenter,
+            bonusApplierPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -125,6 +132,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeAdditionallyPresenter.Initialize();
         bonusConditionPresenter.Initialize();
         bonusRewardPresenter.Initialize();
+        bonusApplierPresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -183,6 +191,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeAdditionallyPresenter?.Dispose();
         bonusConditionPresenter?.Dispose();
         bonusRewardPresenter?.Dispose();
+        bonusApplierPresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

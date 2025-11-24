@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StoreBonusPresenter : IStoreBonusProvider, IStoreBonusEventsProvider
+public class StoreBonusPresenter : IStoreBonusProvider, IStoreBonusEventsProvider, IStoreBonusInfoProvider
 {
     private readonly StoreBonusModel _model;
 
@@ -45,6 +45,10 @@ public interface IStoreBonusProvider
 {
     public void AddBonus(BonusType bonusType, int count);
     public void RemoveBonus(BonusType bonusType, int count);
+}
+
+public interface IStoreBonusInfoProvider
+{
     public int BonusCount(BonusType bonusType);
 }
 

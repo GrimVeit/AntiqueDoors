@@ -6,7 +6,6 @@ using UnityEngine;
 public class StoreDoorModel
 {
     private readonly IDoorCounterInfoProvider _counterInfoProvider;
-
     private readonly System.Random rnd = new();
 
     public StoreDoorModel(IDoorCounterInfoProvider counterInfoProvider)
@@ -14,6 +13,7 @@ public class StoreDoorModel
         _counterInfoProvider = counterInfoProvider;
     }
 
+    /// Метод создания комнаты с 3 дверями
     public void GenerateDoors()
     {
         List<DoorType> available = GetAvailableTypes();
@@ -26,8 +26,10 @@ public class StoreDoorModel
 
         DebugPrintDoors(doors); // для теста
 
-        OnDoorsCreated?.Invoke(doors);
+        OnDoorsCreated?.Invoke(doors); // событие для UI
     }
+
+    #region Генерация типов дверей
 
     private List<DoorType> GetAvailableTypes()
     {
@@ -56,7 +58,14 @@ public class StoreDoorModel
 
     private Door CreateDoorByType(DoorType type)
     {
-        Door door = new Door { Type = type };
+        Door door = new()
+        {
+            Type = type,
+            HasDanger = false,
+            DangerLevel = DangerLevel.None,
+            HasBonus = false,
+            BonusCount = 0
+        };
 
         switch (type)
         {
@@ -72,11 +81,16 @@ public class StoreDoorModel
 
             case DoorType.Spikes:
                 door.HasDanger = true;
-                door.DangerLevel = DangerLevel.Medium; // Базовый урон от шипов
+                door.DangerLevel = DangerLevel.Medium;
                 break;
         }
+
         return door;
     }
+
+    #endregion
+
+    #region Опасности (призраки)
 
     private int GetGhostCount()
     {
@@ -117,7 +131,6 @@ public class StoreDoorModel
                 if (!d.HasDanger)
                     sum += GetDangerWeight(d.Type);
 
-            // Если все опасные → дальше не распределяем
             if (sum == 0) break;
 
             int roll = rnd.Next(sum);
@@ -153,15 +166,20 @@ public class StoreDoorModel
         };
     }
 
+    #endregion
+
+    #region Бонусы
+
     private void AssignBonuses(List<Door> doors)
     {
         foreach (var d in doors)
         {
-            if (d.HasDanger) continue;
+            d.BonusCount = GetBonusAmount(d.Type);
+
+            // С вероятностью 50% бонус будет
             if (rnd.NextDouble() > 0.5) continue;
 
             d.HasBonus = true;
-            d.BonusCount = GetBonusAmount(d.Type);
         }
     }
 
@@ -179,23 +197,26 @@ public class StoreDoorModel
         };
     }
 
+    #endregion
+
+    #region Debug
+
     private void DebugPrintDoors(List<Door> doors)
     {
         for (int i = 0; i < doors.Count; i++)
         {
             var d = doors[i];
-
             string log = $"Door {i + 1}({_counterInfoProvider.GetCountDoor() + 1}): {d.Type} | " +
-                         $"Locked: {d.HasLock} | " +
-                         $"GoldLock: {d.IsGoldLock} | " +
+                         $"Locked: {d.HasLock} | GoldLock: {d.IsGoldLock} | " +
                          $"Danger: {d.HasDanger} ({d.DangerLevel}) | " +
-                         $"Bonus: {d.HasBonus} ({d.BonusCount}) | " +
-                         $"MarkedSafe: {d.MarkedAsSafe} | " +
-                         $"MarkedDanger: {d.MarkedAsDanger}";
+                         $"Bonus: {d.HasBonus} | " +
+                         $"BonusCount: {d.BonusCount}";
 
             Debug.Log(log);
         }
     }
+
+    #endregion
 
     #region Output
 
@@ -220,10 +241,6 @@ public class Door
     // Бонусы
     public bool HasBonus;
     public int BonusCount;
-
-    // Метки подсказок
-    public bool MarkedAsSafe;
-    public bool MarkedAsDanger;
 }
 
 /// Тип двери — влияет на шансы опасности и количество бонусов

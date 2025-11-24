@@ -48,7 +48,7 @@ public class MoveDoorState_Game : IState
         {
             ChangeStateToDanger();
         }
-        else if (_currentDoor.HasBonus)
+        else if (_currentDoor.HasBonus && !_currentDoor.HasDanger)
         {
             ChangeStateToBonus();
         }

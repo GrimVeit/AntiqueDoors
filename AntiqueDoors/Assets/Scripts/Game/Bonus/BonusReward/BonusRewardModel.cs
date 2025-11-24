@@ -19,6 +19,8 @@ public class BonusRewardModel
     private readonly IStoreBonusProvider _storeBonusProvider;
     private readonly IPlayerHealthProvider _playerHealthProvider;
 
+    private List<BonusType> _currentBonusesType;
+
     public BonusRewardModel(IStoreBonusProvider storeBonusProvider, IPlayerHealthProvider playerHealthProvider)
     {
         _storeBonusProvider = storeBonusProvider;
@@ -38,14 +40,16 @@ public class BonusRewardModel
         }
         else
         {
-            _playerHealthProvider.AddHealth(int.MaxValue);
+            _playerHealthProvider.AddHealth(1);
         }
     }
 
 
     public void CreateBonuses(int count)
     {
-        OnChooseBonusesForReward?.Invoke(GetRandomWeightedBonuses(count));
+        _currentBonusesType = GetRandomWeightedBonuses(count);
+
+        OnChooseBonusesForReward?.Invoke(_currentBonusesType);
     }
 
     public void ActivateMove()
@@ -88,5 +92,11 @@ public class BonusRewardModel
     public event Action OnActivateMove;
 
     public event Action OnAllBonusRewarded;
+
+
+    public bool IsHaveBonus(BonusType type)
+    {
+        return _currentBonusesType != null && _currentBonusesType.Contains(type);
+    }
     #endregion
 }

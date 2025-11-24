@@ -8,13 +8,17 @@ public class MainState_Game : IState
     private readonly UIGameRoot _sceneRoot;
     private readonly IDoorVisualActivatorProvider _doorVisualActivatorProvider;
     private readonly IDoorVisualEventsProvider _doorVisualEventsProvider;
+    private readonly IBonusVisualEventsProvider _bonusVisualEventsProvider;
+    private readonly IBonusVisualActivatorProvider _bonusVisualActivatorProvider;
 
-    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider)
+    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IBonusVisualActivatorProvider bonusVisualActivatorProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
         _doorVisualActivatorProvider = doorVisualActivatorProvider;
         _doorVisualEventsProvider = doorVisualEventsProvider;
+        _bonusVisualEventsProvider = bonusVisualEventsProvider;
+        _bonusVisualActivatorProvider = bonusVisualActivatorProvider;
     }
 
     public void EnterState()
@@ -22,21 +26,32 @@ public class MainState_Game : IState
         Debug.Log("<color=red>ACTIVATE MAIN STATE</color>");
 
         _doorVisualEventsProvider.OnChooseDoor += ChangeStateToDoorMove;
+        _bonusVisualEventsProvider.OnChooseBonus += ChangeStateToCheckUseBonus;
 
         _doorVisualActivatorProvider.ActivateInteraction();
+        _bonusVisualActivatorProvider.ActivateInteraction();
     }
 
     public void ExitState()
     {
         _doorVisualEventsProvider.OnChooseDoor -= ChangeStateToDoorMove;
+        _bonusVisualEventsProvider.OnChooseBonus -= ChangeStateToCheckUseBonus;
 
         _doorVisualActivatorProvider.DeactivateInteraction();
+        _bonusVisualActivatorProvider.DeactivateInteraction();
 
-        _sceneRoot.CloseMainPanel();
+        _sceneRoot.CloseFooterPanel();
     }
     
     private void ChangeStateToDoorMove()
     {
+        _sceneRoot.CloseMainPanel();
+
         _machineProvider.SetState(_machineProvider.GetState<MoveDoorState_Game>());
+    }
+
+    private void ChangeStateToCheckUseBonus()
+    {
+        _machineProvider.SetState(_machineProvider.GetState<CheckUseBonusState_Game>());
     }
 }

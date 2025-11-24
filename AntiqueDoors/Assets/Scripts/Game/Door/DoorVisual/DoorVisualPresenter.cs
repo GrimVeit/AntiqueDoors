@@ -54,6 +54,12 @@ public class DoorVisualPresenter : IDoorVisualActivatorProvider, IDoorVisualEven
         remove => _model.OnChooseDoor_Value -= value;
     }
 
+    public event Action<int> OnChooseDoor_Index
+    {
+        add => _model.OnChooseDoor_Index += value;
+        remove => _model.OnChooseDoor_Index -= value;
+    }
+
     public event Action OnChooseDoor
     {
         add => _model.OnChooseDoor += value;
@@ -89,5 +95,6 @@ public interface IDoorVisualInfoProvider
 public interface IDoorVisualEventsProvider
 {
     public event Action<Door> OnChooseDoor_Value;
+    public event Action<int> OnChooseDoor_Index;
     public event Action OnChooseDoor;
 }

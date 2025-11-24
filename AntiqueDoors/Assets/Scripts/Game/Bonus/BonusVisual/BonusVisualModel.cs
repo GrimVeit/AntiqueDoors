@@ -6,10 +6,12 @@ using UnityEngine;
 public class BonusVisualModel
 {
     private readonly IStoreBonusEventsProvider _storeBonusEventsProvider;
+    private readonly IStoreBonusInfoProvider _storeBonusInfoProvider;
 
-    public BonusVisualModel(IStoreBonusEventsProvider storeBonusEventsProvider)
+    public BonusVisualModel(IStoreBonusEventsProvider storeBonusEventsProvider, IStoreBonusInfoProvider storeBonusInfoProvider)
     {
         _storeBonusEventsProvider = storeBonusEventsProvider;
+        _storeBonusInfoProvider = storeBonusInfoProvider;
     }
 
     public void Initialize()
@@ -22,7 +24,40 @@ public class BonusVisualModel
         _storeBonusEventsProvider.OnChangedBonusCount -= ChangeBonusCount;
     }
 
+
+    public void ActivateInteraction()
+    {
+        OnActivateInteraction?.Invoke();
+    }
+
+    public void DeactivateInteraction()
+    {
+        OnDeactivateInteraction?.Invoke();
+    }
+
+
+    public void ChooseBonus(BonusType bonusType)
+    {
+        if(_storeBonusInfoProvider.BonusCount(bonusType) >= 1)
+        {
+            OnChooseBonus_Value?.Invoke(bonusType);
+            OnChooseBonus?.Invoke();
+        }
+        else
+        {
+            //NOT HAVE BONUS
+        }
+    }
+
     #region Output
+
+    public event Action<BonusType> OnChooseBonus_Value;
+    public event Action OnChooseBonus;
+
+    public event Action OnActivateInteraction;
+    public event Action OnDeactivateInteraction;
+
+
 
     public event Action<BonusType, int> OnChangedBonusCount;
 

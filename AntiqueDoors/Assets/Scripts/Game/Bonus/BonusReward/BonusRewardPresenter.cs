@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BonusRewardPresenter : IBonusRewardProvider, IBonusRewardEventsProvider
+public class BonusRewardPresenter : IBonusRewardProvider, IBonusRewardEventsProvider, IBonusRewardInfoProvider
 {
     private readonly BonusRewardModel _model;
     private readonly BonusRewardView _view;
@@ -57,6 +57,8 @@ public class BonusRewardPresenter : IBonusRewardProvider, IBonusRewardEventsProv
     public void CreateBonuses(int count) => _model.CreateBonuses(count);
     public void ActivateMove() => _model.ActivateMove();
 
+    public bool IsHaveBonus(BonusType type) => _model.IsHaveBonus(type);
+
     #endregion
 }
 
@@ -64,6 +66,11 @@ public interface IBonusRewardProvider
 {
     public void CreateBonuses(int count);
     public void ActivateMove();
+}
+
+public interface IBonusRewardInfoProvider
+{
+    public bool IsHaveBonus(BonusType type);
 }
 
 public interface IBonusRewardEventsProvider

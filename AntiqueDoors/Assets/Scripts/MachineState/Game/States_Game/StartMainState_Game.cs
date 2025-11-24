@@ -26,6 +26,7 @@ public class StartMainState_Game : IState
         _doorStateEventsProvider.OnEndActivateAllDoors += ChangeStateToMain;
 
         _sceneRoot.OpenMainPanel();
+        _sceneRoot.OpenFooterPanel();
 
         _storeDoorProvider.GenerateDoors();
         _doorStateProvider.ActivateAll();

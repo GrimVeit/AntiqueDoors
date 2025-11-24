@@ -6,6 +6,7 @@ using UnityEngine;
 public class UIGameRoot : UIRoot
 {
     [SerializeField] private MainPanel_Game mainPanel;
+    [SerializeField] private FooterPanel_Game footerPanel;
     [SerializeField] private DoorsPanel_Game doorsPanel;
 
     [Header("Nothing Door")]
@@ -30,6 +31,7 @@ public class UIGameRoot : UIRoot
     public void Initialize()
     {
         mainPanel.Initialize();
+        footerPanel.Initialize();
         doorsPanel.Initialize();
 
         doorNothingPanel.Initialize();
@@ -55,6 +57,7 @@ public class UIGameRoot : UIRoot
             CloseOtherPanel(currentPanel);
 
         CloseMainPanel();
+        CloseFooterPanel();
         CloseDoorNothingPanel();
         CloseDoorNothingBaackgroundPanel();
         CloseDoorDangerPanel();
@@ -66,6 +69,7 @@ public class UIGameRoot : UIRoot
     public void Dispose()
     {
         mainPanel.Dispose();
+        footerPanel.Dispose();
         doorsPanel.Dispose();
 
         doorNothingPanel.Dispose();
@@ -93,6 +97,20 @@ public class UIGameRoot : UIRoot
         if(!mainPanel.IsActive) return;
 
         CloseOtherPanel(mainPanel);
+    }
+
+    public void OpenFooterPanel()
+    {
+        if(footerPanel.IsActive) return;
+
+        OpenOtherPanel(footerPanel);
+    }
+
+    public void CloseFooterPanel()
+    {
+        if(!footerPanel.IsActive) return;
+
+        CloseOtherPanel(footerPanel);
     }
 
     public void OpenDoorsPanel()
