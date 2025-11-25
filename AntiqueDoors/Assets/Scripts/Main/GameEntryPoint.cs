@@ -48,7 +48,7 @@ public class GameEntryPoint
             yield return rootView.ShowLoadingScreen(0);
 
         if (showLoading)
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(1f);
 
         yield return SceneManager.LoadSceneAsync(scene);
         yield return new WaitForEndOfFrame();
