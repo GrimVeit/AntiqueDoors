@@ -17,19 +17,22 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         IDoorStateEventsProvider doorStateEventsProvider,
         IStoreDoorProvider storeDoorProvider,
         IDoorCounterProvider doorCounterProvider,
+        IDoorCounterInfoProvider doorCounterInfoProvider,
         IDoorVisualInfoProvider doorVisualInfoProvider,
         IVideoProvider videoProvider,
         IPlayerHealthProvider playerHealthProvider,
+        IPlayerHealthInfoProvider playerHealthInfoProvider,
         IBonusRewardProvider bonusRewardProvider,
         IBonusRewardEventsProvider bonusRewardEventsProvider,
         IBonusRewardInfoProvider bonusRewardInfoProvider,
         IBonusVisualActivatorProvider bonusVisualActivatorProvider,
         IBonusVisualEventsProvider bonusVisualEventsProvider,
         IBonusApplierInfoProvider bonusApplierInfoProvider,
-        IBonusApplierProvider bonusApplierProvider)
+        IBonusApplierProvider bonusApplierProvider,
+        IBankGameProvider bankGameProvider)
     {
         states[typeof(StartMainState_Game)] = new StartMainState_Game(this, sceneRoot, doorStateProvider, doorStateEventsProvider, storeDoorProvider);
-        states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot, doorVisualActivatorProvider, doorVisualEventsProvider, bonusVisualEventsProvider, bonusVisualActivatorProvider);
+        states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot, doorVisualActivatorProvider, doorVisualEventsProvider, bonusVisualEventsProvider, bonusVisualActivatorProvider, doorVisualInfoProvider);
         states[typeof(MoveDoorState_Game)] = new MoveDoorState_Game(this, doorVisualInfoProvider, doorStateProvider, doorStateEventsProvider, videoProvider);
 
         states[typeof(CheckUseBonusState_Game)] = new CheckUseBonusState_Game(this, bonusApplierInfoProvider);
@@ -38,6 +41,10 @@ public class StateMachine_Game : IGlobalStateMachineProvider
 
         states[typeof(NothingDoorResultState_Game)] = new NothingDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, doorVisualInfoProvider, playerHealthProvider);
         states[typeof(DangerDoorResultState_Game)] = new DangerDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, videoProvider, doorVisualInfoProvider, playerHealthProvider);
+
+        states[typeof(CheckWinLoseState_Game)] = new CheckWinLoseState_Game(this, doorCounterInfoProvider, playerHealthInfoProvider, sceneRoot);
+        states[typeof(WinState_Game)] = new WinState_Game(this, sceneRoot, videoProvider, bankGameProvider);
+        states[typeof(LoseState_Game)] = new LoseState_Game(this, sceneRoot, bankGameProvider);
 
         states[typeof(BonusDoorResultState_Game)] = new BonusDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, bonusRewardProvider, doorVisualInfoProvider);
         states[typeof(BonusRewardState_Game)] = new BonusRewardState_Game(this, sceneRoot, bonusRewardProvider, bonusRewardEventsProvider, bonusRewardInfoProvider);

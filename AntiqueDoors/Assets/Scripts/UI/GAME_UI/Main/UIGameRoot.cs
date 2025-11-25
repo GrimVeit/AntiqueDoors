@@ -8,6 +8,8 @@ public class UIGameRoot : UIRoot
     [SerializeField] private MainPanel_Game mainPanel;
     [SerializeField] private FooterPanel_Game footerPanel;
     [SerializeField] private DoorsPanel_Game doorsPanel;
+    [SerializeField] private WinPanel_Game winPanel;
+    [SerializeField] private LosePanel_Game losePanel;
 
     [Header("Nothing Door")]
     [SerializeField] private DoorNothingPanel_Game doorNothingPanel;
@@ -17,6 +19,7 @@ public class UIGameRoot : UIRoot
     [SerializeField] private DoorDangerPanel_Game doorDangerPanel;
 
     [Header("Bonus Door")]
+    [SerializeField] private ChooseDoorForApplyPanel_Game chooseDoorForApplyPanel;
     [SerializeField] private DoorBonusPanel_Game doorBonusPanel;
     [SerializeField] private DoorBonusBackgroundPanel_Game doorBonusBackgroundPanel;
     [SerializeField] private BonusRewardPanel_Game bonusRewardPanel;
@@ -33,12 +36,15 @@ public class UIGameRoot : UIRoot
         mainPanel.Initialize();
         footerPanel.Initialize();
         doorsPanel.Initialize();
+        winPanel.Initialize();
+        losePanel.Initialize();
 
         doorNothingPanel.Initialize();
         doorNothingBackgroundPanel.Initialize();
 
         doorDangerPanel.Initialize();
 
+        chooseDoorForApplyPanel.Initialize();
         doorBonusPanel.Initialize();
         doorBonusBackgroundPanel.Initialize();
         bonusRewardPanel.Initialize();
@@ -64,6 +70,7 @@ public class UIGameRoot : UIRoot
         CloseDoorBonusPanel();
         CloseDoorBonusBackgroundPanel();
         CloseBonusRewardPanel();
+        CloseChooseDoorForApplyPanel();
     }
 
     public void Dispose()
@@ -71,12 +78,15 @@ public class UIGameRoot : UIRoot
         mainPanel.Dispose();
         footerPanel.Dispose();
         doorsPanel.Dispose();
+        winPanel.Dispose();
+        losePanel.Dispose();
 
         doorNothingPanel.Dispose();
         doorNothingBackgroundPanel.Dispose();
 
         doorDangerPanel.Dispose();
 
+        chooseDoorForApplyPanel.Dispose();
         doorBonusPanel.Dispose();
         doorBonusBackgroundPanel.Dispose();
         bonusRewardPanel.Dispose();
@@ -125,6 +135,34 @@ public class UIGameRoot : UIRoot
         if (!doorsPanel.IsActive) return;
 
         CloseOtherPanel(doorsPanel);
+    }
+
+    public void OpenWinPanel()
+    {
+        if(winPanel.IsActive) return;
+
+        OpenOtherPanel(winPanel);
+    }
+
+    public void CloseWinPanel()
+    {
+        if(!winPanel.IsActive) return;
+
+        CloseOtherPanel(winPanel);
+    }
+
+    public void OpenLosePanel()
+    {
+        if(losePanel.IsActive) return;
+
+        OpenOtherPanel(losePanel);
+    }
+
+    public void CloseLosePanel()
+    {
+        if(!losePanel.IsActive) return;
+
+        CloseOtherPanel(losePanel);
     }
 
 
@@ -216,6 +254,20 @@ public class UIGameRoot : UIRoot
         if(!bonusRewardPanel.IsActive) return;
 
         CloseOtherPanel(bonusRewardPanel);
+    }
+
+    public void OpenChooseDoorForApplyPanel()
+    {
+        if(chooseDoorForApplyPanel.IsActive) return;
+
+        OpenOtherPanel(chooseDoorForApplyPanel);
+    }
+
+    public void CloseChooseDoorForApplyPanel()
+    {
+        if(!chooseDoorForApplyPanel.IsActive) return;
+
+        CloseOtherPanel(chooseDoorForApplyPanel);
     }
 
     #endregion

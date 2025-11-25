@@ -32,7 +32,7 @@ public class DangerDoorResultState_Game : IState
         _sceneRoot.OpenDoorDangerPanel();
 
         _currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
-        _videoProvider.Play($"DoorDanger_{(int)_currentDoor.DangerLevel}", ChangeStateToStartMenu);
+        _videoProvider.Play($"DoorDanger_{(int)_currentDoor.DangerLevel}", ChangeStateToCheckWinLose);
 
         _playerHealthProvider.TakeDamage((int)_currentDoor.DangerLevel);
     }
@@ -41,14 +41,14 @@ public class DangerDoorResultState_Game : IState
     {
         _doorCounterProvider.AddCount();
         _doorStateProvider.Hide();
-        _sceneRoot.CloseDoorDangerPanel();
+        //_sceneRoot.CloseDoorDangerPanel();
 
         if (_currentDoor.Type == DoorType.Spikes)
             _playerHealthProvider.TakeDamage(1);
     }
 
-    private void ChangeStateToStartMenu()
+    private void ChangeStateToCheckWinLose()
     {
-        _machineProvider.SetState(_machineProvider.GetState<StartMainState_Game>());
+        _machineProvider.SetState(_machineProvider.GetState<CheckWinLoseState_Game>());
     }
 }

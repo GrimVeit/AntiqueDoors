@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ScoreRecordModel
 {
+    public int ScoreRecord => _scoreRecord;
+
     private int _scoreRecord;
 
     private readonly string KEY;

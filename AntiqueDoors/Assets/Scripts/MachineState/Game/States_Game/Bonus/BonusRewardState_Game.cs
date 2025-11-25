@@ -23,7 +23,7 @@ public class BonusRewardState_Game : IState
     {
         Debug.Log("<color=red>ACTIVATE BONUS REWARD STATE</color>");
 
-        _bonusRewardEventsProvider.OnAllBonusRewarded += ChangeStateToStartMenu;
+        _bonusRewardEventsProvider.OnAllBonusRewarded += ChangeStateToCheckWinLose;
 
         _bonusRewardProvider.ActivateMove();
         _sceneRoot.OpenFooterPanel();
@@ -36,13 +36,13 @@ public class BonusRewardState_Game : IState
 
     public void ExitState()
     {
-        _bonusRewardEventsProvider.OnAllBonusRewarded -= ChangeStateToStartMenu;
+        _bonusRewardEventsProvider.OnAllBonusRewarded -= ChangeStateToCheckWinLose;
 
         _sceneRoot.CloseBonusRewardPanel();
     }
 
-    private void ChangeStateToStartMenu()
+    private void ChangeStateToCheckWinLose()
     {
-        _machineProvider.SetState(_machineProvider.GetState<StartMainState_Game>());
+        _machineProvider.SetState(_machineProvider.GetState<CheckWinLoseState_Game>());
     }
 }

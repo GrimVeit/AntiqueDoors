@@ -391,7 +391,7 @@ MonoBehaviour:
   panel: {fileID: 4997989393129252700}
   from: {x: -200, y: 0, z: 0}
   to: {x: 0, y: 0, z: 0}
-  time: 0.2
+  time: 0.3
   canvasGroup: {fileID: 8973956408726076290}
   effectCombination: {fileID: 3581712646345976617}
   motionGroup:
@@ -411,7 +411,8 @@ MonoBehaviour:
   startTimeDelay: 0
   uiEffects:
   - {fileID: 4126780960772703128}
-  timeDelay: 0.05
+  timeDelay: 0.1
+  isReverseNormal: 0
 --- !u!1 &9145422750578144841
 GameObject:
   m_ObjectHideFlags: 0
@@ -480,7 +481,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Loading...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 82eedf3d19641f749953393a7367d437, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1dac666befcd27346854b28de33ba42e, type: 2}
   m_sharedMaterial: {fileID: 6488032421701608735, guid: 82eedf3d19641f749953393a7367d437, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -544,7 +545,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &4126780960772703128

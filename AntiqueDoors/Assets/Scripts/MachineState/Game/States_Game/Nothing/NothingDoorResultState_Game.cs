@@ -57,11 +57,11 @@ public class NothingDoorResultState_Game : IState
     {
         yield return new WaitForSeconds(3);
 
-        ChangeStateToStartMenu();
+        ChangeStateToCheckWinLose();
     }
 
-    private void ChangeStateToStartMenu()
+    private void ChangeStateToCheckWinLose()
     {
-        _machineProvider.SetState(_machineProvider.GetState<StartMainState_Game>());
+        _machineProvider.SetState(_machineProvider.GetState<CheckWinLoseState_Game>());
     }
 }

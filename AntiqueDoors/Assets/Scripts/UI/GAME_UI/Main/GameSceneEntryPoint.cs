@@ -30,12 +30,17 @@ public class GameSceneEntryPoint : MonoBehaviour
     private StoreHealthPresenter storeHealthPresenter;
     private PlayerHealthPresenter playerHealthPresenter;
 
+    private ScoreRecordPresenter scoreRecordPresenter;
+    private PlayerScorePresenter playerScorePresenter;
+
     private StoreBonusPresenter storeBonusPresenter;
     private BonusVisualPresenter bonusVisualPresenter;
     private StoreAdditionallyPresenter storeAdditionallyPresenter;
     private BonusConditionPresenter bonusConditionPresenter;
     private BonusRewardPresenter bonusRewardPresenter;
     private BonusApplierPresenter bonusApplierPresenter;
+
+    private BankGamePresenter bankGamePresenter;
 
     private StateMachine_Game stateMachine;
 
@@ -71,6 +76,9 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
         playerHealthPresenter = new PlayerHealthPresenter(new PlayerHealthModel(storeHealthPresenter), viewContainer.GetView<PlayerHealthView>());
 
+        scoreRecordPresenter = new ScoreRecordPresenter(new ScoreRecordModel(PlayerPrefsKeys.RECORD));
+        playerScorePresenter = new PlayerScorePresenter(new PlayerScoreModel(doorCounterPresenter, scoreRecordPresenter));
+
         storeBonusPresenter = new StoreBonusPresenter(new StoreBonusModel());
         bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter, storeBonusPresenter), viewContainer.GetView<BonusVisualView>());
         storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
@@ -85,6 +93,8 @@ public class GameSceneEntryPoint : MonoBehaviour
         bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter), viewContainer.GetView<BonusRewardView>());
         bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter));
 
+        bankGamePresenter = new BankGamePresenter(new BankGameModel(doorCounterPresenter, bankPresenter), viewContainer.GetView<BankGameView>());
+
         stateMachine = new StateMachine_Game
             (sceneRoot,
             doorVisualPresenter,
@@ -93,8 +103,10 @@ public class GameSceneEntryPoint : MonoBehaviour
             doorStatePresenter,
             storeDoorPresenter,
             doorCounterPresenter,
+            doorCounterPresenter,
             doorVisualPresenter,
             videoPresenter,
+            playerHealthPresenter,
             playerHealthPresenter,
             bonusRewardPresenter,
             bonusRewardPresenter,
@@ -102,7 +114,8 @@ public class GameSceneEntryPoint : MonoBehaviour
             bonusVisualPresenter,
             bonusVisualPresenter,
             bonusApplierPresenter,
-            bonusApplierPresenter);
+            bonusApplierPresenter,
+            bankGamePresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -118,6 +131,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         avatarPresenter.Initialize();
 
         videoPresenter.Initialize();
+        videoPresenter.Prepare("Win");
         doorStatePresenter.Initialize();
         doorCounterPresenter.Initialize();
         storeDoorPresenter.Initialize();
@@ -127,12 +141,17 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeHealthPresenter.Initialize();
         playerHealthPresenter.Initialize();
 
+        scoreRecordPresenter.Initialize();
+        playerScorePresenter.Initialize();
+
         bonusVisualPresenter.Initialize();
         storeBonusPresenter.Initialize();
         storeAdditionallyPresenter.Initialize();
         bonusConditionPresenter.Initialize();
         bonusRewardPresenter.Initialize();
         bonusApplierPresenter.Initialize();
+
+        bankGamePresenter.Initialize();
 
         stateMachine.Initialize();
     }
@@ -150,11 +169,13 @@ public class GameSceneEntryPoint : MonoBehaviour
     private void ActivateTransitions()
     {
         sceneRoot.OnClickToExit_Main += HandleClickToMenu;
+        bankGamePresenter.OnApplyMoney += HandleClickToMenu;
     }
 
     private void DeactivateTransitions()
     {
         sceneRoot.OnClickToExit_Main -= HandleClickToMenu;
+        bankGamePresenter.OnApplyMoney -= HandleClickToMenu;
     }
 
     private void Deactivate()
@@ -186,12 +207,17 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeHealthPresenter?.Dispose();
         playerHealthPresenter?.Dispose();
 
+        scoreRecordPresenter?.Dispose();
+        playerScorePresenter?.Dispose();
+
         bonusVisualPresenter?.Dispose();
         storeBonusPresenter?.Dispose();
         storeAdditionallyPresenter?.Dispose();
         bonusConditionPresenter?.Dispose();
         bonusRewardPresenter?.Dispose();
         bonusApplierPresenter?.Dispose();
+
+        bankGamePresenter?.Dispose();
 
         stateMachine?.Dispose();
     }

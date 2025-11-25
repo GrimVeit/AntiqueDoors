@@ -44,19 +44,12 @@ public class DoorVisualModel
 
     public void ChooseDoor(int doorId)
     {
-        if (!_doors[doorId].HasLock)
-        {
-            _currentDoorIndex = doorId;
-            _currentDoor = _doors[_currentDoorIndex];
+        _currentDoorIndex = doorId;
+        _currentDoor = _doors[_currentDoorIndex];
 
-            OnChooseDoor_Value?.Invoke(_currentDoor);
-            OnChooseDoor_Index?.Invoke(_currentDoorIndex);
-            OnChooseDoor?.Invoke();
-        }
-        else
-        {
-            Debug.Log("LOCKED!!!");
-        }
+        OnChooseDoor_Value?.Invoke(_currentDoor);
+        OnChooseDoor_Index?.Invoke(_currentDoorIndex);
+        OnChooseDoor?.Invoke();
     }
 
     private void SetDoors(List<Door> doors)

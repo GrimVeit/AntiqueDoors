@@ -10,8 +10,9 @@ public class MainState_Game : IState
     private readonly IDoorVisualEventsProvider _doorVisualEventsProvider;
     private readonly IBonusVisualEventsProvider _bonusVisualEventsProvider;
     private readonly IBonusVisualActivatorProvider _bonusVisualActivatorProvider;
+    private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
 
-    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IBonusVisualActivatorProvider bonusVisualActivatorProvider)
+    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IBonusVisualActivatorProvider bonusVisualActivatorProvider, IDoorVisualInfoProvider doorVisualInfoProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -19,6 +20,7 @@ public class MainState_Game : IState
         _doorVisualEventsProvider = doorVisualEventsProvider;
         _bonusVisualEventsProvider = bonusVisualEventsProvider;
         _bonusVisualActivatorProvider = bonusVisualActivatorProvider;
+        _doorVisualInfoProvider = doorVisualInfoProvider;
     }
 
     public void EnterState()
@@ -45,6 +47,12 @@ public class MainState_Game : IState
     
     private void ChangeStateToDoorMove()
     {
+        if (_doorVisualInfoProvider.GetCurrentDoor().HasLock)
+        {
+            Debug.Log("LOCKED!!!");
+            return;
+        }
+
         _sceneRoot.CloseMainPanel();
 
         _machineProvider.SetState(_machineProvider.GetState<MoveDoorState_Game>());

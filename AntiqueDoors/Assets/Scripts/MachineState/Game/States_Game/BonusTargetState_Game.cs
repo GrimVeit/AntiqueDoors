@@ -28,6 +28,7 @@ public class BonusTargetState_Game : IState
 
         _doorVisualActivatorProvider.ActivateInteraction();
         _sceneRoot.CloseMainPanel();
+        _sceneRoot.OpenChooseDoorForApplyPanel();
     }
 
     public void ExitState()
@@ -38,6 +39,7 @@ public class BonusTargetState_Game : IState
         _doorVisualActivatorProvider.DeactivateInteraction();
         _sceneRoot.OpenMainPanel();
         _sceneRoot.OpenFooterPanel();
+        _sceneRoot.CloseChooseDoorForApplyPanel();
     }
 
     private void ChangeStateToMainMenu()

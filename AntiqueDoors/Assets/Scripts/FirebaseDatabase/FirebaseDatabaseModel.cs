@@ -31,19 +31,15 @@ public class FirebaseDatabaseModel
     private FirebaseAuth auth;
     private DatabaseReference databaseReference;
 
-    private IMoneyProvider _moneyProvider;
-
     public FirebaseDatabaseModel(FirebaseAuth auth, DatabaseReference database, IMoneyProvider moneyProvider)
     {
         this.auth = auth;
         this.databaseReference = database;
-        _moneyProvider = moneyProvider;
     }
 
     public void Initialize()
     {
-        Record = (int)_moneyProvider.GetMoney();
-
+        Record = PlayerPrefs.GetInt(PlayerPrefsKeys.RECORD);
         Nickname = PlayerPrefs.GetString(PlayerPrefsKeys.NICKNAME);
         Avatar = PlayerPrefs.GetInt(PlayerPrefsKeys.AVATAR);
     }
