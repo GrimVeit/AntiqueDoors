@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 2701031085590356204}
   - component: {fileID: 73013220353151991}
   - component: {fileID: 6485677768272443476}
+  - component: {fileID: -5930093594565988432}
   m_Layer: 5
   m_Name: UIRootView
   m_TagString: Untagged
@@ -140,7 +141,7 @@ RectTransform:
   m_GameObject: {fileID: 2084627984512893446}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6297646957813283434}
@@ -193,7 +194,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -216,6 +217,20 @@ MonoBehaviour:
   - {fileID: 2416943704433985181}
   - {fileID: 0}
   uiSceneContainer: {fileID: 6297646957813283434}
+--- !u!114 &-5930093594565988432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084627984512893446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b27f959a4de537a4d86e7f44e724cf59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minMatch: 0.3
+  maxMatch: 0.7
 --- !u!1 &2634042832739265041
 GameObject:
   m_ObjectHideFlags: 0
