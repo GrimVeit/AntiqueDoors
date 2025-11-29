@@ -28,6 +28,7 @@ public class BonusRewardPresenter : IBonusRewardProvider, IBonusRewardEventsProv
     {
         _view.OnAllBonusRewarded += _model.AllBonusRewarded;
         _view.OnAddBonus += _model.AddBonus;
+        _view.OnAddSound += _model.AddSound;
 
         _model.OnChooseBonusesForReward += _view.ChooseBonusTypesForReward;
         _model.OnActivateMove += _view.ActivateMove;
@@ -37,6 +38,7 @@ public class BonusRewardPresenter : IBonusRewardProvider, IBonusRewardEventsProv
     {
         _view.OnAllBonusRewarded -= _model.AllBonusRewarded;
         _view.OnAddBonus -= _model.AddBonus;
+        _view.OnAddSound -= _model.AddSound;
 
         _model.OnChooseBonusesForReward -= _view.ChooseBonusTypesForReward;
         _model.OnActivateMove -= _view.ActivateMove;

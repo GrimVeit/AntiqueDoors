@@ -12,9 +12,11 @@ public class DangerDoorResultState_Game : IState
     private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
 
     private readonly IPlayerHealthProvider _playerHealthProvider;
+    private readonly ISoundProvider _soundProvider;
+    private readonly ISound _soundBackground;
     private Door _currentDoor;
 
-    public DangerDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IVideoProvider videoProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider)
+    public DangerDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IVideoProvider videoProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider, ISoundProvider soundProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -23,6 +25,9 @@ public class DangerDoorResultState_Game : IState
         _videoProvider = videoProvider;
         _doorVisualInfoProvider = doorVisualInfoProvider;
         _playerHealthProvider = playerHealthProvider;
+
+        _soundProvider = soundProvider;
+        _soundBackground = _soundProvider.GetSound("Background");
     }
 
     public void EnterState()
@@ -33,8 +38,10 @@ public class DangerDoorResultState_Game : IState
 
         _currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
         _videoProvider.Play($"DoorDanger_{(int)_currentDoor.DangerLevel}", ChangeStateToCheckWinLose);
-
         _playerHealthProvider.TakeDamage((int)_currentDoor.DangerLevel);
+
+        _soundBackground.SetVolume(0.3f, 0.1f, 0.2f);
+        _soundProvider.PlayOneShot("Danger");
     }
 
     public void ExitState()

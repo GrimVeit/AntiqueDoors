@@ -11,8 +11,9 @@ public class MainState_Game : IState
     private readonly IBonusVisualEventsProvider _bonusVisualEventsProvider;
     private readonly IBonusVisualActivatorProvider _bonusVisualActivatorProvider;
     private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
+    private readonly ISoundProvider _soundProvider;
 
-    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IBonusVisualActivatorProvider bonusVisualActivatorProvider, IDoorVisualInfoProvider doorVisualInfoProvider)
+    public MainState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorVisualActivatorProvider doorVisualActivatorProvider, IDoorVisualEventsProvider doorVisualEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IBonusVisualActivatorProvider bonusVisualActivatorProvider, IDoorVisualInfoProvider doorVisualInfoProvider, ISoundProvider soundProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -21,6 +22,7 @@ public class MainState_Game : IState
         _bonusVisualEventsProvider = bonusVisualEventsProvider;
         _bonusVisualActivatorProvider = bonusVisualActivatorProvider;
         _doorVisualInfoProvider = doorVisualInfoProvider;
+        _soundProvider = soundProvider;
     }
 
     public void EnterState()
@@ -50,6 +52,7 @@ public class MainState_Game : IState
         if (_doorVisualInfoProvider.GetCurrentDoor().HasLock)
         {
             Debug.Log("LOCKED!!!");
+            _soundProvider.PlayOneShot("DoorLock");
             return;
         }
 

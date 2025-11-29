@@ -14,6 +14,36 @@ public class DoorStateView : View
 
     private IEnumerator timerActivator;
 
+    public void Initialize()
+    {
+        doorUnit_1.OnSoundMoveUp += SoundMoveUp;
+        doorUnit_2.OnSoundMoveUp += SoundMoveUp;
+        doorUnit_3.OnSoundMoveUp += SoundMoveUp;
+
+        doorUnit_1.OnSoundMoveDown += SoundMoveDown;
+        doorUnit_2.OnSoundMoveDown += SoundMoveDown;
+        doorUnit_3.OnSoundMoveDown += SoundMoveDown;
+
+        doorUnit_1.OnSoundOpen += SoundOpen;
+        doorUnit_2.OnSoundOpen += SoundOpen;
+        doorUnit_3.OnSoundOpen += SoundOpen;
+    }
+
+    public void Dispose()
+    {
+        doorUnit_1.OnSoundMoveUp -= SoundMoveUp;
+        doorUnit_2.OnSoundMoveUp -= SoundMoveUp;
+        doorUnit_3.OnSoundMoveUp -= SoundMoveUp;
+
+        doorUnit_1.OnSoundMoveDown -= SoundMoveDown;
+        doorUnit_2.OnSoundMoveDown -= SoundMoveDown;
+        doorUnit_3.OnSoundMoveDown -= SoundMoveDown;
+
+        doorUnit_1.OnSoundOpen -= SoundOpen;
+        doorUnit_2.OnSoundOpen -= SoundOpen;
+        doorUnit_3.OnSoundOpen -= SoundOpen;
+    }
+
     public void Hide()
     {
         doorUnit_1.Hide();
@@ -116,6 +146,25 @@ public class DoorStateView : View
     public event Action OnEndActivateAllDoors;
     public event Action OnEndDeactivateAllDoors;
     public event Action OnEndOpenDoor;
+
+    public event Action OnSoundMoveUp;
+    public event Action OnSoundMoveDown;
+    public event Action OnSoundOpen;
+
+    private void SoundMoveUp()
+    {
+        OnSoundMoveUp?.Invoke();
+    }
+
+    private void SoundMoveDown()
+    {
+        OnSoundMoveDown?.Invoke();
+    }
+
+    private void SoundOpen()
+    {
+        OnSoundOpen?.Invoke();
+    }
 
     #endregion
 }

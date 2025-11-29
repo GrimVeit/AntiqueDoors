@@ -43,8 +43,8 @@ public class DoorUnit : MonoBehaviour
         sequenceUnit
             .Append(transformUnit.DOScale(1, timeScaleUnitDuration))
             .Insert(timeScaleUnitDuration * overlapPercentActivateDeactivate,
-                transformDoor.DOLocalMove(vectorActiveDoorPosition, timeDoorMoveDuration))
-            .OnComplete(() => OnComplete?.Invoke());
+                transformDoor.DOLocalMove(vectorActiveDoorPosition, timeDoorMoveDuration).OnStart(() => OnSoundMoveUp?.Invoke())
+            .OnComplete(() => OnComplete?.Invoke()));
     }
 
     public void Deactivate(Action OnComplete = null)
@@ -60,7 +60,7 @@ public class DoorUnit : MonoBehaviour
         sequenceUnit
             .Append(transformDoor.DOLocalMove(vectorDeactiveDoorPosition, timeDoorMoveDuration))
             .Insert(timeDoorMoveDuration * overlapPercentActivateDeactivate,
-                transformUnit.DOScale(0, timeScaleUnitDuration))
+                transformUnit.DOScale(0, timeScaleUnitDuration)).OnStart(() => OnSoundMoveDown?.Invoke())
             .OnComplete(() => OnComplete?.Invoke());
     }
 
@@ -90,8 +90,22 @@ public class DoorUnit : MonoBehaviour
         else
             sequenceUnit.Append(transformUnit.DOLocalMove(vectorCenterPos, timeUnitMoveToCenter/3));
 
+        sequenceUnit.AppendCallback(() => OnSoundOpen?.Invoke());
+
         sequenceUnit
             .Insert(timeUnitMoveToCenter * overlapPercentOpen, transformDoor.DOScale(scaleSizeOpenDoor, timeScaleOpenDoor))
-            .OnComplete(() => OnComplete?.Invoke());
+            .OnComplete(() =>
+            {
+                OnComplete?.Invoke();
+                //OnSoundOpen?.Invoke();
+            });
     }
+
+    #region Output
+
+    public event Action OnSoundMoveUp;
+    public event Action OnSoundMoveDown;
+    public event Action OnSoundOpen;
+
+    #endregion
 }

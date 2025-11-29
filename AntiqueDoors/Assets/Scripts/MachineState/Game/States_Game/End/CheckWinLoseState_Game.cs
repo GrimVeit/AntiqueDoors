@@ -9,12 +9,18 @@ public class CheckWinLoseState_Game : IState
     private readonly IDoorCounterInfoProvider _doorCounterInfoProvider;
     private readonly IPlayerHealthInfoProvider _playerHealthInfoProvider;
 
-    public CheckWinLoseState_Game(IGlobalStateMachineProvider machineProvider, IDoorCounterInfoProvider doorCounterInfoProvider, IPlayerHealthInfoProvider playerHealthInfoProvider, UIGameRoot sceneRoot)
+    private readonly ISoundProvider _soundProvider;
+    private readonly ISound _soundBackground;
+
+    public CheckWinLoseState_Game(IGlobalStateMachineProvider machineProvider, IDoorCounterInfoProvider doorCounterInfoProvider, IPlayerHealthInfoProvider playerHealthInfoProvider, UIGameRoot sceneRoot, ISoundProvider soundProvider)
     {
         _machineProvider = machineProvider;
         _doorCounterInfoProvider = doorCounterInfoProvider;
         _playerHealthInfoProvider = playerHealthInfoProvider;
         _sceneRoot = sceneRoot;
+
+        _soundProvider = soundProvider;
+        _soundBackground = _soundProvider.GetSound("Background");
     }
 
     public void EnterState()
@@ -43,6 +49,8 @@ public class CheckWinLoseState_Game : IState
 
     private void ChangeStateToStartMainMenu()
     {
+        _soundBackground.SetVolume(0.1f, 0.3f, 0.2f);
+
         _sceneRoot.CloseDoorDangerPanel();
         _machineProvider.SetState(_machineProvider.GetState<StartMainState_Game>());
     }

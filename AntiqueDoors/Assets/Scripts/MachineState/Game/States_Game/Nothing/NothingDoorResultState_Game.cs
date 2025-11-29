@@ -11,10 +11,12 @@ public class NothingDoorResultState_Game : IState
 
     private readonly IDoorVisualInfoProvider _visualInfoProvider;
     private readonly IPlayerHealthProvider _healthProvider;
+    private readonly ISoundProvider _soundProvider;
+    private readonly ISound _soundBackground;
 
     private IEnumerator timer;
 
-    public NothingDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider)
+    public NothingDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IDoorVisualInfoProvider doorVisualInfoProvider, IPlayerHealthProvider playerHealthProvider, ISoundProvider soundProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -22,6 +24,9 @@ public class NothingDoorResultState_Game : IState
         _doorStateProvider = doorStateProvider;
         _visualInfoProvider = doorVisualInfoProvider;
         _healthProvider = playerHealthProvider;
+
+        _soundProvider = soundProvider;
+        _soundBackground = _soundProvider.GetSound("Background");
     }
 
     public void EnterState()
@@ -35,6 +40,9 @@ public class NothingDoorResultState_Game : IState
 
         timer = Timer();
         Coroutines.Start(timer);
+
+        _soundBackground.SetVolume(0.3f, 0.1f, 0.2f);
+        _soundProvider.PlayOneShot("Fog");
     }
 
     public void ExitState()

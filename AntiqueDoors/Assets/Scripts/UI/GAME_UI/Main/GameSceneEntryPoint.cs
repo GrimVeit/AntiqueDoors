@@ -67,7 +67,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         avatarPresenter = new AvatarPresenter(new AvatarModel(PlayerPrefsKeys.AVATAR), viewContainer.GetView<AvatarView>());
 
         videoPresenter = new VideoPresenter(new VideoModel(), viewContainer.GetView<VideoView>());
-        doorStatePresenter = new DoorStatePresenter(viewContainer.GetView<DoorStateView>());
+        doorStatePresenter = new DoorStatePresenter(viewContainer.GetView<DoorStateView>(), soundPresenter);
         doorCounterPresenter = new DoorCounterPresenter(new DoorCounterModel(), viewContainer.GetView<DoorCounterView>());
         storeDoorPresenter = new StoreDoorPresenter(new StoreDoorModel(doorCounterPresenter));
         doorDesignPresenter = new DoorDesignPresenter(new DoorDesignModel(storeDoorPresenter), viewContainer.GetView<DoorDesignView>());
@@ -90,7 +90,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         }));
 
         bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
-        bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter), viewContainer.GetView<BonusRewardView>());
+        bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter, soundPresenter), viewContainer.GetView<BonusRewardView>());
         bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter));
 
         bankGamePresenter = new BankGamePresenter(new BankGameModel(doorCounterPresenter, bankPresenter), viewContainer.GetView<BankGameView>());
@@ -115,7 +115,8 @@ public class GameSceneEntryPoint : MonoBehaviour
             bonusVisualPresenter,
             bonusApplierPresenter,
             bonusApplierPresenter,
-            bankGamePresenter);
+            bankGamePresenter,
+            soundPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();

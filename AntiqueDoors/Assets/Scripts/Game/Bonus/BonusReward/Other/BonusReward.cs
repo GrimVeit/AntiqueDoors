@@ -41,11 +41,40 @@ public class BonusReward : MonoBehaviour
 
     private void StartMoving(float durationMove)
     {
+        //transform.DOScale(0.42f, durationMove - 0.01f);
+        //transform.DOLocalMove(_transformTarget.localPosition, durationMove)
+        //    .SetEase(Ease.OutQuad)
+        //    .OnComplete(() =>
+        //    {
+        //        OnAddSound?.Invoke();
+        //        OnAddBonus?.Invoke(bonusType);
+        //        OnDestroyed?.Invoke(this);
+        //        Destroy(gameObject);
+        //    });
+
         transform.DOScale(0.42f, durationMove - 0.01f);
+
         transform.DOLocalMove(_transformTarget.localPosition, durationMove)
             .SetEase(Ease.OutQuad)
+            .OnStart(() =>
+            {
+                if (durationMove > 0.1f)
+                {
+                    // Запланируем звук за 0.2 секунды до конца
+                    DOVirtual.DelayedCall(durationMove - 0.1f, () =>
+                    {
+                        OnAddSound?.Invoke();
+                    });
+                }
+            })
             .OnComplete(() =>
             {
+                // Если движение было короче 0.2 секунды, звук вызываем здесь
+                if (durationMove <= 0.1f)
+                {
+                    OnAddSound?.Invoke();
+                }
+
                 OnAddBonus?.Invoke(bonusType);
                 OnDestroyed?.Invoke(this);
                 Destroy(gameObject);
@@ -54,6 +83,7 @@ public class BonusReward : MonoBehaviour
 
     #region Output
 
+    public event Action OnAddSound;
     public event Action<BonusType> OnAddBonus;
     public event Action<BonusReward> OnDestroyed;
 

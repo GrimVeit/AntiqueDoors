@@ -18,13 +18,15 @@ public class BonusRewardModel
 
     private readonly IStoreBonusProvider _storeBonusProvider;
     private readonly IPlayerHealthProvider _playerHealthProvider;
+    private readonly ISoundProvider _soundProvider;
 
     private List<BonusType> _currentBonusesType;
 
-    public BonusRewardModel(IStoreBonusProvider storeBonusProvider, IPlayerHealthProvider playerHealthProvider)
+    public BonusRewardModel(IStoreBonusProvider storeBonusProvider, IPlayerHealthProvider playerHealthProvider, ISoundProvider soundProvider)
     {
         _storeBonusProvider = storeBonusProvider;
         _playerHealthProvider = playerHealthProvider;
+        _soundProvider = soundProvider;
     }
 
     public void AllBonusRewarded()
@@ -42,6 +44,11 @@ public class BonusRewardModel
         {
             _playerHealthProvider.AddHealth(1);
         }
+    }
+
+    public void AddSound()
+    {
+        _soundProvider.PlayOneShot("AddBonus");
     }
 
 

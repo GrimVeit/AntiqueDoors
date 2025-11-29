@@ -10,11 +10,13 @@ public class BonusDoorResultState_Game : IState
     private readonly IDoorStateProvider _doorStateProvider;
     private readonly IBonusRewardProvider _bonusRewardProvider;
     private readonly IDoorVisualInfoProvider _doorVisualInfoProvider;
+    private readonly ISoundProvider _soundProvider;
+    private readonly ISound _soundBackground;
 
     private Door _currentDoor;
     private IEnumerator timer;
 
-    public BonusDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IBonusRewardProvider bonusRewardProvider, IDoorVisualInfoProvider doorVisualInfoProvider)
+    public BonusDoorResultState_Game(IGlobalStateMachineProvider machineProvider, UIGameRoot sceneRoot, IDoorCounterProvider doorCounterProvider, IDoorStateProvider doorStateProvider, IBonusRewardProvider bonusRewardProvider, IDoorVisualInfoProvider doorVisualInfoProvider, ISoundProvider soundProvider)
     {
         _machineProvider = machineProvider;
         _sceneRoot = sceneRoot;
@@ -22,6 +24,9 @@ public class BonusDoorResultState_Game : IState
         _doorStateProvider = doorStateProvider;
         _bonusRewardProvider = bonusRewardProvider;
         _doorVisualInfoProvider = doorVisualInfoProvider;
+
+        _soundProvider = soundProvider;
+        _soundBackground = _soundProvider.GetSound("Background");
     }
 
     public void EnterState()
@@ -35,6 +40,9 @@ public class BonusDoorResultState_Game : IState
 
         _currentDoor = _doorVisualInfoProvider.GetCurrentDoor();
         _bonusRewardProvider.CreateBonuses(_currentDoor.BonusCount);
+
+        _soundBackground.SetVolume(0.3f, 0.1f, 0.2f);
+        _soundProvider.PlayOneShot("Bonuses");
     }
 
     public void ExitState()

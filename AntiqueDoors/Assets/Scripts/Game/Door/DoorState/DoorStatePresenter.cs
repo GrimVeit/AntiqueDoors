@@ -7,19 +7,55 @@ public class DoorStatePresenter : IDoorStateProvider, IDoorStateEventsProvider
 {
     private readonly DoorStateView _view;
 
-    public DoorStatePresenter(DoorStateView view)
+    private readonly ISoundProvider _soundProvider;
+
+    public DoorStatePresenter(DoorStateView view, ISoundProvider soundProvider)
     {
         _view = view;
+        _soundProvider = soundProvider;
     }
 
     public void Initialize()
     {
+        ActivateEvents();
 
+        _view.Initialize();
     }
 
     public void Dispose()
     {
+        DeactivateEvents();
 
+        _view.Dispose();
+    }
+
+    private void ActivateEvents()
+    {
+        _view.OnSoundMoveUp += SoundMoveUp;
+        _view.OnSoundMoveDown += SoundMoveDown;
+        _view.OnSoundOpen += SoundOpen;
+    }
+
+    private void DeactivateEvents()
+    {
+        _view.OnSoundMoveUp -= SoundMoveUp;
+        _view.OnSoundMoveDown -= SoundMoveDown;
+        _view.OnSoundOpen -= SoundOpen;
+    }
+
+    private void SoundMoveUp()
+    {
+        _soundProvider.PlayOneShot("DoorMoveUp");
+    }
+
+    private void SoundMoveDown()
+    {
+        _soundProvider.PlayOneShot("DoorMoveDown");
+    }
+
+    private void SoundOpen()
+    {
+        _soundProvider.PlayOneShot("DoorOpen");
     }
 
     #region Output
@@ -29,8 +65,6 @@ public class DoorStatePresenter : IDoorStateProvider, IDoorStateEventsProvider
     public event Action OnEndOpenDoor { add => _view.OnEndOpenDoor += value; remove => _view.OnEndOpenDoor -= value; }
 
     #endregion
-
-
 
     #region Input
 

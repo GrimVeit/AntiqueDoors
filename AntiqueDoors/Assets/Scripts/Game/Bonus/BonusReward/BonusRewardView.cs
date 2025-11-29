@@ -29,6 +29,7 @@ public class BonusRewardView : View
             visual.SetData(config.TransformEnd);
 
             visual.OnAddBonus += AddBonus;
+            visual.OnAddSound += AddSound;
             visual.OnDestroyed += HandleVisualDestroyed;
             _currentBonusRewards.Add(visual);
         }
@@ -48,6 +49,7 @@ public class BonusRewardView : View
     private void HandleVisualDestroyed(BonusReward visual)
     {
         visual.OnAddBonus -= AddBonus;
+        visual.OnAddSound -= AddSound;
         visual.OnDestroyed -= HandleVisualDestroyed;
         _currentBonusRewards.Remove(visual);
 
@@ -58,11 +60,17 @@ public class BonusRewardView : View
     #region Output
 
     public event Action<BonusType> OnAddBonus;
+    public event Action OnAddSound;
     public event Action OnAllBonusRewarded;
 
     private void AddBonus(BonusType type)
     {
         OnAddBonus?.Invoke(type);
+    }
+
+    private void AddSound()
+    {
+        OnAddSound?.Invoke();
     }
 
     #endregion
