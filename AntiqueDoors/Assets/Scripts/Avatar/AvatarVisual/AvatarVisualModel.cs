@@ -8,16 +8,18 @@ public class AvatarVisualModel
     private readonly IAvatarEventsProvider _avatarEventsProvider;
     private readonly IAvatarInfoProvider _avatarInfoProvider;
     private readonly IAvatarProvider _avatarProvider;
+    private readonly ISoundProvider _soundProvider;
 
     private int _currentAvatarId;
 
-    public AvatarVisualModel(IAvatarEventsProvider avatarEventsProvider, IAvatarInfoProvider avatarInfoProvider, IAvatarProvider avatarProvider)
+    public AvatarVisualModel(IAvatarEventsProvider avatarEventsProvider, IAvatarInfoProvider avatarInfoProvider, IAvatarProvider avatarProvider, ISoundProvider soundProvider)
     {
         _avatarEventsProvider = avatarEventsProvider;
         _avatarInfoProvider = avatarInfoProvider;
         _avatarProvider = avatarProvider;
 
         _avatarEventsProvider.OnChooseAvatar += OnSelect;
+        _soundProvider = soundProvider;
     }
 
     public void Initialize()
@@ -33,17 +35,23 @@ public class AvatarVisualModel
 
     public void LeftClick()
     {
+        _soundProvider.PlayOneShot("Click");
+
         OnClickToLeft?.Invoke();
     }
 
     public void RightClick()
     {
+        _soundProvider.PlayOneShot("Click");
+
         OnClickToRight?.Invoke();
     }
 
     public void SelectAvatar(int id)
     {
         _avatarProvider.SelectAvatar(id);
+
+        _soundProvider.PlayOneShot("ClickAvatar");
     }
 
 

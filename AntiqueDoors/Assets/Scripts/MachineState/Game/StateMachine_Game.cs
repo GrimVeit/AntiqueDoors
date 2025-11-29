@@ -44,8 +44,8 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         states[typeof(DangerDoorResultState_Game)] = new DangerDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, videoProvider, doorVisualInfoProvider, playerHealthProvider, soundProvider);
 
         states[typeof(CheckWinLoseState_Game)] = new CheckWinLoseState_Game(this, doorCounterInfoProvider, playerHealthInfoProvider, sceneRoot, soundProvider);
-        states[typeof(WinState_Game)] = new WinState_Game(this, sceneRoot, videoProvider, bankGameProvider);
-        states[typeof(LoseState_Game)] = new LoseState_Game(this, sceneRoot, bankGameProvider);
+        states[typeof(WinState_Game)] = new WinState_Game(this, sceneRoot, videoProvider, bankGameProvider, soundProvider);
+        states[typeof(LoseState_Game)] = new LoseState_Game(this, sceneRoot, bankGameProvider, soundProvider);
 
         states[typeof(BonusDoorResultState_Game)] = new BonusDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, bonusRewardProvider, doorVisualInfoProvider, soundProvider);
         states[typeof(BonusRewardState_Game)] = new BonusRewardState_Game(this, sceneRoot, bonusRewardProvider, bonusRewardEventsProvider, bonusRewardInfoProvider);

@@ -257,6 +257,8 @@ public class UIMainMenuRoot : UIRoot
 
     private void HandleClickToProfile_Main()
     {
+        _soundProvider.PlayOneShot("Click");
+
         OnClickToProfile_Main?.Invoke();
     }
 

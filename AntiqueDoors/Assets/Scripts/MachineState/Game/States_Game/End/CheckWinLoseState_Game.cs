@@ -66,6 +66,8 @@ public class CheckWinLoseState_Game : IState
 
     private void ChangeStateToLose()
     {
+        _soundBackground.SetVolume(0.1f, 0f, 0.2f);
+
         _sceneRoot.CloseMainPanel();
         _sceneRoot.CloseFooterPanel();
 
