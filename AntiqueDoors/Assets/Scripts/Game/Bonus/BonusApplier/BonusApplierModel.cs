@@ -14,16 +14,18 @@ public class BonusApplierModel
     private readonly IBonusVisualEventsProvider _bonusVisualEventsProvider;
     private readonly IDoorDesignProvider _doorDesignProvider;
     private readonly IStoreBonusProvider _storeBonusProvider;
+    private readonly ISoundProvider _soundProvider;
 
     private BonusType _currentBonusType;
     private List<Door> _currentDoors;
 
-    public BonusApplierModel(IStoreDoorEventsProvider storeDoorEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IStoreBonusProvider storeBonusProvider, IDoorDesignProvider doorDesignProvider)
+    public BonusApplierModel(IStoreDoorEventsProvider storeDoorEventsProvider, IBonusVisualEventsProvider bonusVisualEventsProvider, IStoreBonusProvider storeBonusProvider, IDoorDesignProvider doorDesignProvider, ISoundProvider soundProvider)
     {
         _storeDoorEventsProvider = storeDoorEventsProvider;
         _bonusVisualEventsProvider = bonusVisualEventsProvider;
         _storeBonusProvider = storeBonusProvider;
         _doorDesignProvider = doorDesignProvider;
+        _soundProvider = soundProvider;
 
         _storeDoorEventsProvider.OnDoorsCreated += SetDoors;
         _bonusVisualEventsProvider.OnChooseBonus_Value += SetBonus;
@@ -92,11 +94,14 @@ public class BonusApplierModel
                 if(door.HasLock && !door.IsGoldLock)
                 {
                     door.HasLock = false;
+                    _soundProvider.PlayOneShot("DoorUnlock");
                 }
                 break;
             case BonusType.GoldenKey:
                 if(door.HasLock)
                     door.HasLock = false;
+
+                _soundProvider.PlayOneShot("DoorUnlock");
                 break;
         }
     }

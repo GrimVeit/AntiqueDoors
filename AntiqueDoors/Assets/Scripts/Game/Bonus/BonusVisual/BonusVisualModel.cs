@@ -7,11 +7,13 @@ public class BonusVisualModel
 {
     private readonly IStoreBonusEventsProvider _storeBonusEventsProvider;
     private readonly IStoreBonusInfoProvider _storeBonusInfoProvider;
+    private readonly ISoundProvider _soundProvider;
 
-    public BonusVisualModel(IStoreBonusEventsProvider storeBonusEventsProvider, IStoreBonusInfoProvider storeBonusInfoProvider)
+    public BonusVisualModel(IStoreBonusEventsProvider storeBonusEventsProvider, IStoreBonusInfoProvider storeBonusInfoProvider, ISoundProvider soundProvider)
     {
         _storeBonusEventsProvider = storeBonusEventsProvider;
         _storeBonusInfoProvider = storeBonusInfoProvider;
+        _soundProvider = soundProvider;
     }
 
     public void Initialize()
@@ -42,6 +44,7 @@ public class BonusVisualModel
         {
             OnChooseBonus_Value?.Invoke(bonusType);
             OnChooseBonus?.Invoke();
+            _soundProvider.PlayOneShot("Click");
         }
         else
         {

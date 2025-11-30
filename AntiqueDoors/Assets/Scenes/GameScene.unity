@@ -3494,7 +3494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 575644666}
-  from: {x: 0, y: 200, z: 0}
+  from: {x: 200, y: 0, z: 0}
   to: {x: 0, y: 0, z: 0}
   time: 0.2
   canvasGroup: {fileID: 575644672}
@@ -9584,10 +9584,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 575644667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 396}
-  m_SizeDelta: {x: 1077.4, y: 124.7}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -144}
+  m_SizeDelta: {x: 1077.4, y: 124.70001}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1890936401
 MonoBehaviour:
@@ -10760,9 +10760,16 @@ MonoBehaviour:
     pitch: 1
     isLoop: 0
     isPlayAwake: 0
+  - id: DoorUnlock
+    audioSource: {fileID: 2105092356}
+    audioClip: {fileID: 8300000, guid: 96ee6123096511f469119374b9466030, type: 3}
+    volume: 0.5
+    pitch: 1
+    isLoop: 0
+    isPlayAwake: 0
   - id: DoorOpen
     audioSource: {fileID: 76080671}
-    audioClip: {fileID: 8300000, guid: fba320d4bab86c348a9508bb3f4955b7, type: 3}
+    audioClip: {fileID: 8300000, guid: 92fcdd1c3dd971c4c956999ffa50d48f, type: 3}
     volume: 0.7
     pitch: 1
     isLoop: 0
@@ -11262,7 +11269,7 @@ GameObject:
   - component: {fileID: 2105092355}
   - component: {fileID: 2105092356}
   m_Layer: 0
-  m_Name: DoorLock
+  m_Name: DoorLockUnlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

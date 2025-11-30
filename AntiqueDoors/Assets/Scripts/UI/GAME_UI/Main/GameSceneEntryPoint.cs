@@ -80,7 +80,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         playerScorePresenter = new PlayerScorePresenter(new PlayerScoreModel(doorCounterPresenter, scoreRecordPresenter));
 
         storeBonusPresenter = new StoreBonusPresenter(new StoreBonusModel());
-        bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter, storeBonusPresenter), viewContainer.GetView<BonusVisualView>());
+        bonusVisualPresenter = new BonusVisualPresenter(new BonusVisualModel(storeBonusPresenter, storeBonusPresenter, soundPresenter), viewContainer.GetView<BonusVisualView>());
         storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
         {
             PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_START,
@@ -91,7 +91,7 @@ public class GameSceneEntryPoint : MonoBehaviour
 
         bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
         bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter, soundPresenter), viewContainer.GetView<BonusRewardView>());
-        bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter));
+        bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter, soundPresenter));
 
         bankGamePresenter = new BankGamePresenter(new BankGameModel(doorCounterPresenter, bankPresenter), viewContainer.GetView<BankGameView>());
 
