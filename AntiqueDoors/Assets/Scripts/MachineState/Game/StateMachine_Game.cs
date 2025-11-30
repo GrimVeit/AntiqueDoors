@@ -29,6 +29,7 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         IBonusVisualEventsProvider bonusVisualEventsProvider,
         IBonusApplierInfoProvider bonusApplierInfoProvider,
         IBonusApplierProvider bonusApplierProvider,
+        IBonusApplierEventsProvider bonusApplierEventsProvider,
         IBankGameProvider bankGameProvider,
         ISoundProvider soundProvider)
     {
@@ -37,7 +38,7 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         states[typeof(MoveDoorState_Game)] = new MoveDoorState_Game(this, doorVisualInfoProvider, doorStateProvider, doorStateEventsProvider, videoProvider);
 
         states[typeof(CheckUseBonusState_Game)] = new CheckUseBonusState_Game(this, bonusApplierInfoProvider);
-        states[typeof(BonusVisibleState_Game)] = new BonusVisibleState_Game(this, bonusApplierProvider, sceneRoot);
+        states[typeof(BonusVisibleState_Game)] = new BonusVisibleState_Game(this, bonusApplierProvider, sceneRoot, bonusApplierEventsProvider);
         states[typeof(BonusTargetState_Game)] = new BonusTargetState_Game(this, bonusApplierProvider, sceneRoot, doorVisualEventsProvider, doorVisualActivatorProvider);
 
         states[typeof(NothingDoorResultState_Game)] = new NothingDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, doorVisualInfoProvider, playerHealthProvider, soundProvider);

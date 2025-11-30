@@ -19,6 +19,7 @@ public class UIGameRoot : UIRoot
     [SerializeField] private DoorDangerPanel_Game doorDangerPanel;
 
     [Header("Bonus Door")]
+    [SerializeField] private NoApplyBonusPanel_Game noApplyBonusPanel;
     [SerializeField] private ChooseDoorForApplyPanel_Game chooseDoorForApplyPanel;
     [SerializeField] private DoorBonusPanel_Game doorBonusPanel;
     [SerializeField] private DoorBonusBackgroundPanel_Game doorBonusBackgroundPanel;
@@ -44,6 +45,7 @@ public class UIGameRoot : UIRoot
 
         doorDangerPanel.Initialize();
 
+        noApplyBonusPanel.Initialize();
         chooseDoorForApplyPanel.Initialize();
         doorBonusPanel.Initialize();
         doorBonusBackgroundPanel.Initialize();
@@ -71,6 +73,7 @@ public class UIGameRoot : UIRoot
         CloseDoorBonusBackgroundPanel();
         CloseBonusRewardPanel();
         CloseChooseDoorForApplyPanel();
+        CloseNoApplyBonusPanel();
     }
 
     public void Dispose()
@@ -86,6 +89,7 @@ public class UIGameRoot : UIRoot
 
         doorDangerPanel.Dispose();
 
+        noApplyBonusPanel.Dispose();
         chooseDoorForApplyPanel.Dispose();
         doorBonusPanel.Dispose();
         doorBonusBackgroundPanel.Dispose();
@@ -268,6 +272,20 @@ public class UIGameRoot : UIRoot
         if(!chooseDoorForApplyPanel.IsActive) return;
 
         CloseOtherPanel(chooseDoorForApplyPanel);
+    }
+
+    public void OpenNoApplyBonusPanel()
+    {
+        if(noApplyBonusPanel.IsActive) return;
+
+        OpenOtherPanel(noApplyBonusPanel);
+    }
+
+    public void CloseNoApplyBonusPanel()
+    {
+        if (!noApplyBonusPanel.IsActive) return;
+
+        CloseOtherPanel(noApplyBonusPanel);
     }
 
     #endregion

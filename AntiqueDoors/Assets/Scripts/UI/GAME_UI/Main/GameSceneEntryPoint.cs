@@ -115,6 +115,7 @@ public class GameSceneEntryPoint : MonoBehaviour
             bonusVisualPresenter,
             bonusApplierPresenter,
             bonusApplierPresenter,
+            bonusApplierPresenter,
             bankGamePresenter,
             soundPresenter);
 

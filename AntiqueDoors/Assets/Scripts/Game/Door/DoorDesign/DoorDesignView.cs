@@ -91,10 +91,14 @@ public class DoorVisualBonus
 
     [SerializeField] private int doorId;
 
-    [SerializeField] private Transform transformOracle;
-    [SerializeField] private Transform transformEvilTongue;
-    [SerializeField] private float timeShowHide;
-    [SerializeField] private float timeVisible;
+    [SerializeField] private Image oracleImage;
+    [SerializeField] private Sprite[] oracleSprites;
+    [SerializeField] private Image evilTongueImage;
+    [SerializeField] private Sprite[] evilTongueSprites;
+
+    [SerializeField] private float timeShowHide = 0.2f;
+    [SerializeField] private float timeVisible = 0.8f;
+    [SerializeField] private float switchInterval = 0.5f;
 
     private Sequence sequenceBonus;
 
@@ -102,29 +106,54 @@ public class DoorVisualBonus
     {
         sequenceBonus?.Kill();
 
-        transformOracle.localScale = Vector3.zero;
-        transformEvilTongue.localScale = Vector3.zero;
+        oracleImage.transform.localScale = Vector3.zero;
+        evilTongueImage.transform.localScale = Vector3.zero;
 
         sequenceBonus = DOTween.Sequence();
-        sequenceBonus
-            .Append(transformOracle.DOScale(1, timeShowHide))
-            .AppendInterval(timeVisible)
-            .Append(transformOracle.DOScale(0, timeShowHide));
+        sequenceBonus.Append(oracleImage.transform.DOScale(1, timeShowHide));
 
+        float totalTime = 0f;
+        int spriteIndex = 0;
+
+        // анимация смены спрайтов во время видимости
+        while (totalTime < timeVisible)
+        {
+            sequenceBonus.AppendCallback(() =>
+            {
+                oracleImage.sprite = oracleSprites[spriteIndex % oracleSprites.Length];
+                spriteIndex++;
+            });
+            sequenceBonus.AppendInterval(switchInterval);
+            totalTime += switchInterval;
+        }
+
+        sequenceBonus.Append(oracleImage.transform.DOScale(0, timeShowHide));
     }
 
     public void ShowEvilTongue()
     {
         sequenceBonus?.Kill();
 
-        transformOracle.localScale = Vector3.zero;
-        transformEvilTongue.localScale = Vector3.zero;
+        oracleImage.transform.localScale = Vector3.zero;
+        evilTongueImage.transform.localScale = Vector3.zero;
 
         sequenceBonus = DOTween.Sequence();
-        sequenceBonus
-            .Append(transformEvilTongue.DOScale(1, timeShowHide))
-            .AppendInterval(timeVisible)
-            .Append(transformEvilTongue.DOScale(0, timeShowHide));
+        sequenceBonus.Append(evilTongueImage.transform.DOScale(1, timeShowHide));
 
+        float totalTime = 0f;
+        int spriteIndex = 0;
+
+        while (totalTime < timeVisible)
+        {
+            sequenceBonus.AppendCallback(() =>
+            {
+                evilTongueImage.sprite = evilTongueSprites[spriteIndex % evilTongueSprites.Length];
+                spriteIndex++;
+            });
+            sequenceBonus.AppendInterval(switchInterval);
+            totalTime += switchInterval;
+        }
+
+        sequenceBonus.Append(evilTongueImage.transform.DOScale(0, timeShowHide));
     }
 }

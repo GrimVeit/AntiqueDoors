@@ -60,18 +60,31 @@ public class BonusApplierModel
         {
             case BonusType.Oracle:
 
+                bool isApply = false;
+
                 for (int i = 0; i < _currentDoors.Count; i++)
                 {
                     if (!_currentDoors[i].HasDanger)
+                    {
                         _doorDesignProvider.ShowOracle(i);
+                        isApply = true;
+                    }
                 }
+
+                if(!isApply)
+                    OnNotApplyBonus?.Invoke();
+
                 break;
 
             case BonusType.EvilTongue:
 
                 var dangerDoorsIndexes = Array.FindAll(Enumerable.Range(0, _currentDoors.Count).ToArray(), i => _currentDoors[i].HasDanger);
 
-                if(dangerDoorsIndexes.Length == 0) return;
+                if(dangerDoorsIndexes.Length == 0)
+                {
+                    OnNotApplyBonus?.Invoke();
+                    return;
+                }
 
                 _doorDesignProvider.ShowEvilTongue(dangerDoorsIndexes[Random.Range(0, dangerDoorsIndexes.Length)]);
 
@@ -105,4 +118,10 @@ public class BonusApplierModel
                 break;
         }
     }
+
+    #region Output
+
+    public event Action OnNotApplyBonus;
+
+    #endregion
 }
