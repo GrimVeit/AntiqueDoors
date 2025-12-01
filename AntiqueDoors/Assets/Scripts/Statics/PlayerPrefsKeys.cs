@@ -6,7 +6,8 @@ public static class PlayerPrefsKeys
 {
     public const string IS_MUTE_SOUNDS = "IS_MUTE_SOUNDS";
 
-    public const string RECORD = "RECORD";
+    public const string SCORE_RECORD_DOOR = "SCORE_RECORD_DOOR";
+    public const string SCORE_LAUREL = "SCORE_LAUREL";
     public const string AVATAR = "AVATAR";
     public const string NICKNAME = "NICKNAME";
 

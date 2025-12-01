@@ -31,7 +31,8 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         IBonusApplierProvider bonusApplierProvider,
         IBonusApplierEventsProvider bonusApplierEventsProvider,
         IBankGameProvider bankGameProvider,
-        ISoundProvider soundProvider)
+        ISoundProvider soundProvider,
+        IScoreLaurelProvider scoreLaurelProvider)
     {
         states[typeof(StartMainState_Game)] = new StartMainState_Game(this, sceneRoot, doorStateProvider, doorStateEventsProvider, storeDoorProvider);
         states[typeof(MainState_Game)] = new MainState_Game(this, sceneRoot, doorVisualActivatorProvider, doorVisualEventsProvider, bonusVisualEventsProvider, bonusVisualActivatorProvider, doorVisualInfoProvider, soundProvider);
@@ -45,7 +46,7 @@ public class StateMachine_Game : IGlobalStateMachineProvider
         states[typeof(DangerDoorResultState_Game)] = new DangerDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, videoProvider, doorVisualInfoProvider, playerHealthProvider, soundProvider);
 
         states[typeof(CheckWinLoseState_Game)] = new CheckWinLoseState_Game(this, doorCounterInfoProvider, playerHealthInfoProvider, sceneRoot, soundProvider);
-        states[typeof(WinState_Game)] = new WinState_Game(this, sceneRoot, videoProvider, bankGameProvider, soundProvider);
+        states[typeof(WinState_Game)] = new WinState_Game(this, sceneRoot, videoProvider, bankGameProvider, soundProvider, scoreLaurelProvider);
         states[typeof(LoseState_Game)] = new LoseState_Game(this, sceneRoot, bankGameProvider, soundProvider);
 
         states[typeof(BonusDoorResultState_Game)] = new BonusDoorResultState_Game(this, sceneRoot, doorCounterProvider, doorStateProvider, bonusRewardProvider, doorVisualInfoProvider, soundProvider);

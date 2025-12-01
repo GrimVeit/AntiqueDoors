@@ -10,8 +10,9 @@ public class ShopVisualModel
     private readonly IStoreShopProvider _storeShopProvider;
     private readonly IHealthStoreProvider _healthStoreProvider;
     private readonly IStoreAdditionallyProvider _storeAdditionallyProvider;
+    private readonly ISoundProvider _soundProvider;
 
-    public ShopVisualModel(IStoreShopEventsProvider storeShopEventsProvider, IMoneyProvider moneyProvider, IStoreShopProvider storeShopProvider, IHealthStoreProvider healthStoreProvider, IStoreAdditionallyProvider storeAdditionallyProvider)
+    public ShopVisualModel(IStoreShopEventsProvider storeShopEventsProvider, IMoneyProvider moneyProvider, IStoreShopProvider storeShopProvider, IHealthStoreProvider healthStoreProvider, IStoreAdditionallyProvider storeAdditionallyProvider, ISoundProvider soundProvider)
     {
         _storeShopEventsProvider = storeShopEventsProvider;
         _moneyProvider = moneyProvider;
@@ -20,6 +21,7 @@ public class ShopVisualModel
 
         _storeShopEventsProvider.OnLevelShopChanged += SetChange;
         _storeAdditionallyProvider = storeAdditionallyProvider;
+        _soundProvider = soundProvider;
     }
 
     public void Initialize()
@@ -75,6 +77,8 @@ public class ShopVisualModel
                 }
                 break;
         }
+
+        _soundProvider.PlayOneShot("ClickAvatar");
 
         _storeShopProvider.SetLevel(shopGroup, levelId);
 

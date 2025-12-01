@@ -23,7 +23,7 @@ public class FirebaseDatabaseModel
 
     public string Nickname { get; private set; }
     public int Avatar { get; private set; } = 0;
-    public int Record { get; private set; }
+    public int ScoreLaurel { get; private set; }
 
     private List<UserData> userRecordsDictionary = new List<UserData>();
 
@@ -39,7 +39,7 @@ public class FirebaseDatabaseModel
 
     public void Initialize()
     {
-        Record = PlayerPrefs.GetInt(PlayerPrefsKeys.RECORD);
+        ScoreLaurel = PlayerPrefs.GetInt(PlayerPrefsKeys.SCORE_LAUREL);
         Nickname = PlayerPrefs.GetString(PlayerPrefsKeys.NICKNAME);
         Avatar = PlayerPrefs.GetInt(PlayerPrefsKeys.AVATAR);
     }
@@ -52,7 +52,7 @@ public class FirebaseDatabaseModel
     public void CreateNewAccountInServer()
     {
         Nickname = auth.CurrentUser.Email.Split('@')[0];
-        Record = 0;
+        ScoreLaurel = 0;
         UserData user = new(Nickname, 0, Avatar);
         string json = JsonUtility.ToJson(user);
 
@@ -77,7 +77,7 @@ public class FirebaseDatabaseModel
 
     public void SaveChangesToServer()
     {
-        UserData user = new(Nickname, Record, Avatar);
+        UserData user = new(Nickname, ScoreLaurel, Avatar);
         string json = JsonUtility.ToJson(user);
         databaseReference.Child("Users").Child(auth.CurrentUser.UserId).SetRawJsonValueAsync(json);
     }

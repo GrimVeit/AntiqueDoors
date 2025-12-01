@@ -28,6 +28,9 @@ public class MenuEntryPoint : MonoBehaviour
     private AvatarVisualPresenter avatarVisualPresenter_Main;
     private AvatarVisualPresenter avatarVisualPresenter_Update;
 
+    private ScoreLaurelPresenter scoreLaurelPresenter;
+    private ScoreLaurelVisualPresenter scoreLaurelVisualPresenter;
+
     private StoreAdditionallyPresenter storeAdditionallyPresenter;
     private StoreHealthPresenter storeHealthPresenter;
     private StoreShopPresenter storeShopPresenter;
@@ -77,6 +80,9 @@ public class MenuEntryPoint : MonoBehaviour
                 avatarVisualPresenter_Main = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter, soundPresenter), viewContainer.GetView<AvatarVisualView>("Registration"));
                 avatarVisualPresenter_Update = new AvatarVisualPresenter(new AvatarVisualModel(avatarPresenter, avatarPresenter, avatarPresenter, soundPresenter), viewContainer.GetView<AvatarVisualView>("Update"));
 
+                scoreLaurelPresenter = new ScoreLaurelPresenter(new ScoreLaurelModel(PlayerPrefsKeys.SCORE_LAUREL));
+                scoreLaurelVisualPresenter = new ScoreLaurelVisualPresenter(new ScoreLaurelVisualModel(scoreLaurelPresenter, scoreLaurelPresenter), viewContainer.GetView<ScoreLaurelVisualView>());
+
                 storeAdditionallyPresenter = new StoreAdditionallyPresenter(new StoreAdditionallyModel(new List<string>
                 {
                     PlayerPrefsKeys.SHOP_CONDITION_EVIL_TONGUE_START,
@@ -87,7 +93,7 @@ public class MenuEntryPoint : MonoBehaviour
 
                 storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
                 storeShopPresenter = new StoreShopPresenter(new StoreShopModel(PlayerPrefsKeys.SHOP_LEVEL_SHIELD, PlayerPrefsKeys.SHOP_LEVEL_EVIL, PlayerPrefsKeys.SHOP_LEVEL_ORACLE));
-                shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter, storeAdditionallyPresenter), viewContainer.GetView<ShopVisualView>());
+                shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter, storeAdditionallyPresenter, soundPresenter), viewContainer.GetView<ShopVisualView>());
                 shopAnimationVisualPresenter = new ShopAnimationVisualPresenter(new ShopAnimationVisualModel(storeShopPresenter), viewContainer.GetView<ShopAnimationVisualView>());
 
                 stateMachine = new StateMachine_Menu
@@ -102,8 +108,6 @@ public class MenuEntryPoint : MonoBehaviour
 
                 ActivateEvents();
 
-                Debug.Log("Test");
-
                 soundPresenter.Initialize();
                 particleEffectPresenter.Initialize();
                 particleEffectMaterialPresenter.Initialize();
@@ -117,6 +121,8 @@ public class MenuEntryPoint : MonoBehaviour
 
                 avatarVisualPresenter_Main.Initialize();
                 avatarVisualPresenter_Update.Initialize();
+                scoreLaurelPresenter.Initialize();
+                scoreLaurelVisualPresenter.Initialize();
                 avatarPresenter.Initialize();
                 shopAnimationVisualPresenter.Initialize();
 
@@ -189,6 +195,8 @@ public class MenuEntryPoint : MonoBehaviour
 
         avatarVisualPresenter_Main?.Dispose();
         avatarVisualPresenter_Update?.Dispose();
+        scoreLaurelPresenter?.Dispose();
+        scoreLaurelVisualPresenter?.Dispose();
         avatarPresenter?.Dispose();
 
         shopAnimationVisualPresenter?.Dispose();

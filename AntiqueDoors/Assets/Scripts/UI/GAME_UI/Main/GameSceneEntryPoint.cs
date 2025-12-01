@@ -39,6 +39,7 @@ public class GameSceneEntryPoint : MonoBehaviour
     private BonusConditionPresenter bonusConditionPresenter;
     private BonusRewardPresenter bonusRewardPresenter;
     private BonusApplierPresenter bonusApplierPresenter;
+    private ScoreLaurelPresenter scoreLaurelPresenter;
 
     private BankGamePresenter bankGamePresenter;
 
@@ -76,7 +77,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         storeHealthPresenter = new StoreHealthPresenter(new StoreHealthModel(PlayerPrefsKeys.MAX_HEALTH, PlayerPrefsKeys.MAX_SHIELD));
         playerHealthPresenter = new PlayerHealthPresenter(new PlayerHealthModel(storeHealthPresenter), viewContainer.GetView<PlayerHealthView>());
 
-        scoreRecordPresenter = new ScoreRecordPresenter(new ScoreRecordModel(PlayerPrefsKeys.RECORD));
+        scoreRecordPresenter = new ScoreRecordPresenter(new ScoreRecordModel(PlayerPrefsKeys.SCORE_RECORD_DOOR));
         playerScorePresenter = new PlayerScorePresenter(new PlayerScoreModel(doorCounterPresenter, scoreRecordPresenter));
 
         storeBonusPresenter = new StoreBonusPresenter(new StoreBonusModel());
@@ -92,6 +93,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         bonusConditionPresenter = new BonusConditionPresenter(new BonusConditionModel(storeAdditionallyPresenter, doorCounterPresenter, storeBonusPresenter));
         bonusRewardPresenter = new BonusRewardPresenter(new BonusRewardModel(storeBonusPresenter, playerHealthPresenter, soundPresenter), viewContainer.GetView<BonusRewardView>());
         bonusApplierPresenter = new BonusApplierPresenter(new BonusApplierModel(storeDoorPresenter, bonusVisualPresenter, storeBonusPresenter, doorDesignPresenter, soundPresenter));
+        scoreLaurelPresenter = new ScoreLaurelPresenter(new ScoreLaurelModel(PlayerPrefsKeys.SCORE_LAUREL));
 
         bankGamePresenter = new BankGamePresenter(new BankGameModel(doorCounterPresenter, bankPresenter), viewContainer.GetView<BankGameView>());
 
@@ -117,7 +119,8 @@ public class GameSceneEntryPoint : MonoBehaviour
             bonusApplierPresenter,
             bonusApplierPresenter,
             bankGamePresenter,
-            soundPresenter);
+            soundPresenter,
+            scoreLaurelPresenter);
 
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
@@ -152,6 +155,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         bonusConditionPresenter.Initialize();
         bonusRewardPresenter.Initialize();
         bonusApplierPresenter.Initialize();
+        scoreLaurelPresenter.Initialize();
 
         bankGamePresenter.Initialize();
 
@@ -218,6 +222,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         bonusConditionPresenter?.Dispose();
         bonusRewardPresenter?.Dispose();
         bonusApplierPresenter?.Dispose();
+        scoreLaurelPresenter?.Dispose();
 
         bankGamePresenter?.Dispose();
 
