@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase.Auth;
+using Firebase.Database;
 using UnityEngine;
 
 public class OtherSceneEntryPoint : MonoBehaviour
@@ -8,13 +10,16 @@ public class OtherSceneEntryPoint : MonoBehaviour
     [SerializeField] private UIOtherSceneRoot sceneRootPrefab;
 
     private UIOtherSceneRoot sceneRoot;
-
+    private BankPresenter bankPresenter;
     private ViewContainer viewContainer;
-    //private WebViewPresenter otherWebViewPresenter;
+    private FirebaseDatabasePresenter firebaseDatabasePresenter;
+    private WebViewPresenter webViewPresenter;
 
     public void Run(UIRootView uIRootView)
     {
-        Debug.Log("OPEN OTHER SCENE");
+        FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
+        FirebaseAuth firebaseAuth = FirebaseAuth.DefaultInstance;
+        DatabaseReference databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
 
         sceneRoot = Instantiate(sceneRootPrefab);
         uIRootView.AttachSceneUI(sceneRoot.gameObject, Camera.main);
@@ -22,23 +27,41 @@ public class OtherSceneEntryPoint : MonoBehaviour
         viewContainer = sceneRoot.GetComponent<ViewContainer>();
         viewContainer.Initialize();
 
-        //otherWebViewPresenter = new WebViewPresenter(new WebViewModel(), viewContainer.GetView<WebViewView>());
-        //otherWebViewPresenter.Initialize();
+        bankPresenter = new BankPresenter(new BankModel(), viewContainer.GetView<BankView>());
+        bankPresenter.Initialize();
+
+        webViewPresenter = new WebViewPresenter(new WebViewModel(), viewContainer.GetView<WebViewView>());
+        webViewPresenter.Initialize();
+
+        firebaseDatabasePresenter = new FirebaseDatabasePresenter(new FirebaseDatabaseModel(firebaseAuth, databaseReference, bankPresenter));
+        firebaseDatabasePresenter.Initialize();
 
         ActivateActions();
-        //otherWebViewPresenter.GetLinkInTitleFromURL("https://sezak.online/zxWmwt");
+
+        firebaseDatabasePresenter.GetLink();
     }
 
     private void ActivateActions()
     {
-        //otherWebViewPresenter.OnGetLinkFromTitle += GetUrl;
-        //otherWebViewPresenter.OnFail += GoToMainMenu;
+        firebaseDatabasePresenter.OnGetLink += GetURLBd;
+        firebaseDatabasePresenter.OnErrorGetLink += GoToMainMenu;
+
+        webViewPresenter.OnGetLinkFromTitle += GetUrl;
+        webViewPresenter.OnFail += GoToMainMenu;
     }
 
     private void DeactivateActions()
     {
-        //otherWebViewPresenter.OnGetLinkFromTitle -= GetUrl;
-        //otherWebViewPresenter.OnFail -= GoToMainMenu;
+        firebaseDatabasePresenter.OnGetLink -= GetURLBd;
+        firebaseDatabasePresenter.OnErrorGetLink -= GoToMainMenu;
+
+        webViewPresenter.OnGetLinkFromTitle -= GetUrl;
+        webViewPresenter.OnFail -= GoToMainMenu;
+    }
+
+    private void GetURLBd(string link)
+    {
+        webViewPresenter.GetLinkInTitleFromURL(link);
     }
 
     private void GetUrl(string URL)
@@ -49,13 +72,13 @@ public class OtherSceneEntryPoint : MonoBehaviour
             return;
         }
 
-        //otherWebViewPresenter.SetURL(URL);
-        //otherWebViewPresenter.Load();
+        webViewPresenter.SetURL(URL);
+        webViewPresenter.Load();
     }
 
     private void GoToMainMenu()
     {
-        Debug.Log("NO GOOD, OPEN MAIN MENU");
+        //Debug.Log("NO GOOD, OPEN MAIN MENU");
         OnGoToMainMenu?.Invoke();
     }
 
@@ -63,7 +86,7 @@ public class OtherSceneEntryPoint : MonoBehaviour
     {
         DeactivateActions();
 
-        //otherWebViewPresenter.Dispose();
+        webViewPresenter.Dispose();
     }
 
     #region Input
