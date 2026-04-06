@@ -212,7 +212,7 @@ public class StoreDoorModel
                          $"Bonus: {d.HasBonus} | " +
                          $"BonusCount: {d.BonusCount}";
 
-            Debug.Log(log);
+            //Debug.Log(log);
         }
     }
 

@@ -16,7 +16,7 @@ public class BankModel
 
     public void Initialize()
     {
-        money = PlayerPrefs.GetInt(BANK_MONEY, 20);
+        money = PlayerPrefs.GetInt(BANK_MONEY, 200);
     }
 
     public void Destroy()
