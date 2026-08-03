@@ -13,7 +13,7 @@ public class NicknameView : View
     [SerializeField] private List<TMP_InputField> textInputs = new();
 
     [SerializeField] private List<TMP_InputField> inputFieldNickname;
-    [SerializeField] private TextMeshProUGUI textDescription;
+    [SerializeField] private List<TextMeshProUGUI> textDescriptions;
     [SerializeField] private Button button;
 
     public void Initialize()
@@ -61,8 +61,12 @@ public class NicknameView : View
 
     public void DisplayDescription(string text)
     {
-        if(textDescription != null)
-           textDescription.text = text;
+        if(textDescriptions.Count == 0) return;
+
+        for (int i = 0; i < textDescriptions.Count; i++)
+        {
+            textDescriptions[i].text = text;
+        }
     }
 
     #region Input

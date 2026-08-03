@@ -228,6 +228,7 @@ public class FirebaseDatabaseModel
         if (task.IsFaulted || task.IsCanceled || !task.IsCompleted)
         {
             Debug.Log("Error display user");
+            Debug.Log(task.Status);
             OnErrorGetUserFromPlace?.Invoke();
             yield break;
         }
