@@ -19,16 +19,14 @@ public class WebViewView : View, IIdentify
 
     //public event Action OnHide_Action;
 
-    private IEnumerator checkRotationCoroutine;
-
     public string GetID() => id;
 
     public void Initialize()
     {
         ActivateEvents();
 
-        uniWebView.SetShowToolbarNavigationButtons(false);
-        uniWebView.SetShowToolbar(false);
+        uniWebView.EmbeddedToolbar.HideNavigationButtons();
+        uniWebView.EmbeddedToolbar.Hide();
     }
 
     private void ActivateEvents()
@@ -56,8 +54,8 @@ public class WebViewView : View, IIdentify
         if(uniWebView == null)
         {
             uniWebView = gameObject.AddComponent<UniWebView>();
-            uniWebView.SetShowToolbar(false);
-            uniWebView.SetShowToolbarNavigationButtons(false);
+            uniWebView.EmbeddedToolbar.HideNavigationButtons();
+            uniWebView.EmbeddedToolbar.Hide();
             SetFullScreen();
 
             ActivateEvents();
@@ -69,7 +67,7 @@ public class WebViewView : View, IIdentify
 
     private void SetFullScreen()
     {
-        uniWebView.Frame = new Rect(0, 0, Screen.width, Screen.height);
+        //uniWebView.Frame = new Rect(0, 0, Screen.width, Screen.height);
     }
 
     public void OnReload()
@@ -79,10 +77,12 @@ public class WebViewView : View, IIdentify
 
     public void OnHide()
     {
-        if (checkRotationCoroutine != null)
-            StopCoroutine(checkRotationCoroutine);
+        Screen.autorotateToPortrait = false;
+        Screen.autorotateToPortraitUpsideDown = false;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
 
-        Screen.orientation = ScreenOrientation.Portrait;
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
 
         uniWebView.Hide();
     }
@@ -90,11 +90,13 @@ public class WebViewView : View, IIdentify
     public void OnShow()
     {
         uniWebView.Show();
-        uniWebView.SetShowToolbarNavigationButtons(false);
-        uniWebView.SetShowToolbar(false);
+        uniWebView.EmbeddedToolbar.HideNavigationButtons();
+        uniWebView.EmbeddedToolbar.Hide();
 
-        checkRotationCoroutine = CheckRotationDevice_Coroutine();
-        StartCoroutine(checkRotationCoroutine);
+        Screen.autorotateToPortrait = true;
+        Screen.autorotateToPortraitUpsideDown = true;
+        Screen.autorotateToLandscapeLeft = true;
+        Screen.autorotateToLandscapeRight = true;
 
         Screen.orientation = ScreenOrientation.AutoRotation;
 
@@ -117,21 +119,6 @@ public class WebViewView : View, IIdentify
         textLoading.text = errorMessage;
     }
 
-    private IEnumerator CheckRotationDevice_Coroutine()
-    {
-        var orientation = Screen.orientation;
-
-        while (true)
-        {
-            if(orientation != Screen.orientation)
-            {
-                SetFullScreen();
-                orientation = Screen.orientation;
-            }
-            yield return null;
-        }
-    }
-
 
     #region Input
 
@@ -152,9 +139,7 @@ public class WebViewView : View, IIdentify
 
     private bool OnShouldClose(UniWebView webView)
     {
-        OnClosePage?.Invoke();
-
-        return true;
+        return false;
     }
 
     #endregion

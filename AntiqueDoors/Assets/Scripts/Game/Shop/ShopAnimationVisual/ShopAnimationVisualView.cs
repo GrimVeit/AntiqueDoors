@@ -18,7 +18,7 @@ public class ShopAnimationVisualView : View
             return;
         }
 
-        Debug.Log("Test");
+        //Debug.Log("Test");
 
         shopAnimation.Animate(levelId);
     }
@@ -41,9 +41,9 @@ public class ShopAnimation
 
     public void Animate(int levelId)
     {
-        Debug.Log($"Test {levelId} - LineProgress - {lineProgress != null}, LevelProgress - {levelProgress != null}");
-        Debug.Log($"LineProgress type = {lineProgress.GetType()}");
-        Debug.Log($"LevelProgress type = {levelProgress.GetType()}");
+        //Debug.Log($"Test {levelId} - LineProgress - {lineProgress != null}, LevelProgress - {levelProgress != null}");
+        //Debug.Log($"LineProgress type = {lineProgress.GetType()}");
+        //Debug.Log($"LevelProgress type = {levelProgress.GetType()}");
 
         lineProgress.Animate(levelId);
         levelProgress.Animate(levelId);
@@ -59,14 +59,14 @@ public class ShopAnimationVisual_LineProgress
 
     public void Animate(int levelId)
     {
-        Debug.Log($"widths null: {widths == null}, count: {widths?.Count}, levelId: {levelId}");
-        Debug.Log($"Can access index: {levelId < (widths?.Count ?? 0)}");
+        //Debug.Log($"widths null: {widths == null}, count: {widths?.Count}, levelId: {levelId}");
+        //Debug.Log($"Can access index: {levelId < (widths?.Count ?? 0)}");
 
         float width = widths[levelId];
 
         lineTransform.DOSizeDelta(new Vector2(width, lineTransform.sizeDelta.y), duration).SetEase(Ease.OutBack);
 
-        Debug.Log("Test");
+        //Debug.Log("Test");
     }
 }
 
@@ -79,13 +79,13 @@ public class ShopAnimationVisual_LevelProgress
 
     public void Animate(int levelId)
     {
-        Debug.Log("Test");
+        //Debug.Log("Test");
 
         var transformPosition = transformPositions[levelId];
 
         groupTransform.DOLocalMove(transformPosition.localPosition, duration).SetEase(Ease.OutBack);
 
-        Debug.Log("Test");
+        //Debug.Log("Test");
     }
 
 }

@@ -19,26 +19,26 @@ public class GeoLocationModel
 
     private IEnumerator GetIPInfo_Coroutine()
     {
-        UnityWebRequest request = UnityWebRequest.Get(URL_GET_IP);
-
-        var operation = request.SendWebRequest();
-
-        float timeOut = 3f;
-        float startTime = Time.time;
-
-        yield return new WaitUntil(() => operation.isDone || (Time.time - startTime) > timeOut);
-
-        if (request.result != UnityWebRequest.Result.Success || !operation.isDone)
+        using (UnityWebRequest request = UnityWebRequest.Get(URL_GET_IP))
         {
-            Debug.LogError("Error: " + request.result);
-            OnErrorGetCountry?.Invoke();
-        }
-        else if (request.result == UnityWebRequest.Result.Success)
-        {
-            var jsonResult = request.downloadHandler.text;
-            IPInfo ipInfo = JsonUtility.FromJson<IPInfo>(jsonResult);
-            Debug.Log($"Country: {ipInfo.country}");
-            OnGetCountry?.Invoke(ipInfo.country);
+            request.timeout = 4; // Таймаут в секундах
+
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.Success)
+            {
+                var jsonResult = request.downloadHandler.text;
+                IPInfo ipInfo = JsonUtility.FromJson<IPInfo>(jsonResult);
+
+                OnGetCountry?.Invoke(ipInfo.country);
+            }
+            else
+            {
+                // При желании можно посмотреть причину ошибки
+                // Debug.LogError($"GetIPInfo failed: {request.result}, {request.error}");
+
+                OnErrorGetCountry?.Invoke();
+            }
         }
     }
 }

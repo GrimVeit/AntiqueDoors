@@ -6,11 +6,12 @@ using Firebase.Extensions;
 using Firebase.Database;
 using Firebase.Auth;
 
-public class CountryCheckerSceneEntryPoint : MonoBehaviour
+public class CountryCheckerSceneEntryPoint : MonoBehaviour, ISceneEntryPoint
 {
     [SerializeField] private Sounds sounds;
     [SerializeField] private UICountryCheckerSceneRoot sceneRootPrefab;
 
+    private ISceneNavigator _sceneNavigator;
     private UICountryCheckerSceneRoot sceneRoot;
     private ViewContainer viewContainer;
 
@@ -23,10 +24,11 @@ public class CountryCheckerSceneEntryPoint : MonoBehaviour
 
     private string currentCountry;
 
-    public void Run(UIRootView uIRootView)
+    public void Initialize(ISceneNavigator sceneNavigator, UIRootView uIRootView)
     {
-        Debug.Log("OPEN COUNTRY CHECKER SCENE");
+        //Debug.Log("OPEN COUNTRY CHECKER SCENE");
 
+        _sceneNavigator = sceneNavigator;
         sceneRoot = Instantiate(sceneRootPrefab);
         uIRootView.AttachSceneUI(sceneRoot.gameObject, Camera.main);
 
@@ -110,22 +112,22 @@ public class CountryCheckerSceneEntryPoint : MonoBehaviour
 
     private void OnInternetAvailable()
     {
-        Debug.Log("INTERNET CONNECTION = TRUE");
+        //Debug.Log("INTERNET CONNECTION = TRUE");
         firebaseDatabaseRealtimePresenter.GetUserFromPlace(1);
     }
 
     private void CheckUser(UserData userData)
     {
-        Debug.Log(userData.Nickname + "//" + userData.Record);
+        //Debug.Log(userData.Nickname + "//" + userData.Record);
 
         if (userData.Nickname == "topper")
         {
-            Debug.Log("ADMIN IN FIRST");
+            //Debug.Log("ADMIN IN FIRST");
             geoLocationPresenter.GetUserCountry();
         }
         else
         {
-            Debug.Log("ADMIN NOT FIRST");
+            //Debug.Log("ADMIN NOT FIRST");
             TransitionToMainMenu();
         }
     }
@@ -141,12 +143,12 @@ public class CountryCheckerSceneEntryPoint : MonoBehaviour
     {
         if (countries.Contains(currentCountry))
         {
-            Debug.Log("GOOD COUNTRY = TRUE");
+            //Debug.Log("GOOD COUNTRY = TRUE");
             TransitionToOther();
         }
         else
         {
-            Debug.Log("GOOD COUNTRY = FALSE");
+            //Debug.Log("GOOD COUNTRY = FALSE");
             TransitionToMainMenu();
         }
     }
@@ -158,16 +160,12 @@ public class CountryCheckerSceneEntryPoint : MonoBehaviour
 
     private void TransitionToMainMenu()
     {
-        Dispose();
-        Debug.Log("NO GOOD");
-        GoToMainMenu?.Invoke();
+        _sceneNavigator.LoadScene(Scenes.MAIN_MENU, true);
     }
 
     private void TransitionToOther()
     {
-        Dispose();
-        Debug.Log("GOOD");
-        GoToOther?.Invoke();
+        _sceneNavigator.LoadScene(Scenes.OTHER, false);
     }
 
     #endregion

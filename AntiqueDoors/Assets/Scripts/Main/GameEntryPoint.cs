@@ -1,136 +1,103 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
 
-public class GameEntryPoint
+public class GameEntryPoint : ISceneNavigator
 {
     private static GameEntryPoint instance;
-    private UIRootView rootView;
-    private Coroutines coroutines;
+
+    private readonly Coroutines coroutines;
+    private readonly UIRootView rootView;
+
+    private ISceneEntryPoint currentScene;
+
+    private bool isLoading = false;
 
     public GameEntryPoint()
     {
-        coroutines = new GameObject("[Coroutines]").AddComponent<Coroutines>();
+        coroutines = new GameObject("[Coroutines]")
+            .AddComponent<Coroutines>();
+
         Object.DontDestroyOnLoad(coroutines.gameObject);
 
-        var prefabUIRoot = Resources.Load<UIRootView>("UIRootView");
-        rootView = Object.Instantiate(prefabUIRoot);
+        var prefab = Resources.Load<UIRootView>("UIRootView");
+        rootView = Object.Instantiate(prefab);
+
         Object.DontDestroyOnLoad(rootView.gameObject);
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void Autorun()
+    private static void Autorun()
     {
         SetupGlobalSettings();
 
         instance = new GameEntryPoint();
-        instance.Run();
+
+        instance.LoadScene(Scenes.CHECKER, false);
     }
 
     private static void SetupGlobalSettings()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 90;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
-    private void Run()
+    public void LoadScene(string sceneName, bool showLoading = true)
     {
-        coroutines.StartCoroutine(LoadAndStartCheck());
+        if(isLoading) return;
+
+        coroutines.StartCoroutine(LoadSceneRoutine(sceneName, showLoading));
     }
 
-
-    private IEnumerator LoadSceneAndRun<TSceneEntry>(string scene, bool showLoading = false, Action<TSceneEntry> setup = null)
-        where TSceneEntry : MonoBehaviour
+    private IEnumerator LoadSceneRoutine(string sceneName, bool showLoading)
     {
+        isLoading = true;
+
+        currentScene?.Dispose();
+        currentScene = null;
+
         if (showLoading)
+        {
             yield return rootView.ShowLoadingScreen(0);
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        yield return SceneManager.LoadSceneAsync(sceneName);
+
+        currentScene = Object
+            .FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<ISceneEntryPoint>()
+            .FirstOrDefault();
+
+        if (currentScene == null)
+        {
+            Debug.LogError($"Scene '{sceneName}' doesn't contain ISceneEntryPoint");
+            yield break;
+        }
+
+        currentScene.Initialize(this, rootView);
 
         if (showLoading)
-            yield return new WaitForSeconds(1f);
-
-        yield return SceneManager.LoadSceneAsync(scene);
-        yield return new WaitForEndOfFrame();
-
-        var sceneEntryPoint = Object.FindObjectOfType<TSceneEntry>();
-        setup?.Invoke(sceneEntryPoint);
-
-        if (showLoading)
+        {
             yield return rootView.HideLoadingScreen(0);
+            yield return new WaitForSeconds(0.6f);
+        }
+
+        isLoading = false;
     }
+}
 
-    #region Загрузка конкретных сцен
+public interface ISceneNavigator
+{
+    void LoadScene(string sceneName, bool showLoading = true);
+}
 
-    private IEnumerator LoadAndStartCheck()
-    {
-        yield return LoadSceneAndRun<CountryCheckerSceneEntryPoint>(Scenes.CHECKER, false, sceneEntry =>
-        {
-            sceneEntry.Run(rootView);
-
-            sceneEntry.GoToMainMenu -= HandleGoToMainMenu;
-            sceneEntry.GoToMainMenu += HandleGoToMainMenu;
-
-            sceneEntry.GoToOther -= HandleGoToOther;
-            sceneEntry.GoToOther += HandleGoToOther;
-        });
-    }
-
-    private IEnumerator LoadAndStartMainMenu()
-    {
-        yield return LoadSceneAndRun<MenuEntryPoint>(Scenes.MAIN_MENU, true, sceneEntry =>
-        {
-            sceneEntry.Run(rootView);
-
-            sceneEntry.OnClickToGame -= HandleClickToGame;
-            sceneEntry.OnClickToGame += HandleClickToGame;
-        });
-    }
-
-    private IEnumerator LoadAndStartOther()
-    {
-        yield return LoadSceneAndRun<OtherSceneEntryPoint>(Scenes.OTHER, false, sceneEntry =>
-        {
-            sceneEntry.Run(rootView);
-
-            sceneEntry.OnGoToMainMenu -= HandleGoToMainMenu;
-            sceneEntry.OnGoToMainMenu += HandleGoToMainMenu;
-        });
-    }
-
-    private IEnumerator LoadAndStartGame()
-    {
-        yield return LoadSceneAndRun<GameSceneEntryPoint>(Scenes.GAME, true, sceneEntry =>
-        {
-            sceneEntry.Run(rootView);
-
-            sceneEntry.OnClickToMenu -= HandleGoToMainMenu;
-            sceneEntry.OnClickToMenu += HandleGoToMainMenu;
-
-            sceneEntry.OnClickToGame -= HandleClickToGame;
-            sceneEntry.OnClickToGame += HandleClickToGame;
-        });
-    }
-
-    #endregion
-
-    #region Handlers
-
-    private void HandleGoToMainMenu()
-    {
-        coroutines.StartCoroutine(LoadAndStartMainMenu());
-    }
-
-    private void HandleGoToOther()
-    {
-        coroutines.StartCoroutine(LoadAndStartOther());
-    }
-
-    private void HandleClickToGame()
-    {
-        coroutines.StartCoroutine(LoadAndStartGame());
-    }
-
-    #endregion
+public interface ISceneEntryPoint
+{
+    void Initialize(ISceneNavigator navigator, UIRootView uiRoot);
+    void Dispose();
 }
 

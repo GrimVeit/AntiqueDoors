@@ -11,21 +11,23 @@ public class UIRootView : MonoBehaviour
     public IEnumerator ShowLoadingScreen(int index)
     {
         loadScreens[index].ActivatePanel();
+
         yield return new WaitForSeconds(0.3f);
     }
 
     public IEnumerator HideLoadingScreen(int index)
     {
         loadScreens[index].DeactivatePanel();
+
         yield return new WaitForSeconds(0.3f);
     }
 
     public void AttachSceneUI(GameObject sceneUI, Camera camera)
     {
-        ClearSceneUI();
-
         canvasMain.renderMode = RenderMode.ScreenSpaceCamera;
         canvasMain.worldCamera = camera;
+
+        ClearSceneUI();
 
         sceneUI.transform.SetParent(uiSceneContainer, false);
         sceneUI.transform.localScale = Vector3.one;
@@ -39,7 +41,7 @@ public class UIRootView : MonoBehaviour
         rectTransform.offsetMax = Vector2.zero;
     }
 
-    private void ClearSceneUI()
+    public void ClearSceneUI()
     {
         for (int i = 0; i < uiSceneContainer.childCount; i++)
         {

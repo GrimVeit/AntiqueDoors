@@ -6,11 +6,12 @@ using Firebase.Auth;
 using Firebase.Database;
 using UnityEngine;
 
-public class GameSceneEntryPoint : MonoBehaviour
+public class GameSceneEntryPoint : MonoBehaviour, ISceneEntryPoint
 {
     [SerializeField] private Sounds sounds;
-    [SerializeField] private UIGameRoot menuRootPrefab;
+    [SerializeField] private UIGameRoot gameRootPrefab;
 
+    private ISceneNavigator _sceneNavigator;
     private UIGameRoot sceneRoot;
     private ViewContainer viewContainer;
 
@@ -45,9 +46,11 @@ public class GameSceneEntryPoint : MonoBehaviour
 
     private StateMachine_Game stateMachine;
 
-    public void Run(UIRootView uIRootView)
+    public void Initialize(ISceneNavigator sceneNavigator, UIRootView uIRootView)
     {
-        sceneRoot = menuRootPrefab;
+        _sceneNavigator = sceneNavigator;
+
+        sceneRoot = Instantiate(gameRootPrefab);
 
         uIRootView.AttachSceneUI(sceneRoot.gameObject, Camera.main);
 
@@ -125,7 +128,7 @@ public class GameSceneEntryPoint : MonoBehaviour
         sceneRoot.SetSoundProvider(soundPresenter);
         sceneRoot.Activate();
 
-        ActivateEvents();
+        ActivateTransitions();
 
         soundPresenter.Initialize();
         particleEffectPresenter.Initialize();
@@ -162,16 +165,6 @@ public class GameSceneEntryPoint : MonoBehaviour
         stateMachine.Initialize();
     }
 
-    private void ActivateEvents()
-    {
-        ActivateTransitions();
-    }
-
-    private void DeactivateEvents()
-    {
-        DeactivateTransitions();
-    }
-
     private void ActivateTransitions()
     {
         sceneRoot.OnClickToExit_Main += HandleClickToMenu;
@@ -184,18 +177,13 @@ public class GameSceneEntryPoint : MonoBehaviour
         bankGamePresenter.OnApplyMoney -= HandleClickToMenu;
     }
 
-    private void Deactivate()
+    public void Dispose()
     {
+        DeactivateTransitions();
+
         particleEffectMaterialPresenter.Deactivate();
 
         sceneRoot.Deactivate();
-        soundPresenter?.Dispose();
-    }
-
-    private void Dispose()
-    {
-        DeactivateEvents();
-
         soundPresenter?.Dispose();
         sceneRoot.Dispose();
         particleEffectPresenter?.Dispose();
@@ -229,45 +217,11 @@ public class GameSceneEntryPoint : MonoBehaviour
         stateMachine?.Dispose();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-            doorStatePresenter.ActivateAll();
-
-        if (Input.GetKeyDown(KeyCode.RightAlt))
-            doorStatePresenter.DeactivateAll();
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            doorCounterPresenter.AddCount();
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-            storeDoorPresenter.GenerateDoors();
-    }
-
-    private void OnDestroy()
-    {
-        Dispose();
-    }
-
     #region Output
-
-
-    public event Action OnClickToMenu;
-    public event Action OnClickToGame;
 
     private void HandleClickToMenu()
     {
-        Deactivate();
-
-        OnClickToMenu?.Invoke();
-    }
-
-    private void HandleClickToGame()
-    {
-        Deactivate();
-
-        OnClickToGame?.Invoke();
+        _sceneNavigator.LoadScene(Scenes.MAIN_MENU, true);
     }
 
     #endregion

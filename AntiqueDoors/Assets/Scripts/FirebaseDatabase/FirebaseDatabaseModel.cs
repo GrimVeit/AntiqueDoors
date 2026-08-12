@@ -118,7 +118,6 @@ public class FirebaseDatabaseModel
         {
             string name = user.Child("cs").Value.ToString();
             countries.Add(name);
-            Debug.Log($"{name}");
         }
 
         OnGetCountries?.Invoke(countries);
@@ -144,7 +143,7 @@ public class FirebaseDatabaseModel
 
         if (task.IsFaulted || task.IsCanceled || !task.IsCompleted)
         {
-            Debug.Log("Error display link");
+            //Debug.Log("Error display link");
             OnErrorGetLink?.Invoke();
             yield break;
         }
@@ -157,17 +156,17 @@ public class FirebaseDatabaseModel
         {
             string name = user.Child("link").Value.ToString();
             links.Add(name);
-            Debug.Log($"{name}");
+            //Debug.Log($"{name}");
         }
 
         if (links.Count == 0)
         {
-            Debug.Log("NOT FOUND LINKS");
+            //Debug.Log("NOT FOUND LINKS");
             OnErrorGetLink?.Invoke();
         }
         else
         {
-            Debug.Log(links[0]);
+            //Debug.Log(links[0]);
             OnGetLink?.Invoke(links[0]);
         }
     }
@@ -198,7 +197,7 @@ public class FirebaseDatabaseModel
 
         DataSnapshot data = task.Result;
 
-        Debug.Log("Success " + data.ChildrenCount);
+        //Debug.Log("Success " + data.ChildrenCount);
 
         foreach (var user in data.Children)
         {
@@ -223,7 +222,7 @@ public class FirebaseDatabaseModel
 
         yield return new WaitUntil(() => task.IsCompleted || (Time.time - startTime) > timeOut);
 
-        Debug.Log("END");
+        //Debug.Log("END");
 
         if (task.IsFaulted || task.IsCanceled || !task.IsCompleted)
         {

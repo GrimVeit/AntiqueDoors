@@ -6,11 +6,12 @@ using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
 
-public class MenuEntryPoint : MonoBehaviour
+public class MenuEntryPoint : MonoBehaviour, ISceneEntryPoint
 {
     [SerializeField] private Sounds sounds;
     [SerializeField] private UIMainMenuRoot menuRootPrefab;
 
+    private ISceneNavigator _sceneNavigator;
     private UIMainMenuRoot sceneRoot;
     private ViewContainer viewContainer;
 
@@ -39,9 +40,11 @@ public class MenuEntryPoint : MonoBehaviour
 
     private StateMachine_Menu stateMachine;
 
-    public void Run(UIRootView uIRootView)
+    public void Initialize(ISceneNavigator sceneNavigator, UIRootView uIRootView)
     {
-        sceneRoot = menuRootPrefab;
+        _sceneNavigator = sceneNavigator;
+
+        sceneRoot = Instantiate(menuRootPrefab);
 
         uIRootView.AttachSceneUI(sceneRoot.gameObject, Camera.main);
 
@@ -96,6 +99,7 @@ public class MenuEntryPoint : MonoBehaviour
                 shopVisualPresenter = new ShopVisualPresenter(new ShopVisualModel(storeShopPresenter, bankPresenter, storeShopPresenter, storeHealthPresenter, storeAdditionallyPresenter, soundPresenter), viewContainer.GetView<ShopVisualView>());
                 shopAnimationVisualPresenter = new ShopAnimationVisualPresenter(new ShopAnimationVisualModel(storeShopPresenter), viewContainer.GetView<ShopAnimationVisualView>());
 
+
                 stateMachine = new StateMachine_Menu
                 (sceneRoot,
                 nicknamePresenter,
@@ -106,7 +110,7 @@ public class MenuEntryPoint : MonoBehaviour
                 sceneRoot.SetSoundProvider(soundPresenter);
                 sceneRoot.Activate();
 
-                ActivateEvents();
+                ActivateTransitions();
 
                 soundPresenter.Initialize();
                 particleEffectPresenter.Initialize();
@@ -141,16 +145,6 @@ public class MenuEntryPoint : MonoBehaviour
         });
     }
 
-    private void ActivateEvents()
-    {
-        ActivateTransitions();
-    }
-
-    private void DeactivateEvents()
-    {
-        DeactivateTransitions();
-    }
-
     private void ActivateTransitions()
     {
         sceneRoot.OnClickToPlay_Main += HandleClickToGame;
@@ -161,27 +155,11 @@ public class MenuEntryPoint : MonoBehaviour
         sceneRoot.OnClickToPlay_Main -= HandleClickToGame;
     }
 
-    private void Deactivate()
+    public void Dispose()
     {
-        particleEffectMaterialPresenter.Deactivate();
+        DeactivateTransitions();
 
-        sceneRoot.Deactivate();
-        soundPresenter?.Dispose();
-    }
-
-    private void Exit()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-
-        Application.Quit();
-    }
-
-    private void Dispose()
-    {
-        DeactivateEvents();
-
+        particleEffectMaterialPresenter?.Deactivate();
         soundPresenter?.Dispose();
         sceneRoot?.Dispose();
         particleEffectPresenter?.Dispose();
@@ -208,20 +186,11 @@ public class MenuEntryPoint : MonoBehaviour
         stateMachine?.Dispose();
     }
 
-    private void OnDestroy()
-    {
-        Dispose();
-    }
-
     #region Output
-
-    public event Action OnClickToGame;
 
     private void HandleClickToGame()
     {
-        Deactivate();
-
-        OnClickToGame?.Invoke();
+        _sceneNavigator.LoadScene(Scenes.GAME, true);
     }
 
     #endregion
